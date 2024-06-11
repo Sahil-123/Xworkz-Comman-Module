@@ -1,0 +1,30 @@
+package com.xworkz.configuration;
+
+
+import com.xworkz.utils.ConverterListToString;
+import org.modelmapper.ModelMapper;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
+
+@Configuration
+@ComponentScan("com.xworkz")
+@EnableWebMvc
+public class CommanModuleConfig {
+    @Bean
+    public ViewResolver viewResolver(){
+        System.out.println("View Resolver intiated..");
+        return new InternalResourceViewResolver("/",".jsp");
+    }
+
+    @Bean
+    public ModelMapper modelMapper(ConverterListToString converterListToString) {
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.addConverter(converterListToString);
+
+        return modelMapper;
+    }
+}
