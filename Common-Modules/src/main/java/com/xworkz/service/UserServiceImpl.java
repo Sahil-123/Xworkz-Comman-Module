@@ -3,6 +3,8 @@ package com.xworkz.service;
 import com.xworkz.dto.UserDTO;
 import com.xworkz.exceptions.InfoException;
 import com.xworkz.repository.UserRepository;
+import com.xworkz.requestDto.RequestResetPasswordDTO;
+import com.xworkz.requestDto.RequestSigningDTO;
 import com.xworkz.requestDto.RequestSignupDTO;
 import com.xworkz.utils.PasswordGenerator;
 import org.modelmapper.ModelMapper;
@@ -56,6 +58,45 @@ public class UserServiceImpl implements UserService{
         sendMail(userDTO.getEmail(),userDTO.getPassword());
 
         return result;
+    }
+
+    @Override
+    public String signin(RequestSigningDTO requestSigningDTO) {
+        System.out.println("User Sigin process is initiated with request signin dto "+requestSigningDTO);
+
+        Optional<List<UserDTO>> userDTOList = userRepository.findByUserMail(requestSigningDTO.getEmail());
+
+        if(userDTOList.isPresent() && !userDTOList.get().isEmpty()) {
+            UserDTO userDTO = userDTOList.get().get(0);
+            if(userDTO.getPassword().equals(requestSigningDTO.getPassword())){
+                if(userDTO.getLoginCount() == 0){
+                    return "ResetPassword";
+                }
+                return "User";
+            }
+        }
+
+        throw new InfoException("Invalid Email or Password");
+    }
+
+    @Override
+    public boolean validateAndResetPassword(RequestResetPasswordDTO requestResetPasswordDTO) {
+        System.out.println("User reset password process is initiated with request password dto "+requestResetPasswordDTO);
+
+        Optional<List<UserDTO>> userDTOList = userRepository.findByUserMail(requestResetPasswordDTO.getEmail());
+
+        if(!requestResetPasswordDTO.getNewPassword().equals(requestResetPasswordDTO.getConfirmPassword())){
+            throw new InfoException("New Password and Conform Password must have same value.");
+        }
+
+        if(userDTOList.isPresent() && !userDTOList.get().isEmpty()){
+            UserDTO userDTO=userDTOList.get().get(0);
+            if(userDTO.getPassword().equals(requestResetPasswordDTO.getPassword())){
+                return userRepository.updatePassword(userDTO.getEmail(),requestResetPasswordDTO.getNewPassword());
+            }
+        }
+
+        throw new InfoException("Invalid Email or Password");
     }
 
 

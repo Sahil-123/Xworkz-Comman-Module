@@ -16,6 +16,7 @@ import java.util.Date;
 @Table(name = "user")
 @NamedQuery(name = "findByUserEmail", query = "Select user from UserDTO user where user.email=:email")
 @NamedQuery(name = "findByUserMobile", query = "Select user from UserDTO user where user.mobile=:mobile")
+@NamedQuery(name = "updateUserPassword", query = "update UserDTO user set user.password=: password where user.email=:email")
 public class UserDTO {
 
     @Id

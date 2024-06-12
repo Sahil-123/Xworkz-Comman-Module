@@ -86,4 +86,31 @@ public class UserRepositoryImpl implements UserRepository{
 
         return Optional.empty();
     }
+
+    @Override
+    public boolean updatePassword(String email,String password) {
+        System.out.println("User Repository update password process is initiated using email and Password."+email+", "+ password);
+
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+
+        try {
+            transaction.begin();
+            Query query=entityManager.createNamedQuery("updateUserPassword");
+            query.setParameter("email",email);
+            query.setParameter("password",password);
+
+            query.executeUpdate();
+            transaction.commit();
+            return true;
+
+        }catch(PersistenceException e){
+            e.printStackTrace();
+        }
+        finally {
+            entityManager.close();
+        }
+
+        return false;
+    }
 }
