@@ -26,7 +26,16 @@
                     .compulsary {
                         color: red;
                     }
+
+                    #successIcon{
+                        hight: 100vmin;
+                        width: 10vmin;
+                        background: red;
+
+                    }
+
                 </style>
+
     </head>
 
     <body>
@@ -63,15 +72,16 @@
         </nav>
 
 
+
         <div class="mt-3 container d-flex justify-content-center">
             <div class="card w-50 ps-4 pe-4 pt-2 pb-1">
                 <form action="signup" method="POST">
-                    <h5> ${errorMessage} </h5>
-                    <h3> ${successMessage} </h3>
 
                     <div class="card-body d-flex flex-column justify-content-center">
 
                         <span class="compulsary">
+                                    ${infoError}
+
                                     <c:forEach items="${errors}" var="objectError">
                                         "${objectError.defaultMessage}" <br>
                                     </c:forEach>
@@ -126,6 +136,37 @@
             </div>
             </form>
         </div>
+
+
+<c:if test="${successMessage.length() > 0}">
+    <div class="modal fade " id="exampleModal" tabindex="0" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="background-color: #4BB543">
+                <div class="d-flex flex-row-reverse p-3" style="background-color: #4BB543">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                 <div class="d-flex flex-column align-items-center p-5 text-white" >
+                                    <img src="check.png"></img>
+                 </div>
+                <div class="d-flex flex-column align-items-center p-5 text-white" >
+                    <h5>  ${successMessage}</h5>
+                </div>
+                <div class="d-flex flex-row-reverse p-3">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var exampleModal = new bootstrap.Modal(document.getElementById('exampleModal'));
+            exampleModal.show();
+        });
+    </script>
+</c:if>
+
+
 
     </body>
 

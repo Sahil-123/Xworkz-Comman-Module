@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 
@@ -12,8 +13,10 @@ import java.util.Date;
 @Setter
 @ToString
 @Entity
-@Table(name = "user") // Change table name to "user"
-public class UserEntity {
+@Table(name = "user")
+@NamedQuery(name = "findByUserEmail", query = "Select user from UserDTO user where user.email=:email")
+@NamedQuery(name = "findByUserMobile", query = "Select user from UserDTO user where user.mobile=:mobile")
+public class UserDTO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,18 +44,18 @@ public class UserEntity {
     private String createdBy;
 
     @Column(name = "created_date", nullable = false)
-    private Date createdDate;
+    private LocalDate createdDate;
 
     @Column(name = "updated_by", length = 50)
     private String updatedBy;
 
     @Column(name = "updated_date")
-    private Date updatedDate;
+    private LocalDate updatedDate;
 
     @Column(name = "login_count", columnDefinition = "INT DEFAULT 0")
     private int loginCount;
 
-    public UserEntity(){
+    public UserDTO(){
         System.out.println("User entity object is created.");
     }
 }

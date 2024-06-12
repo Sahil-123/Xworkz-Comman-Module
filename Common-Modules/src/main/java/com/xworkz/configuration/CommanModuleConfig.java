@@ -16,7 +16,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 public class CommanModuleConfig {
     @Bean
     public ViewResolver viewResolver(){
-        System.out.println("View Resolver intiated..");
+        System.out.println("View Resolver initiated..");
         return new InternalResourceViewResolver("/",".jsp");
     }
 
