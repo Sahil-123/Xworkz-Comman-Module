@@ -1,14 +1,32 @@
-<%@ include file="./component/TopLinks.jsp" %>
+<%@ include file="component/TopLinks.jsp" %>
     <!DOCTYPE html>
     <html lang="en">
 
     <head>
         <meta charset="UTF-8">
-        <link rel="icon" type="image/x-icon" href="xworkz-logo.png">
         <%@ include file="component/HeaderLink.jsp" %>
-            <script src="js/Signup.js"></script>
+        <base href="http://localhost:8080/Common-Modules/">
+
 
             <title>Sign Up</title>
+
+            <style>
+                    label {
+                        font-weight: bold;
+                    }
+
+                    .error {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        margin-top: 8px;
+                        color: red;
+                    }
+
+                    .compulsary {
+                        color: red;
+                    }
+                </style>
     </head>
 
     <body>
@@ -47,8 +65,18 @@
 
         <div class="mt-3 container d-flex justify-content-center">
             <div class="card w-50 ps-4 pe-4 pt-2 pb-1">
-                <form>
+                <form action="signup" method="POST">
+                    <h5> ${errorMessage} </h5>
+                    <h3> ${successMessage} </h3>
+
                     <div class="card-body d-flex flex-column justify-content-center">
+
+                        <span class="compulsary">
+                                    <c:forEach items="${errors}" var="objectError">
+                                        "${objectError.defaultMessage}" <br>
+                                    </c:forEach>
+                        </span>
+
                         <h2 class="card-title text-center mb-5">Signup</h2>
 
                         <div class="mb-3">
@@ -81,11 +109,11 @@
                         </div>
 
                         <div class="mb-3 form-check">
-                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                            <label class="form-check-label" for="exampleCheck1">Agreement</label>
+                            <input type="checkbox" class="form-check-input" id="agree" name="agree">
+                            <label class="form-check-label" for="agree">Agreement</label>
                         </div>
 
-                        <button type="submit" class="btn btn-primary" id="submitButton" disabled>Signup</button>
+                        <input type="submit" class="btn btn-primary" id="submitButton" value="Signup"/>
 
                         <div class="mb-1 mt-3 d-flex justify-content-center">
                             <p>
