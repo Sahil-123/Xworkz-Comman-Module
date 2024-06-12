@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -88,8 +90,8 @@ public class UserRepositoryImpl implements UserRepository{
     }
 
     @Override
-    public boolean updatePassword(String email,String password) {
-        System.out.println("User Repository update password process is initiated using email and Password."+email+", "+ password);
+    public boolean updatePassword(UserDTO userDTO,String password) {
+        System.out.println("User Repository update password process is initiated using dto and Password."+userDTO+", "+ password);
 
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
@@ -97,8 +99,11 @@ public class UserRepositoryImpl implements UserRepository{
         try {
             transaction.begin();
             Query query=entityManager.createNamedQuery("updateUserPassword");
-            query.setParameter("email",email);
+            query.setParameter("email",userDTO.getEmail());
             query.setParameter("password",password);
+            query.setParameter("updatedBy",userDTO.getFname()+" "+userDTO.getLname());
+            query.setParameter("updatedDate", LocalDateTime.now());
+            query.setParameter("loginCount",userDTO.getLoginCount()+1);
 
             query.executeUpdate();
             transaction.commit();

@@ -6,6 +6,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 
@@ -16,7 +17,7 @@ import java.util.Date;
 @Table(name = "user")
 @NamedQuery(name = "findByUserEmail", query = "Select user from UserDTO user where user.email=:email")
 @NamedQuery(name = "findByUserMobile", query = "Select user from UserDTO user where user.mobile=:mobile")
-@NamedQuery(name = "updateUserPassword", query = "update UserDTO user set user.password=: password where user.email=:email")
+@NamedQuery(name = "updateUserPassword", query = "update UserDTO user set user.password=: password, user.updatedBy=:updatedBy, user.updatedDate=:updatedDate, user.loginCount=:loginCount where user.email=:email")
 public class UserDTO {
 
     @Id
@@ -45,13 +46,13 @@ public class UserDTO {
     private String createdBy;
 
     @Column(name = "created_date", nullable = false)
-    private LocalDate createdDate;
+    private LocalDateTime createdDate;
 
     @Column(name = "updated_by", length = 50)
     private String updatedBy;
 
     @Column(name = "updated_date")
-    private LocalDate updatedDate;
+    private LocalDateTime updatedDate;
 
     @Column(name = "login_count", columnDefinition = "INT DEFAULT 0")
     private int loginCount;

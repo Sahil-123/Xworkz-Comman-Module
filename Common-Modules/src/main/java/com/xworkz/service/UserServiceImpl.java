@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService{
 
         UserDTO userDTO = modelMapper.map(signupDTO,UserDTO.class);
         userDTO.setCreatedBy(userDTO.getFname()+" "+userDTO.getLname());
-        userDTO.setCreatedDate(LocalDate.now());
+        userDTO.setCreatedDate(LocalDateTime.now());
         userDTO.setPassword(PasswordGenerator.generatePassword());
         System.out.println(userDTO);
         Boolean result= userRepository.save(userDTO);
@@ -92,7 +92,7 @@ public class UserServiceImpl implements UserService{
         if(userDTOList.isPresent() && !userDTOList.get().isEmpty()){
             UserDTO userDTO=userDTOList.get().get(0);
             if(userDTO.getPassword().equals(requestResetPasswordDTO.getPassword())){
-                return userRepository.updatePassword(userDTO.getEmail(),requestResetPasswordDTO.getNewPassword());
+                return userRepository.updatePassword(userDTO,requestResetPasswordDTO.getNewPassword());
             }
         }
 
