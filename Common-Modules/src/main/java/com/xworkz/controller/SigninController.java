@@ -28,12 +28,11 @@ public class SigninController {
 
         try{
             if (bindingResult.hasErrors()) {
-                model.addAttribute("dto",requestSigningDTO);
                 model.addAttribute("errors",bindingResult.getAllErrors());
                 return "SignIn";
             }
 
-            String result = userService.signin(requestSigningDTO);
+            String result = userService.signin(requestSigningDTO,model);
             return result;
         }catch (InfoException e){
             System.out.println(e.getMessage());

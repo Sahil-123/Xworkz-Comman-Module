@@ -13,6 +13,7 @@ import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -61,7 +62,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public String signin(RequestSigningDTO requestSigningDTO) {
+    public String signin(RequestSigningDTO requestSigningDTO, Model model) {
         System.out.println("User Sigin process is initiated with request signin dto "+requestSigningDTO);
 
         Optional<List<UserDTO>> userDTOList = userRepository.findByUserMail(requestSigningDTO.getEmail());
@@ -72,6 +73,7 @@ public class UserServiceImpl implements UserService{
                 if(userDTO.getLoginCount() == 0){
                     return "ResetPassword";
                 }
+                model.addAttribute("userDto",userDTO);
                 return "User";
             }
         }
