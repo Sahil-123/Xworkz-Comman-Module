@@ -56,13 +56,18 @@
                     <ul class="navbar-nav">
 
                         <li class="nav-item">
-                            <a class="nav-link" href="SignUp.jsp">
-                                <i class="fa-solid fa-user"></i>
-                                Sign Up
+                            <a class="nav-link" aria-current="page" href="index.jsp">
+                                <i class="fa-solid fa-house"></i>
+                                Home
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="SignIn.jsp">
+                            <c:if test="${admin}">
+                                <a class="nav-link" href="admin/signinPage">
+                            </c:if>
+                            <c:if test="${!admin}">
+                                <a class="nav-link" href="SignIn.jsp">
+                            </c:if>
                                 <i class="fa-solid fa-right-to-bracket"></i>
                                 Sign in
                             </a>
