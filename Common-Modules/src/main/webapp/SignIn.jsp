@@ -148,7 +148,7 @@
                             <div class="d-flex flex-column align-items-center p-5 text-white">
                                 <img src="resources/images/check.png" class="imgHight"></img>
                             </div>
-                            <div class="d-flex flex-column align-items-center p-5 text-white">
+                            <div class="d-flex flex-column align-items-center p-5">
                                 <h5> ${successMessage}</h5>
                             </div>
                             <div class="d-flex flex-row-reverse p-3">

@@ -14,4 +14,7 @@ public interface UserRepository {
     Optional<List<UserDTO>> findByUserMobile(String mobile);
 
     boolean updatePassword(UserDTO userDTO,String password);
+
+    boolean updateByDto(UserDTO userDTO);
+
 }

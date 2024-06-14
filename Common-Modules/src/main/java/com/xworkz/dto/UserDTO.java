@@ -57,6 +57,12 @@ public class UserDTO {
     @Column(name = "login_count", columnDefinition = "INT DEFAULT 0")
     private int loginCount;
 
+    @Column(name = "failed_attempts_count", columnDefinition = "INT DEFAULT 0")
+    private int failedAttemptsCount;
+
+    @Column(name = "failed_attempt_date_time")
+    private LocalDateTime failedAttemptDateTime;
+
     public UserDTO(){
         System.out.println("User entity object is created.");
     }

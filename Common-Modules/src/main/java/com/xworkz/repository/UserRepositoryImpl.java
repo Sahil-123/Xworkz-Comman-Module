@@ -118,4 +118,28 @@ public class UserRepositoryImpl implements UserRepository{
 
         return false;
     }
+
+    @Override
+    public boolean updateByDto(UserDTO userDTO) {
+        System.out.println("User Repository update by dto process is initiated using dto."+ userDTO);
+
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+
+        try {
+            transaction.begin();
+            entityManager.merge(userDTO);
+            transaction.commit();
+            return true;
+
+        }catch(PersistenceException e){
+            e.printStackTrace();
+            transaction.rollback();
+        }
+        finally {
+            entityManager.close();
+        }
+
+        return false;
+    }
 }

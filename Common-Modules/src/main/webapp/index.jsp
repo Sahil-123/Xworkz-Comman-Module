@@ -43,15 +43,15 @@
 
                 <ul class="dropdown-menu  navbar-dark bg-dark" aria-labelledby="dropdownMenuLink">
                   <li class="nav-item">
-                    <a class="nav-link" href="SignUp.jsp">
-                      <i class="fa-solid fa-user"></i>
-                      Sign Up
+                    <a class="nav-link" href="SignIn.jsp">
+                      <i class="fa-solid fa-right-to-bracket"></i>
+                      Sign In
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="SignIn.jsp">
-                      <i class="fa-solid fa-right-to-bracket"></i>
-                      Sign in
+                    <a class="nav-link" href="SignUp.jsp">
+                      <i class="fa-solid fa-user"></i>
+                      Sign Up
                     </a>
                   </li>
 

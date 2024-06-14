@@ -142,14 +142,14 @@
 <c:if test="${successMessage.length() > 0}">
     <div class="modal fade " id="exampleModal" tabindex="0" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content" style="background-color: #4BB543">
-                <div class="d-flex flex-row-reverse p-3" style="background-color: #4BB543">
+            <div class="modal-content">
+                <div class="d-flex flex-row-reverse p-3" >
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                  <div class="d-flex flex-column align-items-center p-5 text-white" >
-                                    <img src="check.png"></img>
+                                    <img src="resources/images/check.png" class="imgHight"></img>
                  </div>
-                <div class="d-flex flex-column align-items-center p-5 text-white" >
+                <div class="d-flex flex-column align-items-center p-5" >
                     <h5>  ${successMessage}</h5>
                 </div>
                 <div class="d-flex flex-row-reverse p-3">

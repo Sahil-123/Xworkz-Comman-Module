@@ -15,13 +15,14 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     @Autowired
     private ModelMapper modelMapper;
@@ -34,67 +35,122 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public Boolean validateAndSave(RequestSignupDTO signupDTO) {
-        System.out.println("User Service process is initiated using DTO: "+signupDTO);
+        System.out.println("User Service process is initiated using DTO: " + signupDTO);
 
         Optional<List<UserDTO>> userDTOList = userRepository.findByUserMail(signupDTO.getEmail());
 
-        if(userDTOList.isPresent() && !userDTOList.get().isEmpty()){
+        if (userDTOList.isPresent() && !userDTOList.get().isEmpty()) {
             System.out.println(userDTOList.get());
             throw new InfoException("Email already exist");
         }
 
         Optional<List<UserDTO>> userDTOList1 = userRepository.findByUserMobile(signupDTO.getMobile());
 
-        if(userDTOList1.isPresent() && !userDTOList1.get().isEmpty()){
+        if (userDTOList1.isPresent() && !userDTOList1.get().isEmpty()) {
             System.out.println(userDTOList1.get());
             throw new InfoException("Mobile number already exist");
         }
 
-        UserDTO userDTO = modelMapper.map(signupDTO,UserDTO.class);
-        userDTO.setCreatedBy(userDTO.getFname()+" "+userDTO.getLname());
+        UserDTO userDTO = modelMapper.map(signupDTO, UserDTO.class);
+        userDTO.setCreatedBy(userDTO.getFname() + " " + userDTO.getLname());
         userDTO.setCreatedDate(LocalDateTime.now());
         userDTO.setPassword(PasswordGenerator.generatePassword());
         System.out.println(userDTO);
-        Boolean result= userRepository.save(userDTO);
-        sendMail(userDTO.getEmail(),userDTO.getPassword());
+        Boolean result = userRepository.save(userDTO);
+        sendMail(userDTO.getEmail(), userDTO.getPassword());
 
         return result;
     }
 
     @Override
     public String signin(RequestSigningDTO requestSigningDTO, Model model) {
-        System.out.println("User Sigin process is initiated with request signin dto "+requestSigningDTO);
+        System.out.println("User Sigin process is initiated with request signin dto " + requestSigningDTO);
 
         Optional<List<UserDTO>> userDTOList = userRepository.findByUserMail(requestSigningDTO.getEmail());
 
-        if(userDTOList.isPresent() && !userDTOList.get().isEmpty()) {
+        if (userDTOList.isPresent() && !userDTOList.get().isEmpty()) {
             UserDTO userDTO = userDTOList.get().get(0);
-            if(userDTO.getPassword().equals(requestSigningDTO.getPassword())){
-                if(userDTO.getLoginCount() == 0){
+            if (userDTO.getPassword().equals(requestSigningDTO.getPassword())) {
+                if (userDTO.getLoginCount() == 0) {
                     return "ResetPassword";
                 }
-                model.addAttribute("userDto",userDTO);
+                userDTO.setFailedAttemptsCount(0);
+
+//                save updated counts to database
+                userRepository.updateByDto(userDTO);
+
+                model.addAttribute("userDto", userDTO);
                 return "User";
+            } else {
+
+//                3 time wrong attempts allowed within the 1 hour after that it will be allowed
+//                3 attempts if previous attempts are within 3 then only allowed more 3 attempts in next 1 hour
+
+                long duration = getDuration(userDTO.getFailedAttemptDateTime());
+                System.out.println("trying to check the attempts");
+                if (duration < 1L && userDTO.getFailedAttemptsCount() < 3) {
+                    System.out.println("under valid attempts : " + userDTO.getFailedAttemptsCount());
+                    if (userDTO.getFailedAttemptsCount() == 0) {
+                        userDTO.setFailedAttemptDateTime(LocalDateTime.now());
+                    }
+                    userDTO.setFailedAttemptsCount(userDTO.getFailedAttemptsCount() + 1);
+
+//                    save updated counts to database.
+                    userRepository.updateByDto(userDTO);
+
+                } else if (duration >= 1L) {
+                    System.out.println("checking under specified duration attempts are valid or not attempt = "+userDTO.getFailedAttemptsCount());
+                    if (userDTO.getFailedAttemptsCount() < 3) {
+                        System.out.println("attempts are valid under 3 after an hours so resting the time and count");
+                        userDTO.setFailedAttemptDateTime(LocalDateTime.now());
+                        userDTO.setFailedAttemptsCount(1);
+
+//                    save updated counts to database.
+                        userRepository.updateByDto(userDTO);
+
+                    }else{
+                        throw new InfoException("Your have exceeded login attempts. Your account is Locked. Please Reset your password.");
+                    }
+                } else {
+                    throw new InfoException("Your have exceeded login attempts. Your account is Locked. Please Reset your password.");
+                }
             }
         }
-
         throw new InfoException("Invalid Email or Password");
+    }
+
+
+    private Long getDuration(LocalDateTime startDateTime) {
+        LocalDateTime endDateTime = LocalDateTime.now();
+
+        if (startDateTime == null) return 0L;
+
+        // Calculate the duration between the two LocalDateTime instances
+        Duration duration = Duration.between(startDateTime, endDateTime);
+
+        // Get the number of hours between the two LocalDateTime instances
+        long hours = duration.toHours();
+
+        System.out.println("Number of hours between the two dates: " + hours);
+        System.out.println(LocalDateTime.now().minusHours(1L).minusMinutes(30));
+
+        return hours;
     }
 
     @Override
     public boolean validateAndResetPassword(RequestResetPasswordDTO requestResetPasswordDTO) {
-        System.out.println("User reset password process is initiated with request password dto "+requestResetPasswordDTO);
+        System.out.println("User reset password process is initiated with request password dto " + requestResetPasswordDTO);
 
         Optional<List<UserDTO>> userDTOList = userRepository.findByUserMail(requestResetPasswordDTO.getEmail());
 
-        if(!requestResetPasswordDTO.getNewPassword().equals(requestResetPasswordDTO.getConfirmPassword())){
+        if (!requestResetPasswordDTO.getNewPassword().equals(requestResetPasswordDTO.getConfirmPassword())) {
             throw new InfoException("New Password and Conform Password must have same value.");
         }
 
-        if(userDTOList.isPresent() && !userDTOList.get().isEmpty()){
-            UserDTO userDTO=userDTOList.get().get(0);
-            if(userDTO.getPassword().equals(requestResetPasswordDTO.getPassword())){
-                return userRepository.updatePassword(userDTO,requestResetPasswordDTO.getNewPassword());
+        if (userDTOList.isPresent() && !userDTOList.get().isEmpty()) {
+            UserDTO userDTO = userDTOList.get().get(0);
+            if (userDTO.getPassword().equals(requestResetPasswordDTO.getPassword())) {
+                return userRepository.updatePassword(userDTO, requestResetPasswordDTO.getNewPassword());
             }
         }
 
@@ -102,7 +158,7 @@ public class UserServiceImpl implements UserService{
     }
 
 
-    private void sendMail(String mail, String password){
+    private void sendMail(String mail, String password) {
         System.out.println("Mail has successfully sent to " + mail);
 
         String subject = "Welcome to Our Service!";

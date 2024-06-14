@@ -19,27 +19,5 @@ public class SignupController {
     @Autowired
     private UserService userService;
 
-    @PostMapping(value = "/signup")
-    public String processSignupForm(@Valid RequestSignupDTO requestSignupDTO, BindingResult bindingResult, Model model) {
-        System.out.println("Signup Form processing with dto "+requestSignupDTO);
 
-        try{
-            if (bindingResult.hasErrors()) {
-                model.addAttribute("dto",requestSignupDTO);
-                model.addAttribute("errors",bindingResult.getAllErrors());
-                model.addAttribute("errorMessage","Email already exist");
-                return "SignUp";
-            }
-
-            Boolean result = userService.validateAndSave(requestSignupDTO);
-            model.addAttribute("successMessage", " Signup successful! Please check your email. We have sent you a password to log in.");
-        }catch (InfoException e){
-            System.out.println(e.getMessage());
-            model.addAttribute("infoError",e.getMessage());
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-        return "SignUp";
-    }
 }
