@@ -1,6 +1,7 @@
 package com.xworkz.controller;
 
 import com.xworkz.exceptions.InfoException;
+import com.xworkz.requestDto.RequestForgotPasswordDTO;
 import com.xworkz.requestDto.RequestResetPasswordDTO;
 import com.xworkz.requestDto.RequestSigningDTO;
 import com.xworkz.requestDto.RequestSignupDTO;
@@ -21,22 +22,22 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/signin")
-    public String signin(@Valid RequestSigningDTO requestSigningDTO, BindingResult bindingResult, Model model){
-        System.out.println("Signin Form processing with dto "+requestSigningDTO);
-        model.addAttribute("dto",requestSigningDTO);
+    public String signin(@Valid RequestSigningDTO requestSigningDTO, BindingResult bindingResult, Model model) {
+        System.out.println("Signin Form processing with dto " + requestSigningDTO);
+        model.addAttribute("dto", requestSigningDTO);
 
-        try{
+        try {
             if (bindingResult.hasErrors()) {
-                model.addAttribute("errors",bindingResult.getAllErrors());
+                model.addAttribute("errors", bindingResult.getAllErrors());
                 return "SignIn";
             }
 
-            String result = userService.signin(requestSigningDTO,model);
+            String result = userService.signin(requestSigningDTO, model);
             return result;
-        }catch (InfoException e){
+        } catch (InfoException e) {
             System.out.println(e.getMessage());
-            model.addAttribute("infoError",e.getMessage());
-        }catch (Exception e){
+            model.addAttribute("infoError", e.getMessage());
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -44,24 +45,24 @@ public class UserController {
     }
 
     @PostMapping("/resetPassword")
-    public String resetPassword(@Valid RequestResetPasswordDTO requestResetPasswordDTO, BindingResult bindingResult, Model model){
-        System.out.println("Reset Form processing with dto "+requestResetPasswordDTO);
+    public String resetPassword(@Valid RequestResetPasswordDTO requestResetPasswordDTO, BindingResult bindingResult, Model model) {
+        System.out.println("Reset Form processing with dto " + requestResetPasswordDTO);
 
-        try{
+        try {
             if (bindingResult.hasErrors()) {
-                model.addAttribute("dto",requestResetPasswordDTO);
-                model.addAttribute("errors",bindingResult.getAllErrors());
+                model.addAttribute("dto", requestResetPasswordDTO);
+                model.addAttribute("errors", bindingResult.getAllErrors());
                 return "ResetPassword";
             }
 
             userService.validateAndResetPassword(requestResetPasswordDTO);
             model.addAttribute("successMessage", "Password reset successful! Please login with your new password.");
             return "SignIn";
-        }catch (InfoException e){
+        } catch (InfoException e) {
             System.out.println(e.getMessage());
-            model.addAttribute("dto",requestResetPasswordDTO);
-            model.addAttribute("infoError",e.getMessage());
-        }catch (Exception e){
+            model.addAttribute("dto", requestResetPasswordDTO);
+            model.addAttribute("infoError", e.getMessage());
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -70,25 +71,46 @@ public class UserController {
 
     @PostMapping(value = "/signup")
     public String processSignupForm(@Valid RequestSignupDTO requestSignupDTO, BindingResult bindingResult, Model model) {
-        System.out.println("Signup Form processing with dto "+requestSignupDTO);
+        System.out.println("Signup Form processing with dto " + requestSignupDTO);
 
-        try{
+        try {
             if (bindingResult.hasErrors()) {
-                model.addAttribute("dto",requestSignupDTO);
-                model.addAttribute("errors",bindingResult.getAllErrors());
-                model.addAttribute("errorMessage","Email already exist");
+                model.addAttribute("dto", requestSignupDTO);
+                model.addAttribute("errors", bindingResult.getAllErrors());
+                model.addAttribute("errorMessage", "Email already exist");
                 return "SignUp";
             }
 
             Boolean result = userService.validateAndSave(requestSignupDTO);
             model.addAttribute("successMessage", " Signup successful! Please check your email. We have sent you a password to log in.");
-        }catch (InfoException e){
+        } catch (InfoException e) {
             System.out.println(e.getMessage());
-            model.addAttribute("infoError",e.getMessage());
-        }catch (Exception e){
+            model.addAttribute("infoError", e.getMessage());
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         return "SignUp";
+    }
+
+    @PostMapping("/forgotPassword")
+    public String forgotPassword(@Valid RequestForgotPasswordDTO requestForgotPasswordDTO, BindingResult bindingResult, Model model) {
+        System.out.println("User forgot password process is initiated with dto "+requestForgotPasswordDTO);
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("errors", bindingResult.getAllErrors());
+            return "ForgotPassword";
+        }
+
+        try {
+            return userService.validateAndSetForgotPassword(requestForgotPasswordDTO, model);
+        } catch (InfoException e) {
+            model.addAttribute("infoError", e.getMessage());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println(e.getCause());
+            e.printStackTrace();
+        }
+        return "ForgotPassword";
     }
 }

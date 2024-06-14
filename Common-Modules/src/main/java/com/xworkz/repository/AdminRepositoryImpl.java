@@ -38,4 +38,28 @@ public class AdminRepositoryImpl implements AdminRepository {
 
         return Optional.empty();
     }
+
+    @Override
+    public boolean updateByDto(AdminDTO adminDTO) {
+        System.out.println("Admin Repository update by dto process is initiated using dto."+ adminDTO);
+
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+
+        try {
+            transaction.begin();
+            entityManager.merge(adminDTO);
+            transaction.commit();
+            return true;
+
+        }catch(PersistenceException e){
+            e.printStackTrace();
+            transaction.rollback();
+        }
+        finally {
+            entityManager.close();
+        }
+
+        return false;
+    }
 }

@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface AdminRepository {
     Optional<List<AdminDTO>> findByEmail(String email);
+
+    boolean updateByDto(AdminDTO adminDTO);
 }

@@ -8,7 +8,7 @@
             <base href="http://localhost:8080/Common-Modules/">
 
 
-            <title>Signin</title>
+            <title>Forgot Password</title>
 
             <style>
                 label {
@@ -77,15 +77,14 @@
         </nav>
 
 
-
         <div class="mt-3 container d-flex justify-content-center">
             <div class="card w-50 ps-4 pe-4 pt-2 pb-1 shadow p-3 mb-5 bg-body rounded">
 
                 <c:if test="${admin}">
-                    <form action="admin/signin" method="POST">
+                    <form action="admin/forgotPassword" method="POST">
                 </c:if>
                 <c:if test="${!admin}">
-                    <form action="signin" method="POST">
+                    <form action="forgotPassword" method="POST">
                 </c:if>
 
                 <div class="card-body d-flex flex-column justify-content-center">
@@ -98,7 +97,7 @@
                         </c:forEach>
                     </span>
 
-                    <h2 class="card-title text-center mb-5">Signin</h2>
+                    <h2 class="card-title text-center mb-5">Enter Your Email</h2>
 
                     <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
@@ -107,40 +106,7 @@
                         <div id="emailError" class="text-danger"></div>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" name="password"
-                            value="${dto.password}">
-                        <div id="passwordError" class="text-danger"></div>
-                    </div>
-
-                    <div class="mb-1 mt-3 d-flex justify-content-center">
-
-
-                        <c:if test="${admin}">
-                            <p>
-                                <a href="admin/forgotPasswordPage" style="text-decoration: none">
-                                    <strong> Forgot password? </strong> </a>
-                            </p>
-                        </c:if>
-                        <c:if test="${!admin}">
-                            <p>
-                                <a href="ForgotPassword.jsp" style="text-decoration: none">
-                                    <strong> Forgot password? </strong> </a>
-                            </p>
-                        </c:if>
-                    </div>
-
-                    <input type="submit" class="btn btn-primary mb-3" id="submitButton" value="Signin" />
-
-                    <c:if test="${!admin}">
-                        <div class="mb-1 mt-3 d-flex justify-content-center">
-                            <p>
-                                Don`t have an account? <a href="SignUp.jsp" style="text-decoration: none">
-                                    <strong> Signup </strong> </a>
-                            </p>
-                        </div>
-                    </c:if>
+                    <input type="submit" class="btn btn-primary mb-3" id="submitButton" value="Submit" />
 
                 </div>
             </div>
@@ -154,9 +120,6 @@
                             <div class="d-flex flex-row-reverse p-3">
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
-                            </div>
-                            <div class="d-flex flex-column align-items-center p-5 text-white">
-                                <img src="resources/images/check.png" class="imgHight"></img>
                             </div>
                             <div class="d-flex flex-column align-items-center p-5">
                                 <h5> ${successMessage}</h5>

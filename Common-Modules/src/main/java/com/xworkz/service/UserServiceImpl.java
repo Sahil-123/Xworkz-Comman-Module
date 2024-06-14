@@ -3,20 +3,18 @@ package com.xworkz.service;
 import com.xworkz.dto.UserDTO;
 import com.xworkz.exceptions.InfoException;
 import com.xworkz.repository.UserRepository;
+import com.xworkz.requestDto.RequestForgotPasswordDTO;
 import com.xworkz.requestDto.RequestResetPasswordDTO;
 import com.xworkz.requestDto.RequestSigningDTO;
 import com.xworkz.requestDto.RequestSignupDTO;
+import com.xworkz.utils.CustomeMailSender;
 import com.xworkz.utils.PasswordGenerator;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.MailSender;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -31,7 +29,9 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Autowired
-    private JavaMailSender mailSender;
+    private CustomeMailSender mailSender;
+
+
 
     @Override
     public Boolean validateAndSave(RequestSignupDTO signupDTO) {
@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
         userDTO.setPassword(PasswordGenerator.generatePassword());
         System.out.println(userDTO);
         Boolean result = userRepository.save(userDTO);
-        sendMail(userDTO.getEmail(), userDTO.getPassword());
+        mailSender.sendSignupMail(userDTO.getEmail(), userDTO.getPassword());
 
         return result;
     }
@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
         if (userDTOList.isPresent() && !userDTOList.get().isEmpty()) {
             UserDTO userDTO = userDTOList.get().get(0);
             if (userDTO.getPassword().equals(requestSigningDTO.getPassword())) {
-                if (userDTO.getLoginCount() == 0) {
+                if (userDTO.getLoginCount() == 0 || userDTO.getFailedAttemptsCount() == 3) {
                     return "ResetPassword";
                 }
                 userDTO.setFailedAttemptsCount(0);
@@ -149,37 +149,39 @@ public class UserServiceImpl implements UserService {
 
         if (userDTOList.isPresent() && !userDTOList.get().isEmpty()) {
             UserDTO userDTO = userDTOList.get().get(0);
-            if (userDTO.getPassword().equals(requestResetPasswordDTO.getPassword())) {
-                return userRepository.updatePassword(userDTO, requestResetPasswordDTO.getNewPassword());
+
+            if(userDTO.getLoginCount() == 0 || userDTO.getFailedAttemptsCount() == 3){
+                if (userDTO.getPassword().equals(requestResetPasswordDTO.getPassword())) {
+                    userDTO.setPassword(requestResetPasswordDTO.getNewPassword());
+                    userDTO.setFailedAttemptsCount(0);
+                    return userRepository.updateByDto(userDTO);
+                }
+            }else {
+                throw new InfoException("Not allowed to reset the password");
             }
+
         }
 
         throw new InfoException("Invalid Email or Password");
     }
 
+    @Override
+    public String validateAndSetForgotPassword(RequestForgotPasswordDTO requestForgotPasswordDTO, Model model) {
+        System.out.println("User forgot password process is initiated with request email dto " + requestForgotPasswordDTO);
 
-    private void sendMail(String mail, String password) {
-        System.out.println("Mail has successfully sent to " + mail);
+        Optional<List<UserDTO>> userDTOList = userRepository.findByUserMail(requestForgotPasswordDTO.getEmail());
 
-        String subject = "Welcome to Our Service!";
-        String text = String.format(
-                "Hello,\n\n" +
-                        "Welcome to our service! Your account has been successfully created.\n\n" +
-                        "Here are your account details:\n" +
-                        "Email: %s\n" +
-                        "Password: %s\n\n" +
-                        "Please make sure to change your password after logging in for the first time for security purposes.\n\n" +
-                        "Thank you for joining us!\n" +
-                        "Best regards,\n" +
-                        "The Team",
-                mail, password
-        );
+        if (userDTOList.isPresent() && !userDTOList.get().isEmpty()) {
+            UserDTO userDTO = userDTOList.get().get(0);
+            String generatePassword = PasswordGenerator.generatePassword();
+            userDTO.setPassword(generatePassword);
+            userDTO.setFailedAttemptsCount(3);
+            userRepository.updateByDto(userDTO);
+            mailSender.sendResetPasswordMail(userDTO.getEmail(),userDTO.getPassword());
+            model.addAttribute("successMessage","We have sent an email containing a temporary password to your registered email address. You can use this temporary password to log in and reset your password.");
+            return "ForgotPassword";
+        }
 
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(mail);
-        message.setSubject(subject);
-        message.setText(text);
-
-        mailSender.send(message);
+        throw new InfoException("Invalid Email!");
     }
 }
