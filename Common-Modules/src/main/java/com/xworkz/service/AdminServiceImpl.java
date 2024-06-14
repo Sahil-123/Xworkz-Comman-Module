@@ -32,6 +32,11 @@ public class AdminServiceImpl implements AdminService{
         Optional<List<AdminDTO>> adminDTOList = adminRepository.findByEmail(requestSigningDTO.getEmail());
         if(adminDTOList.isPresent()){
             AdminDTO adminDTO = adminDTOList.get().get(0);
+
+            if(adminDTO.isLock()){
+                throw new InfoException(" Your account is Locked. Please Reset your password.");
+            }
+
             System.out.println("admin "+ adminDTO);
             if(adminDTO.getPassword().equals(requestSigningDTO.getPassword())){
                 model.addAttribute("adminDto",adminDTO);
@@ -59,6 +64,7 @@ public class AdminServiceImpl implements AdminService{
                         adminDTO.setFailedAttemptDateTime(LocalDateTime.now());
                     }
                     adminDTO.setFailedAttemptsCount(adminDTO.getFailedAttemptsCount() + 1);
+                    adminDTO.setLock(true);
 
 //                    save updated counts to database.
                     adminRepository.updateByDto(adminDTO);
@@ -114,6 +120,7 @@ public class AdminServiceImpl implements AdminService{
             String generatePassword = PasswordGenerator.generatePassword();
             adminDTO.setFailedAttemptsCount(3);
             adminDTO.setPassword(generatePassword);
+            adminDTO.setLock(false);
             adminRepository.updateByDto(adminDTO);
             mailSender.sendResetPasswordMail(adminDTO.getEmail(),adminDTO.getPassword());
             model.addAttribute("successMessage","We have sent an email containing a temporary password to your registered email address. You can use this temporary password to log in and reset your password.");
@@ -136,10 +143,17 @@ public class AdminServiceImpl implements AdminService{
 
         if (adminDTOList.isPresent() && !adminDTOList.get().isEmpty()) {
             AdminDTO adminDTO = adminDTOList.get().get(0);
+
+            if(adminDTO.isLock()){
+                throw new InfoException("Please follow forgot password process in order to unlock and reset an account.");
+            }
+
             if(adminDTO.getLoginCount() == 0 || adminDTO.getFailedAttemptsCount() == 3){
                 if (adminDTO.getPassword().equals(requestResetPasswordDTO.getPassword())) {
                     adminDTO.setPassword(requestResetPasswordDTO.getNewPassword());
                     adminDTO.setFailedAttemptsCount(0);
+                    if(adminDTO.getLoginCount() == 0) adminDTO.setLoginCount(1);
+
                     return adminRepository.updateByDto(adminDTO);
                 }
             }else {

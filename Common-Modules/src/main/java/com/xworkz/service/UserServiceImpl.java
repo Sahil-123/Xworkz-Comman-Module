@@ -70,6 +70,11 @@ public class UserServiceImpl implements UserService {
 
         if (userDTOList.isPresent() && !userDTOList.get().isEmpty()) {
             UserDTO userDTO = userDTOList.get().get(0);
+
+            if(userDTO.isLock()){
+                throw new InfoException(" Your account is Locked. Please Reset your password.");
+            }
+
             if (userDTO.getPassword().equals(requestSigningDTO.getPassword())) {
                 if (userDTO.getLoginCount() == 0 || userDTO.getFailedAttemptsCount() == 3) {
                     return "ResetPassword";
@@ -94,6 +99,7 @@ public class UserServiceImpl implements UserService {
                         userDTO.setFailedAttemptDateTime(LocalDateTime.now());
                     }
                     userDTO.setFailedAttemptsCount(userDTO.getFailedAttemptsCount() + 1);
+                    userDTO.setLock(true);
 
 //                    save updated counts to database.
                     userRepository.updateByDto(userDTO);
@@ -150,10 +156,17 @@ public class UserServiceImpl implements UserService {
         if (userDTOList.isPresent() && !userDTOList.get().isEmpty()) {
             UserDTO userDTO = userDTOList.get().get(0);
 
+            if(userDTO.isLock()){
+                throw new InfoException("Please follow forgot password process in order to unlock and reset an account.");
+            }
+
             if(userDTO.getLoginCount() == 0 || userDTO.getFailedAttemptsCount() == 3){
                 if (userDTO.getPassword().equals(requestResetPasswordDTO.getPassword())) {
                     userDTO.setPassword(requestResetPasswordDTO.getNewPassword());
                     userDTO.setFailedAttemptsCount(0);
+
+                    if(userDTO.getLoginCount() == 0 ) userDTO.setLoginCount(1);
+
                     return userRepository.updateByDto(userDTO);
                 }
             }else {
@@ -176,6 +189,7 @@ public class UserServiceImpl implements UserService {
             String generatePassword = PasswordGenerator.generatePassword();
             userDTO.setPassword(generatePassword);
             userDTO.setFailedAttemptsCount(3);
+            userDTO.setLock(false);
             userRepository.updateByDto(userDTO);
             mailSender.sendResetPasswordMail(userDTO.getEmail(),userDTO.getPassword());
             model.addAttribute("successMessage","We have sent an email containing a temporary password to your registered email address. You can use this temporary password to log in and reset your password.");

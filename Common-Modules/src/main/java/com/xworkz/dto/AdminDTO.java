@@ -8,7 +8,6 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "Admin")
@@ -54,4 +53,11 @@ public class AdminDTO {
 
     @Column(name = "UpdatedDate")
     private LocalDateTime updatedDate;
+
+    @Column(name = "User_Lock", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private boolean lock;
+
+    public AdminDTO(){
+        System.out.println("AdminDTO object is created");
+    }
 }
