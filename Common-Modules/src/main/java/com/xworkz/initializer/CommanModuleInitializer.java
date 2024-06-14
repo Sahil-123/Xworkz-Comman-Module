@@ -5,7 +5,7 @@ import org.springframework.web.servlet.config.annotation.DefaultServletHandlerCo
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-public class CommanModuleInitializer extends AbstractAnnotationConfigDispatcherServletInitializer implements WebMvcConfigurer {
+public class CommanModuleInitializer extends AbstractAnnotationConfigDispatcherServletInitializer  {
 
 
     @Override
@@ -28,10 +28,6 @@ public class CommanModuleInitializer extends AbstractAnnotationConfigDispatcherS
     }
 
 
-    @Override
-    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
-        configurer.enable();        // it tells the server to if Dispatcher Servlet not able to map the
-        // request then pass it to default servlet to map in static resources.
-    }
+
 
 }

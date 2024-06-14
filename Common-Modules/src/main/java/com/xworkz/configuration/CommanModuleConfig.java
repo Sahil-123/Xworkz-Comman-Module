@@ -7,13 +7,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @Configuration
 @ComponentScan("com.xworkz")
 @EnableWebMvc
-public class CommanModuleConfig {
+public class CommanModuleConfig implements WebMvcConfigurer {
     @Bean
     public ViewResolver viewResolver(){
         System.out.println("View Resolver initiated..");
@@ -27,4 +27,23 @@ public class CommanModuleConfig {
 
         return modelMapper;
     }
+
+    @Override
+    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
+        configurer.enable();        // it tells the server to if Dispatcher Servlet not able to map the
+        // request then pass it to default servlet to map in static resources.
+    }
+
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry
+                .addResourceHandler("/resources/**")
+                .addResourceLocations("/resources/");
+    }
+
+//    @Override
+//    public void configureViewResolvers(ViewResolverRegistry registry) {
+//        registry.viewResolver(viewResolver());
+//    }
 }
