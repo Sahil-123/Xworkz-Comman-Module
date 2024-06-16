@@ -66,10 +66,6 @@ public class UserDTO {
     @Column(name = "User_Lock", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
     private boolean lock;
 
-    public boolean isLock() {
-        return lock;
-    }
-
     public UserDTO(){
         System.out.println("User entity object is created.");
     }

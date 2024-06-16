@@ -64,15 +64,15 @@
                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                            </ul>
                            <ul class="navbar-nav">
-                            <li class="nav-item text-capitalize nav-link d-flex align-items-center text-white" >
-                                <div class="">${userDto.fname.concat(" ").concat(userDto.lname)}</div>
-                            </li>
 
-                               <li class="nav-item nav-link ">
-                                   <div class="userProfile">
-                                           <i class="fa-solid fa-user " ></i>
-                                   </div>
-                               </li>
+                                <li class="nav-item text-capitalize nav-link d-flex align-items-center text-white">
+                                                            <div class="nav-link nav-item ">${userDto.fname} ${userDto.lname}</div>
+                                                            <div class="userProfile nav-item nav-link ms-1">
+                                                                                       <i class="fa-solid fa-user"></i>
+
+                                                            </div>
+                                                        </li>
+
                            </ul>
                        </div>
                    </div>

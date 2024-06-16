@@ -7,6 +7,9 @@ import com.xworkz.requestDto.RequestSigningDTO;
 import com.xworkz.requestDto.RequestSignupDTO;
 import org.springframework.ui.Model;
 
+import java.util.List;
+import java.util.Optional;
+
 public interface UserService {
     Boolean validateAndSave(RequestSignupDTO signupDTO);
 
@@ -15,4 +18,6 @@ public interface UserService {
     boolean validateAndResetPassword(RequestResetPasswordDTO requestResetPasswordDTO);
 
     String validateAndSetForgotPassword(RequestForgotPasswordDTO requestForgotPasswordDTO, Model model);
+
+    Optional<List<UserDTO>> getAllUser();
 }

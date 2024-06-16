@@ -198,4 +198,10 @@ public class UserServiceImpl implements UserService {
 
         throw new InfoException("Invalid Email!");
     }
+
+    @Override
+    public Optional<List<UserDTO>> getAllUser() {
+        System.out.println("Running User service impl get all user method to find all the users.");
+        return userRepository.getAllUsers();
+    }
 }

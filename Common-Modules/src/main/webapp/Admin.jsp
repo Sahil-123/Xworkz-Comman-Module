@@ -44,49 +44,46 @@
                     border-radius: 60%;
                     cursor: pointer;
                 }
+
+                .customized-item {
+                    width: 6vmax;
+                    text-align: center;
+                    cursor: pointer;
+
+                }
+
+                .cutomize-vertical-nav {
+                    width: 8vmax;
+                    height: 41vmax;
+
+                }
+
+                .data-page {
+                    padding: 20px
+                }
             </style>
 
     </head>
 
     <body>
-        <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark" style="background-color: #e3f2fd;">
-            <div class="container-fluid">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false"
-                    aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <a class="" href="index.jsp">
-                    <img src="https://www.x-workz.in/static/media/Logo.cf195593dc1b3f921369.png"
-                        style="width: 70px; height:30px; " />
-                </a>
+        <%@ include file="component/AdminHorizontalNavBar.jsp" %>
 
-                <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    </ul>
-                    <ul class="navbar-nav">
-                        <li class="nav-item text-capitalize nav-link d-flex align-items-center text-white">
-                            <div class="">${adminDto.firstName} ${adminDto.lastName}</div>
-                        </li>
 
-                        <li class="nav-item nav-link ">
-                            <div class="userProfile">
-                                <i class="fa-solid fa-user-tie"></i>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
+            <div class=" d-flex ">
+                <%@ include file="component/AdminSideBar.jsp" %>
+                    <div class="data-page">
+                        <c:choose>
+
+                            <c:when test="${action.equalsIgnoreCase('users') }">
+                                <%@ include file="component/AdminUsersView.jsp" %>
+                            </c:when>
+
+                            <c:otherwise>
+                                Welecome ${adminDto.firstName} ${adminDto.lastName}
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
             </div>
-        </nav>
-
-        <div class="mt-3 container">
-            <div class="card text-left">
-              Welcome
-      
-            </div>
-          </div>
-
-        
 
     </body>
 

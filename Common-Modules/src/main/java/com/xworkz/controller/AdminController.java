@@ -5,6 +5,7 @@ import com.xworkz.requestDto.RequestForgotPasswordDTO;
 import com.xworkz.requestDto.RequestResetPasswordDTO;
 import com.xworkz.requestDto.RequestSigningDTO;
 import com.xworkz.service.AdminService;
+import com.xworkz.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -22,6 +23,9 @@ public class AdminController {
 
     @Autowired
     private AdminService adminService;
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/signinPage")
     public String getSigningPage(Model model) {
@@ -106,6 +110,14 @@ public class AdminController {
         }
 
         return "ResetPassword";
+    }
+
+    @GetMapping("/users")
+    public String getUsers(Model model){
+        System.out.println("Admin get users method is processing the request");
+        model.addAttribute("action","users");
+        model.addAttribute("userslist",userService.getAllUser().get());
+        return "Admin";
     }
 
 }

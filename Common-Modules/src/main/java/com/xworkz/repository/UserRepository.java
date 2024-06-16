@@ -17,4 +17,6 @@ public interface UserRepository {
 
     boolean updateByDto(UserDTO userDTO);
 
+    Optional<List<UserDTO>> getAllUsers();
+
 }

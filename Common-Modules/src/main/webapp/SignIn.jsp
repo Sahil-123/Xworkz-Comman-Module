@@ -65,12 +65,15 @@
                                 Home
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="SignUp.jsp">
-                                <i class="fa-solid fa-user"></i>
-                                Sign up
-                            </a>
-                        </li>
+                        <c:if test="${!admin}">
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="SignUp.jsp">
+                                    <i class="fa-solid fa-user"></i>
+                                    Sign up
+                                </a>
+                            </li>
+                        </c:if>
                     </ul>
                 </div>
             </div>

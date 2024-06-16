@@ -142,4 +142,25 @@ public class UserRepositoryImpl implements UserRepository{
 
         return false;
     }
+
+    @Override
+    public Optional<List<UserDTO>> getAllUsers() {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        try{
+            Query query = entityManager.createQuery("select user from UserDTO user",UserDTO.class);
+            List<UserDTO> userDTOList = query.getResultList();
+            return Optional.ofNullable(userDTOList);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            System.out.println(e.getCause());
+            e.printStackTrace();
+        }
+
+        finally {
+            entityManager.close();
+        }
+
+        return Optional.empty();
+    }
 }
