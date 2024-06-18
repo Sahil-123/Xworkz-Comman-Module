@@ -163,4 +163,28 @@ public class UserRepositoryImpl implements UserRepository{
 
         return Optional.empty();
     }
+
+    @Override
+    public boolean merge(UserDTO userDTO) {
+        System.out.println("User Repository merge process is initiated using dto."+ userDTO);
+
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+
+        try {
+            transaction.begin();
+            entityManager.merge(userDTO);
+            transaction.commit();
+            return true;
+
+        }catch(PersistenceException e){
+            e.printStackTrace();
+            transaction.rollback();
+        }
+        finally {
+            entityManager.close();
+        }
+
+        return false;
+    }
 }

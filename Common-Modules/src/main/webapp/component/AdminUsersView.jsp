@@ -1,4 +1,4 @@
-<div>
+<div class="">
   <div class="table-responsive-sm p-4 ">
     <h1 class="text-center"> Users Details </h1>
     <c:choose>
@@ -8,7 +8,8 @@
         </tr>
       </c:when>
       <c:otherwise>
-        <table class="table">
+      <div class="customeHeight">
+        <table class="table " >
           <thead class="table-dark">
             <tr>
               <th scope="col"><strong>Email Address</strong></th>
@@ -44,6 +45,7 @@
             </c:forEach>
           </tbody>
         </table>
+        </div>
       </c:otherwise>
     </c:choose>
   </div>

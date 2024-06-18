@@ -49,7 +49,7 @@ public class AdminServiceImpl implements AdminService{
 
 //                save updated counts to database
                 adminRepository.updateByDto(adminDTO);
-
+                model.addAttribute("adminData",adminDTO);
                 return "Admin";
             }else {
 

@@ -1,6 +1,7 @@
 package com.xworkz.service;
 
 import com.xworkz.dto.UserDTO;
+import com.xworkz.dto.UserProfileDTO;
 import com.xworkz.requestDto.RequestForgotPasswordDTO;
 import com.xworkz.requestDto.RequestResetPasswordDTO;
 import com.xworkz.requestDto.RequestSigningDTO;
@@ -20,4 +21,8 @@ public interface UserService {
     String validateAndSetForgotPassword(RequestForgotPasswordDTO requestForgotPasswordDTO, Model model);
 
     Optional<List<UserDTO>> getAllUser();
+
+    boolean editProfile(UserProfileDTO userProfileDTO,Model model);
+
+
 }

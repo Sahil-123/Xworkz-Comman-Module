@@ -1,5 +1,6 @@
 package com.xworkz.controller;
 
+import com.xworkz.dto.UserProfileDTO;
 import com.xworkz.exceptions.InfoException;
 import com.xworkz.requestDto.RequestForgotPasswordDTO;
 import com.xworkz.requestDto.RequestResetPasswordDTO;
@@ -12,11 +13,13 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/")
+@SessionAttributes("userData")
 public class UserController {
     @Autowired
     private UserService userService;
@@ -113,4 +116,30 @@ public class UserController {
         }
         return "ForgotPassword";
     }
+
+    @PostMapping("/editProfile")
+    public String editProfile(UserProfileDTO userProfile,BindingResult bindingResult,Model model) {
+        System.out.println("Edit profile process is initiated."+ userProfile);
+
+        if(bindingResult.hasErrors()){
+            model.addAttribute("errors",bindingResult.getAllErrors());
+            return "user/UserEditProfilePage";
+        }
+
+        try {
+            userService.editProfile(userProfile, model);
+        } catch (InfoException e) {
+            model.addAttribute("infoError", e.getMessage());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println(e.getCause());
+            e.printStackTrace();
+        }
+
+
+        model.addAttribute("successMessage","Profile update is completed");
+        return "user/UserEditProfilePage";
+    }
+
+
 }

@@ -1,6 +1,7 @@
 package com.xworkz.service;
 
 import com.xworkz.dto.UserDTO;
+import com.xworkz.dto.UserProfileDTO;
 import com.xworkz.exceptions.InfoException;
 import com.xworkz.repository.UserRepository;
 import com.xworkz.requestDto.RequestForgotPasswordDTO;
@@ -83,7 +84,7 @@ public class UserServiceImpl implements UserService {
 
 //                save updated counts to database
                 userRepository.updateByDto(userDTO);
-
+                model.addAttribute("userData", userDTO);
                 model.addAttribute("userDto", userDTO);
                 return "User";
             } else {
@@ -203,5 +204,16 @@ public class UserServiceImpl implements UserService {
     public Optional<List<UserDTO>> getAllUser() {
         System.out.println("Running User service impl get all user method to find all the users.");
         return userRepository.getAllUsers();
+    }
+
+    @Override
+    public boolean editProfile(UserProfileDTO userProfileDTO, Model model) {
+
+        UserDTO userDTO = (UserDTO) model.getAttribute("userData");
+        userDTO.setFname(userProfileDTO.getFname());
+        userDTO.setLname(userProfileDTO.getLname());
+        userDTO.setMobile(userProfileDTO.getMobile());
+
+        return userRepository.merge(userDTO);
     }
 }

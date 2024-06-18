@@ -19,4 +19,6 @@ public interface UserRepository {
 
     Optional<List<UserDTO>> getAllUsers();
 
+    boolean merge(UserDTO userDTO);
+
 }

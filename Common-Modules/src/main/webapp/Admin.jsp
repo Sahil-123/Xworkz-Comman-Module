@@ -35,14 +35,20 @@
                 }
 
                 .userProfile {
-                    padding: 10px;
                     display: flex;
                     justify-content: center;
                     align-item: center;
                     background: grey;
                     width: 38px;
+                    height: 38px;
                     border-radius: 60%;
                     cursor: pointer;
+                    overflow: hidden;
+                }
+
+                .userImg{
+                    width: 50px;
+                    height: 50px;
                 }
 
                 .customized-item {
@@ -61,6 +67,14 @@
                 .data-page {
                     padding: 20px
                 }
+
+                .customeHeight{
+                    height: 70vh;
+                    width: 85vw;
+                    overflow: scroll;
+                    overflow-x=scroll
+                }
+
             </style>
 
     </head>
