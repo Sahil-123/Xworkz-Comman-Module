@@ -24,12 +24,19 @@
 
                 <li class="nav-item">
                     <div class="dropdown dropstart">
-                        <a class=" nav-link nav-item text-capitalize nav-link d-flex align-items-center text-white" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
+                        <a class=" nav-link nav-item text-capitalize nav-link d-flex align-items-center text-white"
+                            href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
                             aria-expanded="false">
                             <div class="nav-link nav-item ">${adminData.firstName} ${adminData.lastName}</div>
                             <div class="nav-item nav-link ms-1">
                                 <div class="userProfile ">
-                                    <i class="fa-solid fa-user-tie mt-2"></i>
+                                    <c:if test="${adminImageData != null}">
+                                        <img src="profileImages" alt="Profile picture" class="userImg"></img>
+                                    </c:if>
+                                    <c:if test="${adminImageData == null}">
+                                        <i class="fa-solid fa-user-tie defaultUserIcon"></i>
+                                    </c:if>
+
                                 </div>
                             </div>
                         </a>

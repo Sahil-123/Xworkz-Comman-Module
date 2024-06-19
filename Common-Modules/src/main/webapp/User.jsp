@@ -35,15 +35,26 @@
                 }
 
                 .userProfile {
-                    padding: 10px;
                     display: flex;
                     justify-content: center;
                     align-item: center;
                     background: grey;
                     width: 38px;
+                    height: 38px;
                     border-radius: 60%;
                     cursor: pointer;
+                    overflow: hidden;
                 }
+
+                .userImg{
+                    width: 50px;
+                    height: 50px;
+                }
+
+                .defaultUserIcon{
+                    margin-top: 10px;
+                }
+
             </style>
 
     </head>
@@ -81,7 +92,7 @@
             </script>
         </c:if>
 
-
+        <!-- <img src="profileImages" alt="Profile picture"></img> -->
 
     </body>
 

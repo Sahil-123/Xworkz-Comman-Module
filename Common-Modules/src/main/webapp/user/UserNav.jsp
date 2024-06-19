@@ -30,10 +30,15 @@
                             href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
                             aria-expanded="false">
                             <div class="nav-link nav-item ">${userData.fname} ${userData.lname}</div>
-        
+
                             <div class="nav-item nav-link ms-1">
                                 <div class="userProfile ">
-                                    <i class="fa-solid fa-user"></i>
+                                    <c:if test="${imageData != null}">
+                                        <img src="profileImages" alt="Profile picture" class="userImg"></img>
+                                    </c:if>
+                                    <c:if test="${imageData == null}">
+                                        <i class="fa-solid fa-user defaultUserIcon"></i>
+                                    </c:if>
                                 </div>
                             </div>
                         </a>
@@ -52,3 +57,6 @@
         </div>
     </div>
 </nav>
+
+
+<!-- <p> ${imageData}</p> -->

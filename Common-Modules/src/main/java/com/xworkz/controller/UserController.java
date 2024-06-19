@@ -1,5 +1,7 @@
 package com.xworkz.controller;
 
+import com.sun.deploy.net.HttpResponse;
+import com.xworkz.dto.ImageDTO;
 import com.xworkz.requestDto.UserProfileDTO;
 import com.xworkz.exceptions.InfoException;
 import com.xworkz.requestDto.RequestForgotPasswordDTO;
@@ -7,24 +9,25 @@ import com.xworkz.requestDto.RequestResetPasswordDTO;
 import com.xworkz.requestDto.RequestSigningDTO;
 import com.xworkz.requestDto.RequestSignupDTO;
 import com.xworkz.service.UserService;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletResponse;
 import javax.validation.Valid;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @Controller
 @RequestMapping("/")
-@SessionAttributes("userData")
+@SessionAttributes({"userData","imageData","imageFilePath"})
 public class UserController {
     @Autowired
     private UserService userService;
@@ -176,6 +179,31 @@ public class UserController {
 
         model.addAttribute("successMessage","Profile update is completed");
         return "user/UserEditProfilePage";
+    }
+
+    @GetMapping("/profileImages")
+    public void getImage(ServletResponse response, Model model) throws IOException {
+        System.out.println("Image fetching process initiated");
+        ImageDTO imageDTO = (ImageDTO) model.getAttribute("imageData");
+        if (imageDTO == null) {
+            throw new IllegalArgumentException("Image data not found in model");
+        }
+
+        // Example file path, replace with your actual image file path
+        Path path = Paths.get("D:\\Xworkz-Comman-Module\\uploadedImages\\"+imageDTO.getImageName());
+
+        // Set the content type and buffer size
+        response.setContentType(imageDTO.getImageType());
+        response.setBufferSize(imageDTO.getImageSize());
+
+        // Write the file to the response output stream
+        try (OutputStream outputStream = response.getOutputStream()) {
+            byte[] byteData = Files.readAllBytes(path);
+            outputStream.write(byteData);
+            outputStream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

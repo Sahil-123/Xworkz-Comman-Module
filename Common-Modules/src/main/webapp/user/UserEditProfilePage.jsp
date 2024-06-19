@@ -35,14 +35,24 @@
                 }
 
                 .userProfile {
-                    padding: 10px;
                     display: flex;
                     justify-content: center;
                     align-item: center;
                     background: grey;
                     width: 38px;
+                    height: 38px;
                     border-radius: 60%;
                     cursor: pointer;
+                    overflow: hidden;
+                }
+
+                .userImg {
+                    width: 50px;
+                    height: 50px;
+                }
+
+                .defaultUserIcon {
+                    margin-top: 10px;
                 }
             </style>
 
@@ -109,16 +119,6 @@
                 </div>
                 </form>
             </div>
-            <form action="upload" method="POST" enctype="multipart/form-data">
-
-                <div class="mb-3">
-                    <label for="formFile" class="form-label">Upload Profile Picture</label>
-                    <input class="form-control" accept="image/*" type="file" id="formFile" name="profilePicture">
-                </div>
-                <input type="submit" class="btn btn-primary" id="submitButton" value="upload" />
-
-            </form>
-
 
             <c:if test="${successMessage.length() > 0}">
                 <div class="modal fade " id="exampleModal" tabindex="0" aria-labelledby="exampleModalLabel"

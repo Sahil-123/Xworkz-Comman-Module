@@ -1,5 +1,6 @@
 package com.xworkz.service;
 
+import com.xworkz.dto.ImageDTO;
 import com.xworkz.dto.UserDTO;
 import com.xworkz.exceptions.InfoException;
 import com.xworkz.repository.UserRepository;
@@ -85,6 +86,12 @@ public class UserServiceImpl implements UserService {
                 userRepository.updateByDto(userDTO);
                 model.addAttribute("userData", userDTO);
                 model.addAttribute("userDto", userDTO);
+
+                Optional<ImageDTO> imageDTO = imageService.findActiveImageByUserId(userDTO.getId());
+                if(imageDTO.isPresent()){
+                    model.addAttribute("imageData",imageDTO.get());
+                }
+
                 return "User";
             } else {
 
@@ -212,9 +219,12 @@ public class UserServiceImpl implements UserService {
         userDTO.setFname(userProfileDTO.getFname());
         userDTO.setLname(userProfileDTO.getLname());
         userDTO.setMobile(userProfileDTO.getMobile());
+        userDTO.setUpdatedBy(userDTO.getFname()+" "+userDTO.getLname());
+        userDTO.setUpdatedDate(LocalDateTime.now());
 
         if(userProfileDTO.getProfilePicture() != null){
-            imageService.uploadImage(userProfileDTO.getProfilePicture(),userDTO);
+            ImageDTO imageDTO = imageService.uploadImage(userProfileDTO.getProfilePicture(),userDTO);
+            model.addAttribute("imageData",imageDTO);
         }
 
         return userRepository.merge(userDTO);

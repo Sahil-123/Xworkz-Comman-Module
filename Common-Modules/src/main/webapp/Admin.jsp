@@ -51,6 +51,10 @@
                     height: 50px;
                 }
 
+                .defaultUserIcon{
+                    margin-top: 10px;
+                }
+
                 .customized-item {
                     width: 6vmax;
                     text-align: center;
