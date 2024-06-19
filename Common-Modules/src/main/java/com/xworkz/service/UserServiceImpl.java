@@ -1,13 +1,9 @@
 package com.xworkz.service;
 
 import com.xworkz.dto.UserDTO;
-import com.xworkz.dto.UserProfileDTO;
 import com.xworkz.exceptions.InfoException;
 import com.xworkz.repository.UserRepository;
-import com.xworkz.requestDto.RequestForgotPasswordDTO;
-import com.xworkz.requestDto.RequestResetPasswordDTO;
-import com.xworkz.requestDto.RequestSigningDTO;
-import com.xworkz.requestDto.RequestSignupDTO;
+import com.xworkz.requestDto.*;
 import com.xworkz.utils.CustomeMailSender;
 import com.xworkz.utils.PasswordGenerator;
 import org.modelmapper.ModelMapper;
@@ -15,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,6 +29,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private CustomeMailSender mailSender;
 
+    @Autowired
+    private ImageService imageService;
 
 
     @Override
@@ -207,13 +206,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean editProfile(UserProfileDTO userProfileDTO, Model model) {
+    public boolean editProfile(UserProfileDTO userProfileDTO, Model model) throws IOException {
 
         UserDTO userDTO = (UserDTO) model.getAttribute("userData");
         userDTO.setFname(userProfileDTO.getFname());
         userDTO.setLname(userProfileDTO.getLname());
         userDTO.setMobile(userProfileDTO.getMobile());
 
+        if(userProfileDTO.getProfilePicture() != null){
+            imageService.uploadImage(userProfileDTO.getProfilePicture(),userDTO);
+        }
+
         return userRepository.merge(userDTO);
     }
+
+
 }

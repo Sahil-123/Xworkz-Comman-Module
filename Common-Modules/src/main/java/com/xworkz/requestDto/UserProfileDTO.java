@@ -1,4 +1,4 @@
-package com.xworkz.dto;
+package com.xworkz.requestDto;
 
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;

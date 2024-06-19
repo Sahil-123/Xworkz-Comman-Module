@@ -1,6 +1,6 @@
 package com.xworkz.controller;
 
-import com.xworkz.dto.UserProfileDTO;
+import com.xworkz.requestDto.UserProfileDTO;
 import com.xworkz.exceptions.InfoException;
 import com.xworkz.requestDto.RequestForgotPasswordDTO;
 import com.xworkz.requestDto.RequestResetPasswordDTO;
@@ -13,9 +13,14 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Controller
 @RequestMapping("/")
@@ -136,6 +141,38 @@ public class UserController {
             e.printStackTrace();
         }
 
+
+        model.addAttribute("successMessage","Profile update is completed");
+        return "user/UserEditProfilePage";
+    }
+
+
+    @PostMapping("/upload")
+    public String upload(@RequestParam("profilePicture") MultipartFile multipartFile, Model model) {
+        System.out.println("Edit profile process is initiated.");
+
+
+        try {
+            if(multipartFile.isEmpty()){
+                System.out.println("file is empty");
+            }
+
+            byte[] bytes = multipartFile.getBytes();
+            Path path = Paths.get("D:\\Xworkz-Comman-Module\\uploadedImages\\" + multipartFile.getOriginalFilename());
+            Files.write(path, multipartFile.getBytes());
+
+            System.out.println("File upload successful.");
+
+        } catch (InfoException e) {
+            model.addAttribute("infoError", e.getMessage());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println(e.getCause());
+            model.addAttribute("infoError", "Something went wrong please try again later.");
+
+            e.printStackTrace();
+            return "user/UserEditProfilePage";
+        }
 
         model.addAttribute("successMessage","Profile update is completed");
         return "user/UserEditProfilePage";

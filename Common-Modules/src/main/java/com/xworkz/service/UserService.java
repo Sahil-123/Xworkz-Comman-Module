@@ -1,13 +1,14 @@
 package com.xworkz.service;
 
 import com.xworkz.dto.UserDTO;
-import com.xworkz.dto.UserProfileDTO;
+import com.xworkz.requestDto.UserProfileDTO;
 import com.xworkz.requestDto.RequestForgotPasswordDTO;
 import com.xworkz.requestDto.RequestResetPasswordDTO;
 import com.xworkz.requestDto.RequestSigningDTO;
 import com.xworkz.requestDto.RequestSignupDTO;
 import org.springframework.ui.Model;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,7 +23,7 @@ public interface UserService {
 
     Optional<List<UserDTO>> getAllUser();
 
-    boolean editProfile(UserProfileDTO userProfileDTO,Model model);
+    boolean editProfile(UserProfileDTO userProfileDTO,Model model) throws IOException;
 
 
 }

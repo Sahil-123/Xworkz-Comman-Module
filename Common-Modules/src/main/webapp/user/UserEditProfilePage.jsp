@@ -98,8 +98,9 @@
                             </div>
 
                             <div class="mb-3">
-                              <label for="formFile" class="form-label">Upload Profile Picture</label>
-                              <input class="form-control" accept="image/*" type="file" id="formFile" name="profilePicture">
+                                <label for="formFile" class="form-label">Upload Profile Picture</label>
+                                <input class="form-control" accept="image/*" type="file" id="formFile"
+                                    name="profilePicture">
                             </div>
 
                             <input type="submit" class="btn btn-primary" id="submitButton" value="Save" />
@@ -108,6 +109,15 @@
                 </div>
                 </form>
             </div>
+            <form action="upload" method="POST" enctype="multipart/form-data">
+
+                <div class="mb-3">
+                    <label for="formFile" class="form-label">Upload Profile Picture</label>
+                    <input class="form-control" accept="image/*" type="file" id="formFile" name="profilePicture">
+                </div>
+                <input type="submit" class="btn btn-primary" id="submitButton" value="upload" />
+
+            </form>
 
 
             <c:if test="${successMessage.length() > 0}">

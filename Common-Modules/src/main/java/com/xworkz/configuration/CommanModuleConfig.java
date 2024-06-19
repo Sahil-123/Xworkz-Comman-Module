@@ -49,11 +49,12 @@ public class CommanModuleConfig implements WebMvcConfigurer {
 //        registry.viewResolver(viewResolver());
 //    }
 
-//    @Bean
-//    public MultipartResolver multipartResolver() {
-//        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-//        multipartResolver.setMaxUploadSize(10485760); // 10MB
-//        return multipartResolver;
-//    }
+    @Bean
+    public MultipartResolver multipartResolver() {
+        System.out.println("Multipart resolver is created.");
+        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+        multipartResolver.setMaxUploadSize(10485760); // 10MB
+        return multipartResolver;
+    }
 
 }
