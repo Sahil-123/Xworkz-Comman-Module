@@ -4,13 +4,14 @@ import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.*;
+import java.io.Serializable;
 import java.util.Optional;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @ToString
-public class UserProfileDTO {
+public class UserProfileDTO implements Serializable {
     @NotBlank(message = "First name is mandatory")
     @Size(max = 50, message = "First name should not exceed 50 characters")
     private String fname;

@@ -39,6 +39,8 @@
                 }
             </style>
 
+
+
     </head>
 
     <body>
@@ -104,7 +106,7 @@
                         <div class="mb-3">
                             <label for="lname" class="form-label">Last Name</label>
                             <input type="text" class="form-control" id="lname" name="lname"
-                                onkeyup="nameValidation('lname')" value="${dto.lname}">
+                                onblur="nameValidation('lname')" value="${dto.lname}">
                             <div id="lnameError" class="text-danger"></div>
 
                         </div>
@@ -119,7 +121,7 @@
                         <div class="mb-3">
                             <label for="mobile" class="form-label">Mobile </label>
                             <input type="number" class="form-control" id="mobile" name="mobile"
-                                onkeyup="mobileValidation()" value="${dto.mobile}">
+                                onblur="mobileValidation()" value="${dto.mobile}">
                             <div id="mobileError" class="text-danger"></div>
                         </div>
 
@@ -129,7 +131,7 @@
                             <label class="form-check-label" for="agree">Agreement</label>
                         </div>
 
-                        <input type="submit" class="btn btn-primary" id="submitButton" value="Signup" />
+                        <input type="submit" class="btn btn-primary" id="submitButton" value="Signup" disabled/>
 
                         <div class="mb-1 mt-3 d-flex justify-content-center">
                             <p>
@@ -173,7 +175,7 @@
             </script>
         </c:if>
 
-
+            <script type="module" src="resources/js/Signup.js"></script>
 
     </body>
 

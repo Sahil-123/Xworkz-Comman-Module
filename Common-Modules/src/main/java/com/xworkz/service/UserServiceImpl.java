@@ -1,6 +1,8 @@
 package com.xworkz.service;
 
 import com.xworkz.dto.ImageDTO;
+import com.xworkz.responseDto.ResponseDTO;
+import com.xworkz.responseDto.ResponseDataDTO;
 import com.xworkz.dto.UserDTO;
 import com.xworkz.exceptions.InfoException;
 import com.xworkz.repository.UserRepository;
@@ -230,5 +232,23 @@ public class UserServiceImpl implements UserService {
         return userRepository.merge(userDTO);
     }
 
+    @Override
+    public ResponseDTO checkMobile(String mobile) {
+        boolean check = userRepository.checkMobile(mobile);
+        ResponseDTO responseDTO = new ResponseDTO();
+        responseDTO.setStatus("200");
+        responseDTO.setData(new ResponseDataDTO(check));
+        return responseDTO;
+    }
+
+    @Override
+    public ResponseDTO checkMail(String mail) {
+        boolean check = userRepository.checkEmail(mail);
+        ResponseDTO responseDTO = new ResponseDTO();
+        responseDTO.setStatus("200");
+        responseDTO.setData(new ResponseDataDTO(check));
+
+        return responseDTO;
+    }
 
 }

@@ -7,12 +7,13 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.constraints.*;
+import java.io.Serializable;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @ToString
-public class RequestSignupDTO {
+public class RequestSignupDTO implements Serializable {
     @NotBlank(message = "Please provide valid first name.")
     @Size(min = 1, max = 30, message = "First Name must be between 1 and 50 characters")
     @Pattern(regexp = "^[a-zA-Z\\s]+$", message = "First Name must contain only letters")

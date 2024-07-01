@@ -21,4 +21,8 @@ public interface UserRepository {
 
     boolean merge(UserDTO userDTO);
 
+    boolean checkMobile(String mobile);
+
+    boolean checkEmail(String email);
+
 }

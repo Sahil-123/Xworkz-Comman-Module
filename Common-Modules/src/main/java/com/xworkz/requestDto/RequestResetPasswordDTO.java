@@ -7,12 +7,13 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.constraints.*;
+import java.io.Serializable;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @ToString
-public class RequestResetPasswordDTO {
+public class RequestResetPasswordDTO implements Serializable {
 
     @Email(message = "Please provide valid email")
     @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$", message="Email must be valid")

@@ -1,4 +1,4 @@
-<nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark" style="background-color: #e3f2fd;">
+<nav class="navbar  navbar-expand-lg navbar-dark bg-dark" style="background-color: #e3f2fd;">
     <div class="container-fluid">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03"
             aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,10 +43,14 @@
                             </div>
                         </a>
 
-                        <ul class="dropdown-menu" style="background: #303030" aria-labelledby="dropdownMenuLink">
+                        <ul class="dropdown-menu" style="background: #343a40" aria-labelledby="dropdownMenuLink">
                             <li class="nav-item">
                                 <a class="nav-link" href="user/UserEditProfilePage.jsp">
                                     Edit Profile
+                                </a>
+                                <%-- <hr> --%>
+                                <a class="nav-link" href="index">
+                                    Log out
                                 </a>
                             </li>
                         </ul>

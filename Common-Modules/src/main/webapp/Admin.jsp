@@ -91,7 +91,6 @@
                 <%@ include file="component/AdminSideBar.jsp" %>
                     <div class="data-page">
                         <c:choose>
-
                             <c:when test="${action.equalsIgnoreCase('users') }">
                                 <%@ include file="component/AdminUsersView.jsp" %>
                             </c:when>

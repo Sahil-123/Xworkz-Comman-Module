@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -18,7 +19,7 @@ import java.util.Date;
 @NamedQuery(name = "findByUserEmail", query = "Select user from UserDTO user where user.email=:email")
 @NamedQuery(name = "findByUserMobile", query = "Select user from UserDTO user where user.mobile=:mobile")
 @NamedQuery(name = "updateUserPassword", query = "update UserDTO user set user.password=: password, user.updatedBy=:updatedBy, user.updatedDate=:updatedDate, user.loginCount=:loginCount where user.email=:email")
-public class UserDTO {
+public class UserDTO implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

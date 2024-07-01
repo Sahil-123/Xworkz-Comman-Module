@@ -1,5 +1,6 @@
 package com.xworkz.service;
 
+import com.xworkz.responseDto.ResponseDTO;
 import com.xworkz.dto.UserDTO;
 import com.xworkz.requestDto.UserProfileDTO;
 import com.xworkz.requestDto.RequestForgotPasswordDTO;
@@ -25,5 +26,8 @@ public interface UserService {
 
     boolean editProfile(UserProfileDTO userProfileDTO,Model model) throws IOException;
 
+    ResponseDTO checkMobile(String mobile);
+
+    ResponseDTO checkMail(String mail);
 
 }

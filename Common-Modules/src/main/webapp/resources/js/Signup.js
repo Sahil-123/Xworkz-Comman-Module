@@ -1,3 +1,5 @@
+import * as ajax from "./Ajax.js";
+
 let data = {
     "fname": false,
     "lname": false,
@@ -21,7 +23,7 @@ function validateAndEnableSubmit() {
     }
 }
 
-function nameValidation(field) {
+export function nameValidation(field) {
     let element = document.getElementById(field);
     let error = document.getElementById(field + "Error");
 
@@ -37,7 +39,7 @@ function nameValidation(field) {
 }
 
 
-function mobileValidation() {
+export function mobileValidation() {
     let element = document.getElementById("mobile");
     let error = document.getElementById("mobileError");
 
@@ -45,6 +47,14 @@ function mobileValidation() {
     if (pattern.test(element.value)) {
         error.innerHTML = "";
         data["mobile"] = true;
+
+        ajax.get("check-mobile?mobile="+element.value,(response)=>{
+            if(response.data.found){
+                error.innerHTML = "Account with this mobile number is already exists.";
+            }
+            console.log(response.data.found);
+        });
+
     } else {
         error.innerHTML = "Invalid Mobile Number.";
         data["mobile"] = false;
@@ -52,7 +62,7 @@ function mobileValidation() {
     validateAndEnableSubmit();
 }
 
-function emailValidation() {
+export async function emailValidation() {
     let element = document.getElementById("email");
     let error = document.getElementById("emailError");
 
@@ -60,11 +70,24 @@ function emailValidation() {
     if (emailPattern.test(element.value)) {
         error.innerHTML = "";
         data["email"] = true;
+
+        ajax.get("check-email?email="+element.value,(response)=>{
+            if(response.data.found){
+                error.innerHTML = "Account with this email is already exists.";
+            }
+            console.log(response.data.found);
+        });
+        // console.log(check);
+
     } else {
         error.innerHTML = "Invalid Email.";
         data["email"] = false;
     }
     validateAndEnableSubmit();
 }
+
+window.nameValidation = nameValidation;
+window.emailValidation = emailValidation;
+window.mobileValidation = mobileValidation;
 
 

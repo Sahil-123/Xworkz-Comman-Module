@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
@@ -12,7 +13,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "Admin")
 @NamedQuery(name = "findByAdminEmail", query = "Select admin from AdminDTO admin where admin.email=:email")
-public class AdminDTO {
+public class AdminDTO implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id")

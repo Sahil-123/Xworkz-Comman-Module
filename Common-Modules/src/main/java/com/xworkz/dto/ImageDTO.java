@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NamedQuery(name = "updateImageActive", query = "update ImageDTO image set image.active=:active where image.userId=:userId")
 @NamedQuery(name = "findImagesByUserID", query = "select image from ImageDTO image where image.userId=:userId and image.active=true")
-public class ImageDTO {
+public class ImageDTO implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

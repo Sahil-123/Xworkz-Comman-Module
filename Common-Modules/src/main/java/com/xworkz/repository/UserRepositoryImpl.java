@@ -187,4 +187,54 @@ public class UserRepositoryImpl implements UserRepository{
 
         return false;
     }
+
+    @Override
+    public boolean checkMobile(String mobile) {
+        System.out.println("User Repository check mobile number process is initiated using number."+ mobile);
+
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        try{
+            String query = "SELECT COUNT(u) FROM UserDTO u WHERE u.mobile = :mobile";
+            Long count = (Long) entityManager.createQuery(query)
+                    .setParameter("mobile", mobile)
+                    .getSingleResult();
+
+            return count > 0;
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            System.out.println(e.getCause());
+            e.printStackTrace();
+        }
+
+        finally {
+            entityManager.close();
+        }
+        return true;
+    }
+
+    @Override
+    public boolean checkEmail(String email) {
+
+        System.out.println("User Repository check email process is initiated using email."+ email);
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        try{
+            String query = "SELECT COUNT(u) FROM UserDTO u WHERE u.email = :email";
+            Long count = (Long) entityManager.createQuery(query)
+                    .setParameter("email", email)
+                    .getSingleResult();
+
+            return count > 0;
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            System.out.println(e.getCause());
+            e.printStackTrace();
+        }
+
+        finally {
+            entityManager.close();
+        }
+        return true;
+    }
 }
