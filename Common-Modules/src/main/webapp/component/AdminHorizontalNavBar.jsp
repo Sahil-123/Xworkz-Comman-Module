@@ -12,18 +12,51 @@
         <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             </ul>
-            <ul class="navbar-nav">
-                <li class="nav-item text-capitalize nav-link d-flex align-items-center text-white">
-                    <!-- <div class="nav-link nav-item ">${adminData.firstName} ${adminData.lastName}</div> -->
-                    <!-- <div class="nav-item nav-link ms-1">
+            <ul class="navbar-nav align-items-center">
+                <!-- <li class="nav-item text-capitalize nav-link d-flex align-items-center text-white">
+                    <div class="nav-link nav-item ">${adminData.firstName} ${adminData.lastName}</div>
+                    <div class="nav-item nav-link ms-1">
                         <div class="userProfile ">
                             <i class="fa-solid fa-user-tie mt-2"></i>
                         </div>
-                    </div> -->
+                    </div>
+                </li> -->
+
+                <!-- <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Department
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#">View Users</a></li>
+                    </ul>
+                </li> -->
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        User
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="admin/users">View Users</a></li>
+                    </ul>
                 </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Complaint
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="complaints/viewAllComplaints">View Complaint</a></li>
+                    </ul>
+                </li>
+
+
 
                 <li class="nav-item">
                     <div class="dropdown dropstart">
+                        
                         <a class=" nav-link nav-item text-capitalize nav-link d-flex align-items-center text-white"
                             href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
                             aria-expanded="false">
@@ -41,12 +74,16 @@
                             </div>
                         </a>
 
-                        <ul class="dropdown-menu  navbar-dark bg-dark" aria-labelledby="dropdownMenuLink">
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                             <li class="nav-item">
-                                <a class="nav-link" href="user/UserEditProfilePage.jsp">
+                                <a class=" dropdown-item" href="user/UserEditProfilePage.jsp">
                                     Edit Profile
                                 </a>
                             </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="#">Logout</a></li>
                         </ul>
                     </div>
                 </li>

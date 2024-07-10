@@ -117,9 +117,9 @@ public class AdminController {
     @GetMapping("/users")
     public String getUsers(Model model){
         System.out.println("Admin get users method is processing the request");
-        model.addAttribute("action","users");
+//        model.addAttribute("action","users");
         model.addAttribute("userslist",userService.getAllUser().get());
-        return "Admin";
+        return "component/AdminUsersView";
     }
 
 }

@@ -1,0 +1,32 @@
+.customeHeight{
+    height: 70vh;
+    width: 85vw;
+    overflow: scroll;
+}
+
+label {
+    font-weight: bold;
+}
+
+.error {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 8px;
+    color: red;
+}
+
+.compulsary {
+    color: red;
+}
+
+#successIcon {
+    hight: 100vmin;
+    width: 10vmin;
+    background: red;
+
+}
+
+.imgHight {
+    height: 40vmin;
+}

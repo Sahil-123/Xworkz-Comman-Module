@@ -18,9 +18,11 @@ export async function post(url, data) {
     request.onreadystatechange = await function () {
         if (request.readyState == 4 && request.status == 200) {
             var response = JSON.parse(request.responseText);
-            resolve(response);
+            return response;
         } else if (request.readyState == 4) {
-            reject("error in post request");
+            return {
+                error: "found error"
+            }
         }
     };
 
@@ -50,10 +52,8 @@ export async function get(url,callback) {
         if (request.readyState == 4 && request.status == 200) {
             var response = await JSON.parse(request.responseText);
             callback(response);
-            // resolve(response);
         } else if (request.readyState == 4) {
             console.log("Error in get request.")
-            // reject("error in post request");
         }
     };
     request.send();

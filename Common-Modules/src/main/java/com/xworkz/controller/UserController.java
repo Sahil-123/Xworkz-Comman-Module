@@ -192,5 +192,17 @@ public class UserController {
         return "index";
     }
 
+    @GetMapping("user")
+    public String getUserHome(Model model){
+        model.addAttribute("link","user");
+        return "User";
+    }
+
+    @GetMapping("raiseComplaint")
+    public String raiseComplaint(Model model){
+        model.addAttribute("link","raiseComplaint");
+        return "User";
+    }
+
 
 }

@@ -14,18 +14,37 @@
             </ul>
             <ul class="navbar-nav">
 
-                <!-- <li class="nav-item text-capitalize nav-link d-flex align-items-center text-white">
-                    <div class="nav-link nav-item ">${userData.fname} ${userData.lname}</div>
 
-                    <div class="nav-item nav-link ms-1">
-                        <div class="userProfile ">
-                            <i class="fa-solid fa-user"></i>
-                        </div>
-                    </div>
-                </li> -->
+                <a class=" nav-link nav-item text-capitalize nav-link d-flex align-items-center"
+                    href="user">
+                    Home
+                </a>
+
+                <!-- <li class="nav-item"> -->
+                    <div class="btn-group dropstart nav-item">
+                        <button type="button" class="btn nav-link bg-dark"   data-bs-toggle="dropdown" aria-expanded="false">
+                          Compliant
+                        </button>
+                        <ul class="dropdown-menu" style="background: #343a40 " aria-labelledby="dropdownMenuLink">
+                            <li class="nav-item text-white">
+                                <a class="nav-link" href="user/RaiseUserComplaint.jsp">
+                                    Raise Complaint
+                                </a>
+            
+                                <a class="nav-link" href="complaints/viewUserComplaints">
+                                    View Compliant's
+                                </a>
+                            </li>
+                        </ul>
+                      </div>
+                    
+                <!-- </li> -->
+                
 
                 <li class="nav-item">
                     <div class="dropdown dropstart">
+
+
                         <a class=" nav-link nav-item text-capitalize nav-link d-flex align-items-center text-white"
                             href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
                             aria-expanded="false">
@@ -48,7 +67,7 @@
                                 <a class="nav-link" href="user/UserEditProfilePage.jsp">
                                     Edit Profile
                                 </a>
-                                <%-- <hr> --%>
+                                
                                 <a class="nav-link" href="index">
                                     Log out
                                 </a>

@@ -46,12 +46,12 @@
                     overflow: hidden;
                 }
 
-                .userImg{
+                .userImg {
                     width: 50px;
                     height: 50px;
                 }
 
-                .defaultUserIcon{
+                .defaultUserIcon {
                     margin-top: 10px;
                 }
 
@@ -72,13 +72,12 @@
                     padding: 20px
                 }
 
-                .customeHeight{
+                .customeHeight {
                     height: 70vh;
                     width: 85vw;
                     overflow: scroll;
-                    overflow-x=scroll
+                    overflow-x: scroll;
                 }
-
             </style>
 
     </head>
@@ -87,19 +86,10 @@
         <%@ include file="component/AdminHorizontalNavBar.jsp" %>
 
 
-            <div class=" d-flex ">
-                <%@ include file="component/AdminSideBar.jsp" %>
-                    <div class="data-page">
-                        <c:choose>
-                            <c:when test="${action.equalsIgnoreCase('users') }">
-                                <%@ include file="component/AdminUsersView.jsp" %>
-                            </c:when>
+            <div class=" container">
 
-                            <c:otherwise>
-                                Welecome ${adminDto.firstName} ${adminDto.lastName}
-                            </c:otherwise>
-                        </c:choose>
-                    </div>
+                Welecome ${adminDto.firstName} ${adminDto.lastName}
+
             </div>
 
     </body>

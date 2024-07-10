@@ -6,11 +6,10 @@
         <meta charset="UTF-8">
         <%@ include file="component/HeaderLink.jsp" %>
             <base href="http://localhost:8080/Common-Modules/">
-
+            <%@ include file="user/UserHeader.jsp" %>
 
             <title>User</title>
-            <link rel="stylesheet" href="resources/css/user.css">
-            <script src="resources/js/user.js"></script>
+            
 
             <style>
 
@@ -21,16 +20,6 @@
     <body>
 
         <%@ include file="user/UserNav.jsp" %>
-            <div class="d-flex">
-                <%@ include file="user/UserSiderBar.jsp" %>
-                <div class="m-2">
-                    <!-- view pages... -->
-
-
-
-                    
-                </div>
-            </div>
 
             <c:if test="${successMessage.length() > 0}">
                 <div class="modal fade " id="exampleModal" tabindex="0" aria-labelledby="exampleModalLabel"

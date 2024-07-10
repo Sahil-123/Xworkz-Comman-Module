@@ -197,7 +197,7 @@ public class UserServiceImpl implements UserService {
             UserDTO userDTO = userDTOList.get().get(0);
             String generatePassword = PasswordGenerator.generatePassword();
             userDTO.setPassword(generatePassword);
-            userDTO.setFailedAttemptsCount(3);
+            userDTO.setFailedAttemptsCount(0);
             userDTO.setLock(false);
             userRepository.updateByDto(userDTO);
             mailSender.sendResetPasswordMail(userDTO.getEmail(),userDTO.getPassword());
