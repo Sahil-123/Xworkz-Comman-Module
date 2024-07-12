@@ -19,4 +19,6 @@ public interface EmployeeRepository {
     boolean checkMobile(String mobile);
 
     boolean checkEmail(String email);
+
+    Optional<List<EmployeeDTO>> searchAllEmployees(EmployeeDTO employeeDTO);
 }

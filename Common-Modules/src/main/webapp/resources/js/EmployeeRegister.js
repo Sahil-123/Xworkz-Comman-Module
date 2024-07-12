@@ -47,12 +47,12 @@ export function mobileValidation() {
         error.innerHTML = "";
         data["mobile"] = true;
 
-        // ajax.get("check-mobile?mobile="+element.value,(response)=>{
-        //     if(response.data.found){
-        //         error.innerHTML = "Account with this mobile number is already exists.";
-        //     }
-        //     console.log(response.data.found);
-        // });
+        ajax.get("employee/check-mobile?mobile="+element.value,(response)=>{
+            if(response.data.found){
+                error.innerHTML = "Account with this mobile number is already exists.";
+            }
+            console.log(response.data.found);
+        });
 
     } else {
         error.innerHTML = "Invalid Mobile Number.";
@@ -70,13 +70,13 @@ export async function emailValidation() {
         error.innerHTML = "";
         data["email"] = true;
 
-        // ajax.get("check-email?email="+element.value,(response)=>{
-        //     if(response.data.found){
-        //         error.innerHTML = "Account with this email is already exists.";
-        //     }
-        //     console.log(response.data.found);
-        // });
-        // console.log(check);
+        ajax.get("employee/check-email?email="+element.value,(response)=>{
+            if(response.data.found){
+                error.innerHTML = "Account with this email is already exists.";
+            }
+            console.log(response.data.found);
+        });
+        console.log(check);
 
     } else {
         error.innerHTML = "Invalid Email.";

@@ -31,6 +31,8 @@ public class RequestFilterComplaintDTO implements Serializable {
 
     private Long deptId;
 
+    private Long empId;
+
     private String description;
 
     private LocalDateTime createdDate;

@@ -61,31 +61,75 @@
                                 Home
                             </a>
                         </li>
+
+
                         <li class="nav-item">
-                            <c:if test="${admin}">
+
+                        <c:choose>
+                            <c:when test="${userAccess.equals('departmentAdmin')}">
+                                <%-- <form action="departmentAdmin/signin" method="POST"> --%>
+                            </c:when>
+
+                            <c:when test="${userAccess.equals('admin')}">
+                                <a class="nav-link" href="admin/signinPage">
+                            </c:when>
+
+                            <c:when test="${userAccess.equals('employee')}">
+                                <a class="nav-link" href="employee/signinPage">
+                            </c:when>
+
+                            <c:otherwise>
+                                <a class="nav-link" href="SignIn.jsp">
+                            </c:otherwise>
+                        </c:choose>
+
+                            <%-- <c:if test="${admin}">
                                 <a class="nav-link" href="admin/signinPage">
                             </c:if>
                             <c:if test="${!admin}">
                                 <a class="nav-link" href="SignIn.jsp">
-                            </c:if>
+                            </c:if> --%>
                                 <i class="fa-solid fa-right-to-bracket"></i>
                                 Sign in
                             </a>
                         </li>
+
+
                     </ul>
                 </div>
             </div>
         </nav>
 
+        ${userAccess}
+
         <div class="mt-3 container d-flex justify-content-center">
             <div class="card w-50 ps-4 pe-4 pt-2 pb-1 shadow p-3 mb-5 bg-body rounded">
 
-                <c:if test="${admin}">
+                <c:choose>
+
+                    <c:when test="${userAccess.equals('departmentAdmin')}">
+                        <%-- <form action="departmentAdmin/signin" method="POST"> --%>
+                    </c:when>
+
+                    <c:when test="${userAccess.equals('admin')}">
+                        <form action="admin/resetPassword" method="POST">
+                    </c:when>
+
+                    <c:when test="${userAccess.equals('employee')}">
+                        <form action="employee/resetPassword" method="POST">
+                    </c:when>
+
+                    <c:otherwise>
+                        <form action="resetPassword" method="POST">
+                    </c:otherwise>
+                </c:choose>
+
+                <%-- <c:if test="${admin}">
                     <form action="admin/resetPassword" method="POST">
                 </c:if>
                 <c:if test="${!admin}">
                     <form action="resetPassword" method="POST">
-                </c:if>
+                </c:if> --%>
 
                     <div class="card-body d-flex flex-column justify-content-center">
 

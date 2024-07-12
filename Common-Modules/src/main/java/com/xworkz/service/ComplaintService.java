@@ -2,10 +2,7 @@ package com.xworkz.service;
 
 import com.xworkz.dto.ComplaintDTO;
 import com.xworkz.dto.UserDTO;
-import com.xworkz.requestDto.RequestComplaintDTO;
-import com.xworkz.requestDto.RequestFilterComplaintDTO;
-import com.xworkz.requestDto.RequestUpdateComplaintByAdminDTO;
-import com.xworkz.requestDto.RequestUpdateComplaintDTO;
+import com.xworkz.requestDto.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,5 +19,9 @@ public interface ComplaintService {
     Boolean updateComplaint(RequestUpdateComplaintDTO requestUpdateComplaintDTO);
 
     Boolean updateComplaintForAdmin(RequestUpdateComplaintByAdminDTO requestUpdateComplaintByAdminDTO);
+
+    Boolean updateComplaintForDepartmentAdmin(RequestUpdateDepartmentComplaintByAdminDTO requestUpdateDepartmentComplaintByAdminDTO);
+
+
 
 }

@@ -116,6 +116,10 @@
                         <form action="admin/signin" method="POST">
                     </c:when>
 
+                    <c:when test="${userAccess.equals('employee')}">
+                        <form action="employee/signin" method="POST">
+                    </c:when>
+
                     <c:otherwise>
                         <form action="signin" method="POST">
                     </c:otherwise>
@@ -159,11 +163,23 @@
 
                         <c:choose>
 
+                            <c:when test="${userAccess.equals('departmentAdmin')}">
+                                <!-- future reference -->
+                            </c:when>
+
                             <c:when test="${userAccess.equals('admin')}">
                                 <p>
                                     <a href="admin/forgotPasswordPage" style="text-decoration: none">
                                         <strong> Forgot password? </strong> </a>
                                 </p>
+                            </c:when>
+
+                            <c:when test="${userAccess.equals('employee')}">
+                                <p>
+                                    <a href="employee/forgotPasswordPage" style="text-decoration: none">
+                                        <strong> Forgot password? </strong> </a>
+                                </p>
+
                             </c:when>
 
                             <c:otherwise>
@@ -198,6 +214,10 @@
                         </c:when>
 
                         <c:when test="${userAccess.equals('admin')}">
+                            <!-- need to write -->
+                        </c:when>
+
+                        <c:when test="${userAccess.equals('employee')}">
                             <!-- need to write -->
                         </c:when>
 

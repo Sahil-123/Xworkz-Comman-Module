@@ -108,7 +108,10 @@ public class UserServiceImpl implements UserService {
                         userDTO.setFailedAttemptDateTime(LocalDateTime.now());
                     }
                     userDTO.setFailedAttemptsCount(userDTO.getFailedAttemptsCount() + 1);
-                    userDTO.setLock(true);
+
+                    if(userDTO.getFailedAttemptsCount() == 3){
+                        userDTO.setLock(true);
+                    }
 
 //                    save updated counts to database.
                     userRepository.updateByDto(userDTO);

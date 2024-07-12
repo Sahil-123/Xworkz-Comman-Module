@@ -4,11 +4,8 @@ import com.xworkz.dto.ComplaintDTO;
 import com.xworkz.dto.UserDTO;
 import com.xworkz.exceptions.InfoException;
 import com.xworkz.repository.ComplaintRepository;
-import com.xworkz.requestDto.RequestComplaintDTO;
-import com.xworkz.requestDto.RequestFilterComplaintDTO;
+import com.xworkz.requestDto.*;
 //import com.xworkz.service.ComplaintService;
-import com.xworkz.requestDto.RequestUpdateComplaintByAdminDTO;
-import com.xworkz.requestDto.RequestUpdateComplaintDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -96,6 +93,21 @@ public class ComplaintServiceImpl implements ComplaintService {
 
         if(!complaintRepository.update(complaintDTO)){
             throw new InfoException("Something is wrong complaint with id = "+requestUpdateComplaintByAdminDTO.getComplaintId()+" not updated");
+        }
+
+        return true;
+    }
+
+    @Override
+    public Boolean updateComplaintForDepartmentAdmin(RequestUpdateDepartmentComplaintByAdminDTO requestUpdateDepartmentComplaintByAdminDTO) {
+        System.out.println("service complaint update for department admin processes "+requestUpdateDepartmentComplaintByAdminDTO);
+
+        ComplaintDTO complaintDTO = complaintRepository.findById(requestUpdateDepartmentComplaintByAdminDTO.getComplaintId()).get();
+        complaintDTO.setEmpId(requestUpdateDepartmentComplaintByAdminDTO.getEmployeeId());
+        complaintDTO.setStatus(requestUpdateDepartmentComplaintByAdminDTO.getStatus());
+
+        if(!complaintRepository.update(complaintDTO)){
+            throw new InfoException("Something is wrong complaint with id = "+requestUpdateDepartmentComplaintByAdminDTO.getComplaintId()+" not updated");
         }
 
         return true;

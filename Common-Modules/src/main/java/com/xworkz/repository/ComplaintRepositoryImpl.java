@@ -129,7 +129,7 @@ public class ComplaintRepositoryImpl implements ComplaintRepository {
 
     @Override
     public Optional<List<ComplaintDTO>> searchComplaints(ComplaintDTO complaintDTO) {
-        System.out.println("Complaint in repository processing " + complaintDTO);
+        System.out.println("Search Complaint in repository processing " + complaintDTO);
 
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
@@ -160,6 +160,10 @@ public class ComplaintRepositoryImpl implements ComplaintRepository {
             if (complaintDTO.getAddress() != null && !complaintDTO.getAddress().isEmpty()) {
                 predicates.add(cb.like(root.get("address"), "%" + complaintDTO.getAddress() + "%"));
             }
+            if (complaintDTO.getEmpId() != null) {
+                predicates.add(cb.equal(root.get("empId"), complaintDTO.getEmpId()));
+            }
+
             if (complaintDTO.getDescription() != null && !complaintDTO.getDescription().isEmpty()) {
                 predicates.add(cb.like(root.get("description"), "%" + complaintDTO.getDescription() + "%"));
             }
@@ -220,6 +224,9 @@ public class ComplaintRepositoryImpl implements ComplaintRepository {
             }
             if (complaintDTO.getDeptId() != null) {
                 predicates.add(cb.equal(root.get("deptId"), complaintDTO.getDeptId()));
+            }
+            if (complaintDTO.getEmpId() != null) {
+                predicates.add(cb.equal(root.get("empId"), complaintDTO.getEmpId()));
             }
             if (complaintDTO.getDescription() != null && !complaintDTO.getDescription().isEmpty()) {
                 predicates.add(cb.like(root.get("description"), "%" + complaintDTO.getDescription() + "%"));

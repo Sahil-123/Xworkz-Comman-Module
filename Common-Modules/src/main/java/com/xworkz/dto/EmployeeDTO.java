@@ -40,10 +40,10 @@ public class EmployeeDTO implements Serializable {
     private Long departmentId;
 
     @Column(name = "loginCount", columnDefinition = "INT DEFAULT 0")
-    private int loginCount;
+    private Integer loginCount;
 
     @Column(name = "failedAttempts", columnDefinition = "INT DEFAULT 0")
-    private int failedAttempts;
+    private Integer failedAttempts;
 
     @Column(name = "failedAttemptsDateTime")
     private LocalDateTime failedAttemptsDateTime;
@@ -60,7 +60,7 @@ public class EmployeeDTO implements Serializable {
     @Column(name = "updatedDate")
     private LocalDateTime updatedDate;
 
-    @Column(name = "user_lock", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
+    @Column(name = "employee_lock", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
     private boolean lock;
 
     public EmployeeDTO() {

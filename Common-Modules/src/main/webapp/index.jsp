@@ -38,6 +38,24 @@
               <div class="dropdown dropstart">
                 <a class=" nav-link" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
                   aria-expanded="false">
+                  Admin
+                </a>
+
+                <ul class="dropdown-menu  navbar-dark bg-dark" aria-labelledby="dropdownMenuLink">
+                  <li class="nav-item">
+                    <a class="nav-link" href="admin/signinPage">
+                      <i class="fa-solid fa-right-to-bracket"></i>
+                      Sign in
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            <li class="nav-item">
+              <div class="dropdown dropstart">
+                <a class=" nav-link" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
+                  aria-expanded="false">
                   Department Admin
                 </a>
 
@@ -52,17 +70,16 @@
               </div>
             </li>
 
-
             <li class="nav-item">
               <div class="dropdown dropstart">
                 <a class=" nav-link" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
                   aria-expanded="false">
-                  Admin
+                  Employee
                 </a>
 
                 <ul class="dropdown-menu  navbar-dark bg-dark" aria-labelledby="dropdownMenuLink">
                   <li class="nav-item">
-                    <a class="nav-link" href="admin/signinPage">
+                    <a class="nav-link" href="employee/signinPage">
                       <i class="fa-solid fa-right-to-bracket"></i>
                       Sign in
                     </a>
@@ -70,6 +87,8 @@
                 </ul>
               </div>
             </li>
+
+
 
             <li class="nav-item">
               <div class="dropdown dropstart">
