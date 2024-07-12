@@ -218,6 +218,9 @@ public class ComplaintRepositoryImpl implements ComplaintRepository {
             if (complaintDTO.getAddress() != null && !complaintDTO.getAddress().isEmpty()) {
                 predicates.add(cb.like(root.get("address"), "%" + complaintDTO.getAddress() + "%"));
             }
+            if (complaintDTO.getDeptId() != null) {
+                predicates.add(cb.equal(root.get("deptId"), complaintDTO.getDeptId()));
+            }
             if (complaintDTO.getDescription() != null && !complaintDTO.getDescription().isEmpty()) {
                 predicates.add(cb.like(root.get("description"), "%" + complaintDTO.getDescription() + "%"));
             }
@@ -227,8 +230,6 @@ public class ComplaintRepositoryImpl implements ComplaintRepository {
 
 
             query.where(cb.and(predicates.toArray(new Predicate[0])));
-
-            System.out.println("Query " + query);
 
             List<ComplaintDTO> results = entityManager.createQuery(query).getResultList();
             entityManager.close();

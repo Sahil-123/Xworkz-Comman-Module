@@ -31,20 +31,26 @@ public class AdminController {
 
     @GetMapping("/signinPage")
     public String getSigningPage(Model model) {
-        model.addAttribute("admin", true);
+//        model.addAttribute("admin", true);
+        model.addAttribute("userAccess", "admin");
+
         return "SignIn";
+
     }
 
     @GetMapping("/forgotPasswordPage")
     public String getForgotPasswordPage(Model model) {
-        model.addAttribute("admin", true);
+//        model.addAttribute("admin", true);
+        model.addAttribute("userAccess", "admin");
         return "ForgotPassword";
     }
 
     @PostMapping("/signin")
     public String singnin(@Valid RequestSigningDTO requestSigningDTO, BindingResult bindingResult, Model model) {
         System.out.println(" Admin Siginin Controller " + requestSigningDTO);
-        model.addAttribute("admin", true);
+//        model.addAttribute("admin", true);
+        model.addAttribute("userAccess", "admin");
+
         model.addAttribute("dto", requestSigningDTO);
 
         if (bindingResult.hasErrors()) {

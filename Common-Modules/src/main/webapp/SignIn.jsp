@@ -65,7 +65,30 @@
                                 Home
                             </a>
                         </li>
-                        <c:if test="${!admin}">
+
+
+                        <c:choose>
+
+                            <c:when test="${userAccess.equals('departmentAdmin')}">
+                                
+                            </c:when>
+
+                            <c:when test="${userAccess.equals('admin')}">
+                                
+                            </c:when>
+
+                            <c:otherwise>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="SignUp.jsp">
+                                        <i class="fa-solid fa-user"></i>
+                                        Sign up
+                                    </a>
+                                </li>
+                            </c:otherwise>
+                        </c:choose>
+
+
+                        <!-- <c:if test="${!admin}">
 
                             <li class="nav-item">
                                 <a class="nav-link" href="SignUp.jsp">
@@ -73,23 +96,38 @@
                                     Sign up
                                 </a>
                             </li>
-                        </c:if>
+                        </c:if> -->
                     </ul>
                 </div>
             </div>
         </nav>
 
 
-
         <div class="mt-3 container d-flex justify-content-center">
             <div class="card w-50 ps-4 pe-4 pt-2 pb-1 shadow p-3 mb-5 bg-body rounded">
 
-                <c:if test="${admin}">
+                <c:choose>
+
+                    <c:when test="${userAccess.equals('departmentAdmin')}">
+                        <form action="departmentAdmin/signin" method="POST">
+                    </c:when>
+
+                    <c:when test="${userAccess.equals('admin')}">
+                        <form action="admin/signin" method="POST">
+                    </c:when>
+
+                    <c:otherwise>
+                        <form action="signin" method="POST">
+                    </c:otherwise>
+                </c:choose>
+
+
+                <!-- <c:if test="${admin}">
                     <form action="admin/signin" method="POST">
                 </c:if>
                 <c:if test="${!admin}">
                     <form action="signin" method="POST">
-                </c:if>
+                </c:if> -->
 
                 <div class="card-body d-flex flex-column justify-content-center">
 
@@ -119,8 +157,24 @@
 
                     <div class="mb-1 mt-3 d-flex justify-content-center">
 
+                        <c:choose>
 
-                        <c:if test="${admin}">
+                            <c:when test="${userAccess.equals('admin')}">
+                                <p>
+                                    <a href="admin/forgotPasswordPage" style="text-decoration: none">
+                                        <strong> Forgot password? </strong> </a>
+                                </p>
+                            </c:when>
+
+                            <c:otherwise>
+                                <p>
+                                    <a href="ForgotPassword.jsp" style="text-decoration: none">
+                                        <strong> Forgot password? </strong> </a>
+                                </p>
+                            </c:otherwise>
+                        </c:choose>
+
+                        <!-- <c:if test="${admin}">
                             <p>
                                 <a href="admin/forgotPasswordPage" style="text-decoration: none">
                                     <strong> Forgot password? </strong> </a>
@@ -131,23 +185,47 @@
                                 <a href="ForgotPassword.jsp" style="text-decoration: none">
                                     <strong> Forgot password? </strong> </a>
                             </p>
-                        </c:if>
+                        </c:if> -->
+
                     </div>
 
                     <input type="submit" class="btn btn-primary mb-3" id="submitButton" value="Signin" />
 
-                    <c:if test="${!admin}">
+                    <c:choose>
+
+                        <c:when test="${userAccess.equals('departmentAdmin')}">
+                            <!-- need to write -->
+                        </c:when>
+
+                        <c:when test="${userAccess.equals('admin')}">
+                            <!-- need to write -->
+                        </c:when>
+
+                        <c:otherwise>
+                            <div class="mb-1 mt-3 d-flex justify-content-center">
+                                <p>
+                                    Don`t have an account? <a href="SignUp.jsp" style="text-decoration: none">
+                                        <strong> Signup </strong> </a>
+                                </p>
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
+
+                    <!-- <c:if test="${!admin}">
                         <div class="mb-1 mt-3 d-flex justify-content-center">
                             <p>
                                 Don`t have an account? <a href="SignUp.jsp" style="text-decoration: none">
                                     <strong> Signup </strong> </a>
                             </p>
                         </div>
-                    </c:if>
+                    </c:if> -->
 
                 </div>
             </div>
             </form>
+
+            ${userAccess}
+
 
             <c:if test="${successMessage.length() > 0}">
                 <div class="modal fade " id="exampleModal" tabindex="0" aria-labelledby="exampleModalLabel"

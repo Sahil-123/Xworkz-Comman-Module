@@ -1,6 +1,7 @@
 package com.xworkz.repository;
 
 
+import com.xworkz.dto.DepartmentAdminDTO;
 import com.xworkz.dto.DepartmentDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -33,6 +34,21 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
             entityManager.close();
         }
 
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<DepartmentDTO> findById(long id) {
+
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        try {
+            DepartmentDTO departmentDTO = entityManager.find(DepartmentDTO.class, id);
+            return Optional.ofNullable(departmentDTO);
+        } catch (PersistenceException e) {
+            e.printStackTrace();
+        } finally {
+            entityManager.close();
+        }
         return Optional.empty();
     }
 

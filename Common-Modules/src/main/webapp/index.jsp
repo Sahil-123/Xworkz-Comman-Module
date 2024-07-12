@@ -27,11 +27,48 @@
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           </ul>
           <ul class="navbar-nav">
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a class="nav-link" href="admin/signinPage">
                 <i class="fa-solid fa-user-tie"></i>
                 Admin
               </a>
+            </li> -->
+
+            <li class="nav-item">
+              <div class="dropdown dropstart">
+                <a class=" nav-link" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
+                  aria-expanded="false">
+                  Department Admin
+                </a>
+
+                <ul class="dropdown-menu  navbar-dark bg-dark" aria-labelledby="dropdownMenuLink">
+                  <li class="nav-item">
+                    <a class="nav-link" href="departmentAdmin/signinPage">
+                      <i class="fa-solid fa-right-to-bracket"></i>
+                      Sign in
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+
+            <li class="nav-item">
+              <div class="dropdown dropstart">
+                <a class=" nav-link" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
+                  aria-expanded="false">
+                  Admin
+                </a>
+
+                <ul class="dropdown-menu  navbar-dark bg-dark" aria-labelledby="dropdownMenuLink">
+                  <li class="nav-item">
+                    <a class="nav-link" href="admin/signinPage">
+                      <i class="fa-solid fa-right-to-bracket"></i>
+                      Sign in
+                    </a>
+                  </li>
+                </ul>
+              </div>
             </li>
 
             <li class="nav-item">
