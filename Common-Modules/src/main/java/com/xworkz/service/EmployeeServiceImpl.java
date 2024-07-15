@@ -293,7 +293,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 
             if(status){
                 mailSender.sendComplaintResolutionMail(userDTO.get().getEmail(),otp);
-                return new ResponseOTPDto(true,"OTP has been sent to user please check and verify to resolve the issue.")
+                return new ResponseOTPDto(true,"OTP has been sent to user please check and verify to resolve the issue.");
 
             }else {
                 return new ResponseOTPDto(false,"Something is wrong. Please try after some time. ");
