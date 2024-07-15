@@ -88,4 +88,31 @@ public class CustomeMailSender {
         javaMailSender.send(message);
     }
 
+
+    public void sendComplaintResolutionMail(String mail, String otp) {
+//        String otp = OTPGenerator.generateOTP();
+        System.out.println("Generated OTP: " + otp);
+
+        // The rest of your email sending code
+        String subject = "OTP Verification for Issue Resolution";
+        String text = String.format(
+                "Hello,\n\n" +
+                        "We have received your request to resolve an issue. To confirm that the issue has been resolved, please use the following OTP:\n\n" +
+                        "OTP: %s\n\n" +
+                        "Please enter this OTP to confirm the resolution of the issue.\n\n" +
+                        "Thank you for your cooperation!\n" +
+                        "Best regards,\n" +
+                        "The Team",
+                otp
+        );
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(mail);
+        message.setSubject(subject);
+        message.setText(text);
+
+        javaMailSender.send(message);
+
+    }
+
 }

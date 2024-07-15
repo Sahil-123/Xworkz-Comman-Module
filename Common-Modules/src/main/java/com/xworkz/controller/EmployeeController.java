@@ -7,6 +7,7 @@ import com.xworkz.dto.EmployeeDTO;
 import com.xworkz.exceptions.InfoException;
 import com.xworkz.requestDto.*;
 import com.xworkz.responseDto.ResponseDTO;
+import com.xworkz.responseDto.ResponseOTPDto;
 import com.xworkz.service.ComplaintService;
 import com.xworkz.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -185,5 +186,27 @@ public class EmployeeController {
 
         return "employee/EmployeeViewComplaints";
     }
+
+
+    @GetMapping(value = "resolveComplaintOtp")
+    public ResponseOTPDto getResolveComplaintOTP(@RequestParam Long complaintId, Model model){
+        System.out.println("complaint Id "+complaintId);
+
+        if(complaintId < 0){
+            return new ResponseOTPDto(false, "Complaint Id should be valid");
+        }
+
+        try{
+            EmployeeDTO employeeDTO = (EmployeeDTO) model.getAttribute("employeeData");
+            return employeeService.generateOTP(employeeDTO,complaintId);
+        }catch (InfoException infoException){
+            return new ResponseOTPDto(false,infoException.getMessage());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return new ResponseOTPDto();
+    }
+
 
 }

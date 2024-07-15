@@ -2,17 +2,22 @@ package com.xworkz.service;
 
 import com.xworkz.dto.*;
 import com.xworkz.exceptions.InfoException;
+import com.xworkz.repository.ComplaintRepository;
 import com.xworkz.repository.DepartmentRepository;
 import com.xworkz.repository.EmployeeRepository;
+import com.xworkz.repository.UserRepository;
 import com.xworkz.requestDto.*;
 import com.xworkz.responseDto.EmployeeNameAndIdResponseDto;
 import com.xworkz.responseDto.ResponseDTO;
 import com.xworkz.responseDto.ResponseDataDTO;
+import com.xworkz.responseDto.ResponseOTPDto;
 import com.xworkz.utils.CustomeMailSender;
+import com.xworkz.utils.OTPGenerator;
 import com.xworkz.utils.PasswordGenerator;
 import com.xworkz.utils.TimeConversion;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -37,6 +42,12 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     @Autowired
     private DepartmentRepository departmentRepository;
+
+    @Autowired
+    private ComplaintRepository complaintRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
 
 
@@ -251,6 +262,47 @@ public class EmployeeServiceImpl implements EmployeeService{
         }
 
         return Collections.emptyList();
+    }
+
+
+    @Override
+    public ResponseOTPDto generateOTP(EmployeeDTO employeeDTO, Long complaintId) {
+
+        ComplaintDTO searchComplaint = new ComplaintDTO();
+        searchComplaint.setEmpId(employeeDTO.getId());
+        searchComplaint.setDeptId(employeeDTO.getDepartmentId());
+        searchComplaint.setId(complaintId);
+        Optional<List<ComplaintDTO>> complaintDTOList =complaintRepository.searchAllComplaintsForAdmin(searchComplaint);
+
+        if(complaintDTOList.isPresent() && !complaintDTOList.get().isEmpty()){
+            ComplaintDTO complaintDTO = complaintDTOList.get().get(0);
+
+            String otp = OTPGenerator.generateOTP();
+
+            complaintDTO.setOtp(otp);
+            complaintDTO.setOtptime(LocalDateTime.now());
+
+            Optional<UserDTO> userDTO = userRepository.findById(complaintDTO.getUserId());
+
+            if (!userDTO.isPresent()){
+                System.out.println("user not found");
+                return new ResponseOTPDto(false,"Something is wrong. Please try after some time. ");
+            }
+
+            Boolean status = complaintRepository.update(complaintDTO);
+
+            if(status){
+                mailSender.sendComplaintResolutionMail(userDTO.get().getEmail(),otp);
+                return new ResponseOTPDto(true,"OTP has been sent to user please check and verify to resolve the issue.")
+
+            }else {
+                return new ResponseOTPDto(false,"Something is wrong. Please try after some time. ");
+            }
+
+        }else {
+            return new ResponseOTPDto(false, "Complaint Data not found");
+        }
+
     }
 
 

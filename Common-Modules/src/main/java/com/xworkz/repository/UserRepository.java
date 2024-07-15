@@ -25,4 +25,6 @@ public interface UserRepository {
 
     boolean checkEmail(String email);
 
+    Optional<UserDTO> findById(Long id);
+
 }

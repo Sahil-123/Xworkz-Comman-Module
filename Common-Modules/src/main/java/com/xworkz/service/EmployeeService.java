@@ -4,6 +4,7 @@ import com.xworkz.dto.EmployeeDTO;
 import com.xworkz.requestDto.*;
 import com.xworkz.responseDto.EmployeeNameAndIdResponseDto;
 import com.xworkz.responseDto.ResponseDTO;
+import com.xworkz.responseDto.ResponseOTPDto;
 import org.springframework.ui.Model;
 
 import java.util.List;
@@ -27,4 +28,5 @@ public interface EmployeeService {
 
     String validateAndSetForgotPassword(RequestForgotPasswordDTO requestForgotPasswordDTO,Model model);
 
+    ResponseOTPDto generateOTP(EmployeeDTO employeeDTO, Long complaintId);
 }

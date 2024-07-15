@@ -237,4 +237,25 @@ public class UserRepositoryImpl implements UserRepository{
         }
         return true;
     }
+
+
+    @Override
+    public Optional<UserDTO> findById(Long id) {
+        System.out.println("User Repository find by ID process is initiated using ID." + id);
+
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        try {
+            UserDTO userDTO = entityManager.find(UserDTO.class, id);
+            return Optional.ofNullable(userDTO);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println(e.getCause());
+            e.printStackTrace();
+        } finally {
+            entityManager.close();
+        }
+
+        return Optional.empty();
+    }
 }
