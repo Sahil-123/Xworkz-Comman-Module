@@ -170,6 +170,7 @@ public class EmployeeController {
 //            System.out.println("view Complaint " + requestFilterComplaintDTO);
             EmployeeDTO employeeDTO = (EmployeeDTO) model.getAttribute("employeeData");
             requestFilterComplaintDTO.setEmpId(employeeDTO.getId());
+            requestFilterComplaintDTO.setDeptId(employeeDTO.getDepartmentId());
             Optional<List<ComplaintDTO>> complaintDTOList = complaintService.searchComplaintsForAdmin(requestFilterComplaintDTO);
             System.out.println(complaintDTOList.get());
 

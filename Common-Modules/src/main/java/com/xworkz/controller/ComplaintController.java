@@ -69,6 +69,7 @@ public class ComplaintController {
         try {
             System.out.println("view Complaint " + requestFilterComplaintDTO);
             UserDTO userDTO = (UserDTO) model.getAttribute("userData");
+            System.out.println("user data == > "+userDTO);
             requestFilterComplaintDTO.setUserId(userDTO.getId());
             Optional<List<ComplaintDTO>> complaintDTOList = complaintService.searchComplaints(requestFilterComplaintDTO);
             System.out.println(complaintDTOList.get());

@@ -43,6 +43,7 @@ public class ComplaintServiceImpl implements ComplaintService {
         ComplaintDTO complaintDTO = modelMapper.map(requestComplaintDTO,ComplaintDTO.class);
         complaintDTO.setCreatedBy(userDTO.getFname()+" "+userDTO.getLname());
         complaintDTO.setCreatedDate(LocalDateTime.now());
+        complaintDTO.setUserId(userDTO.getId());
 
         if (complaintRepository.save(complaintDTO)) {
             return complaintDTO;
@@ -90,6 +91,7 @@ public class ComplaintServiceImpl implements ComplaintService {
         ComplaintDTO complaintDTO = complaintRepository.findById(requestUpdateComplaintByAdminDTO.getComplaintId()).get();
         complaintDTO.setDeptId(requestUpdateComplaintByAdminDTO.getDepartment());
         complaintDTO.setStatus(requestUpdateComplaintByAdminDTO.getStatus());
+        complaintDTO.setEmpId(-1L);
 
         if(!complaintRepository.update(complaintDTO)){
             throw new InfoException("Something is wrong complaint with id = "+requestUpdateComplaintByAdminDTO.getComplaintId()+" not updated");

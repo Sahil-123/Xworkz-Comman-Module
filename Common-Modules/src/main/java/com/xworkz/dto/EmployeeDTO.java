@@ -40,10 +40,10 @@ public class EmployeeDTO implements Serializable {
     private Long departmentId;
 
     @Column(name = "loginCount", columnDefinition = "INT DEFAULT 0")
-    private Integer loginCount;
+    private Integer loginCount = 0;
 
     @Column(name = "failedAttempts", columnDefinition = "INT DEFAULT 0")
-    private Integer failedAttempts;
+    private Integer failedAttempts = 0;
 
     @Column(name = "failedAttemptsDateTime")
     private LocalDateTime failedAttemptsDateTime;
