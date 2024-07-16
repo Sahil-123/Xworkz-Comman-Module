@@ -65,8 +65,10 @@ public class ComplaintDTO implements Serializable {
     private String otp;
 
     @Column(name = "otptime")
-    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime otptime;
+
+    @Column(name = "comment")
+    private String comment;
 
 //    public ComplaintDTO() {
 //        System.out.println("Complaint DTO object is created.");

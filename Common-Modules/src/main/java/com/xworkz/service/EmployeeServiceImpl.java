@@ -10,19 +10,14 @@ import com.xworkz.requestDto.*;
 import com.xworkz.responseDto.EmployeeNameAndIdResponseDto;
 import com.xworkz.responseDto.ResponseDTO;
 import com.xworkz.responseDto.ResponseDataDTO;
-import com.xworkz.responseDto.ResponseOTPDto;
-import com.xworkz.utils.CustomeMailSender;
-import com.xworkz.utils.OTPGenerator;
-import com.xworkz.utils.PasswordGenerator;
-import com.xworkz.utils.TimeConversion;
+import com.xworkz.responseDto.ResponseResolveComplaintDto;
+import com.xworkz.utils.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.MailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -266,7 +261,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 
 
     @Override
-    public ResponseOTPDto generateOTP(EmployeeDTO employeeDTO, Long complaintId) {
+    public ResponseResolveComplaintDto generateOTP(EmployeeDTO employeeDTO, Long complaintId) {
 
         ComplaintDTO searchComplaint = new ComplaintDTO();
         searchComplaint.setEmpId(employeeDTO.getId());
@@ -286,25 +281,75 @@ public class EmployeeServiceImpl implements EmployeeService{
 
             if (!userDTO.isPresent()){
                 System.out.println("user not found");
-                return new ResponseOTPDto(false,"Something is wrong. Please try after some time. ");
+                return new ResponseResolveComplaintDto(false,"Something is wrong. Please try after some time. ");
             }
 
             Boolean status = complaintRepository.update(complaintDTO);
 
             if(status){
                 mailSender.sendComplaintResolutionMail(userDTO.get().getEmail(),otp);
-                return new ResponseOTPDto(true,"OTP has been sent to user please check and verify to resolve the issue.");
+                return new ResponseResolveComplaintDto(true,"OTP has been sent to user please check and verify to resolve the issue.");
 
             }else {
-                return new ResponseOTPDto(false,"Something is wrong. Please try after some time. ");
+                return new ResponseResolveComplaintDto(false,"Something is wrong. Please try after some time. ");
             }
 
         }else {
-            return new ResponseOTPDto(false, "Complaint Data not found");
+            return new ResponseResolveComplaintDto(false, "Complaint Data not found");
         }
 
     }
 
+    @Override
+    public ResponseResolveComplaintDto resolveComplaint(RequestResolveComplaintDTO requestResolveComplaintDTO, EmployeeDTO employeeDTO) {
+        System.out.println("Resolve complaint process in employee service is initiated "+requestResolveComplaintDTO);
 
+        ComplaintDTO searchComplaint = new ComplaintDTO();
+        searchComplaint.setEmpId(employeeDTO.getId());
+        searchComplaint.setDeptId(employeeDTO.getDepartmentId());
+        searchComplaint.setId(requestResolveComplaintDTO.getComplaintId());
+        Optional<List<ComplaintDTO>> complaintDTOList =complaintRepository.searchAllComplaintsForAdmin(searchComplaint);
+
+        if(complaintDTOList.isPresent() && !complaintDTOList.get().isEmpty()){
+            ComplaintDTO complaintDTO = complaintDTOList.get().get(0);
+
+            if(complaintDTO.getOtp().equals(requestResolveComplaintDTO.getOtp())){
+                complaintDTO.setStatus(EmployeeCommonUtils.RESOLVED);
+                complaintDTO.setComment(requestResolveComplaintDTO.getComment());
+                Boolean status = complaintRepository.update(complaintDTO);
+                return new ResponseResolveComplaintDto(true,"Complaint Resolved Successfully. Thank you ");
+            }else {
+                return new ResponseResolveComplaintDto(false,"Please provide valid OTP");
+            }
+
+        }else {
+            return new ResponseResolveComplaintDto(false, "Complaint Data not found");
+        }
+
+    }
+
+    @Override
+    public ResponseResolveComplaintDto resolveOtherStatusComplaint(RequestOtherStatusComplaintDTO requestOtherStatusComplaintDTO, EmployeeDTO employeeDTO) {
+        System.out.println("Resolve Other complaint status process in employee service is initiated "+requestOtherStatusComplaintDTO);
+
+        ComplaintDTO searchComplaint = new ComplaintDTO();
+        searchComplaint.setEmpId(employeeDTO.getId());
+        searchComplaint.setDeptId(employeeDTO.getDepartmentId());
+        searchComplaint.setId(requestOtherStatusComplaintDTO.getComplaintId());
+        Optional<List<ComplaintDTO>> complaintDTOList =complaintRepository.searchAllComplaintsForAdmin(searchComplaint);
+
+        if(complaintDTOList.isPresent() && !complaintDTOList.get().isEmpty()){
+            ComplaintDTO complaintDTO = complaintDTOList.get().get(0);
+
+            complaintDTO.setStatus(requestOtherStatusComplaintDTO.getStatus().getDisplayValue());
+            complaintDTO.setComment(requestOtherStatusComplaintDTO.getComment());
+
+            Boolean status = complaintRepository.update(complaintDTO);
+            return new ResponseResolveComplaintDto(true,"Complaint Updated Successfully");
+
+        }else {
+            return new ResponseResolveComplaintDto(false, "Complaint Data not found");
+        }
+    }
 
 }

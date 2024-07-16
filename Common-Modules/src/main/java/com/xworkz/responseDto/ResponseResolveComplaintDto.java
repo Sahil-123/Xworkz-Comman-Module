@@ -8,7 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class ResponseOTPDto {
+public class ResponseResolveComplaintDto {
    private boolean status;
    private String message;
 }

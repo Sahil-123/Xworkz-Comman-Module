@@ -2,18 +2,18 @@ package com.xworkz.controller;
 
 
 import com.xworkz.dto.ComplaintDTO;
-import com.xworkz.dto.DepartmentAdminDTO;
 import com.xworkz.dto.EmployeeDTO;
 import com.xworkz.exceptions.InfoException;
 import com.xworkz.requestDto.*;
 import com.xworkz.responseDto.ResponseDTO;
-import com.xworkz.responseDto.ResponseOTPDto;
+import com.xworkz.responseDto.ResponseResolveComplaintDto;
 import com.xworkz.service.ComplaintService;
 import com.xworkz.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -188,25 +188,101 @@ public class EmployeeController {
     }
 
 
-    @GetMapping(value = "resolveComplaintOtp")
-    public ResponseOTPDto getResolveComplaintOTP(@RequestParam Long complaintId, Model model){
+    @GetMapping(value = "/resolveComplaintOtp")
+    @ResponseBody
+    public ResponseResolveComplaintDto getResolveComplaintOTP(@RequestParam Long complaintId, Model model){
+        System.out.println("Empliyee otp generation process is initiated "+complaintId);
         System.out.println("complaint Id "+complaintId);
 
         if(complaintId < 0){
-            return new ResponseOTPDto(false, "Complaint Id should be valid");
+            return new ResponseResolveComplaintDto(false, "Complaint Id should be valid");
         }
 
         try{
             EmployeeDTO employeeDTO = (EmployeeDTO) model.getAttribute("employeeData");
             return employeeService.generateOTP(employeeDTO,complaintId);
         }catch (InfoException infoException){
-            return new ResponseOTPDto(false,infoException.getMessage());
+            return new ResponseResolveComplaintDto(false,infoException.getMessage());
         }catch (Exception e){
             e.printStackTrace();
         }
 
-        return new ResponseOTPDto();
+        return new ResponseResolveComplaintDto();
     }
+
+    @PostMapping(value = "/resolveComplaint")
+    @ResponseBody
+    public ResponseResolveComplaintDto resolveComplaint(@RequestBody @Valid RequestResolveComplaintDTO requestResolveComplaintDTO,
+                                                        BindingResult bindingResult,
+                                                        Model model){
+        System.out.println("Employee resolve complaint process is initiated "+requestResolveComplaintDTO);
+
+        if (bindingResult.hasErrors()) {
+            String result = "";
+
+            StringBuilder sb = new StringBuilder();
+
+            for (ObjectError s : bindingResult.getAllErrors()) {
+                sb.append(s.getDefaultMessage()).append(",");
+            }
+
+            result = sb.deleteCharAt(sb.length() - 1).toString();
+
+            return new ResponseResolveComplaintDto(false,result);
+        }
+
+        try {
+
+            EmployeeDTO employeeDTO = (EmployeeDTO) model.getAttribute("employeeData");
+
+            return employeeService.resolveComplaint(requestResolveComplaintDTO,employeeDTO);
+
+        } catch (InfoException e) {
+            return new ResponseResolveComplaintDto(false,e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new ResponseResolveComplaintDto(false,"Something goes wrong. Please try again letter.");
+    }
+
+
+    @PostMapping(value = "/resolveOtherStatusComplaint")
+    @ResponseBody
+    public ResponseResolveComplaintDto updateOtherStatusComplaint(@RequestBody @Valid RequestOtherStatusComplaintDTO requestResolveComplaintDTO,
+                                                        BindingResult bindingResult,
+                                                        Model model){
+        System.out.println("Employee update other status complaint process is initiated "+requestResolveComplaintDTO);
+
+        if (bindingResult.hasErrors()) {
+            String result = "";
+
+            StringBuilder sb = new StringBuilder();
+
+            for (ObjectError s : bindingResult.getAllErrors()) {
+                sb.append(s.getDefaultMessage()).append(",");
+            }
+
+            result = sb.deleteCharAt(sb.length() - 1).toString();
+
+            return new ResponseResolveComplaintDto(false,result);
+        }
+
+        try {
+
+            EmployeeDTO employeeDTO = (EmployeeDTO) model.getAttribute("employeeData");
+            return employeeService.resolveOtherStatusComplaint(requestResolveComplaintDTO,employeeDTO);
+
+        } catch (InfoException e) {
+            return new ResponseResolveComplaintDto(false,e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new ResponseResolveComplaintDto(false,"Something goes wrong. Please try again letter.");
+    }
+
+
 
 
 }
