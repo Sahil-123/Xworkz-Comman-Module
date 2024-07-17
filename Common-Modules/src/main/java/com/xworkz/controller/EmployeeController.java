@@ -9,6 +9,7 @@ import com.xworkz.responseDto.ResponseDTO;
 import com.xworkz.responseDto.ResponseResolveComplaintDto;
 import com.xworkz.service.ComplaintService;
 import com.xworkz.service.EmployeeService;
+import com.xworkz.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -166,13 +167,11 @@ public class EmployeeController {
     @RequestMapping(value = "/viewEmployeeComplaints", method = {RequestMethod.GET, RequestMethod.POST})
     public String viewEmployeeComplaints(RequestFilterComplaintDTO requestFilterComplaintDTO, Model model) {
 
-        System.out.println("Employee view complaints process "+requestFilterComplaintDTO);
+        System.out.println("Employee view complaints process for not resolved complaint"+requestFilterComplaintDTO);
         try {
 //            System.out.println("view Complaint " + requestFilterComplaintDTO);
             EmployeeDTO employeeDTO = (EmployeeDTO) model.getAttribute("employeeData");
-            requestFilterComplaintDTO.setEmpId(employeeDTO.getId());
-            requestFilterComplaintDTO.setDeptId(employeeDTO.getDepartmentId());
-            Optional<List<ComplaintDTO>> complaintDTOList = complaintService.searchComplaintsForAdmin(requestFilterComplaintDTO);
+            Optional<List<ComplaintDTO>> complaintDTOList = complaintService.searchNotResolvedComplaintsForEmployee(requestFilterComplaintDTO,employeeDTO);
             System.out.println(complaintDTOList.get());
 
             model.addAttribute("complaintsList", complaintDTOList.get());
@@ -184,6 +183,30 @@ public class EmployeeController {
             e.printStackTrace();
         }
 
+        model.addAttribute("status", CommonUtils.NOT_RESOLVED);
+        return "employee/EmployeeViewComplaints";
+    }
+
+    @RequestMapping(value = "/viewEmployeeResolvedComplaints", method = {RequestMethod.GET, RequestMethod.POST})
+    public String viewEmployeeResolvedComplaints(RequestFilterComplaintDTO requestFilterComplaintDTO, Model model) {
+
+        System.out.println("Employee view complaints process for resolved complaints. "+requestFilterComplaintDTO);
+        try {
+//            System.out.println("view Complaint " + requestFilterComplaintDTO);
+            EmployeeDTO employeeDTO = (EmployeeDTO) model.getAttribute("employeeData");
+            Optional<List<ComplaintDTO>> complaintDTOList = complaintService.searchResolvedComplaintsForEmployee(requestFilterComplaintDTO,employeeDTO);
+            System.out.println(complaintDTOList.get());
+
+            model.addAttribute("complaintsList", complaintDTOList.get());
+        } catch (InfoException e) {
+            model.addAttribute("infoError", e.getMessage());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println(e.getCause());
+            e.printStackTrace();
+        }
+
+        model.addAttribute("status", CommonUtils.RESOLVED);
         return "employee/EmployeeViewComplaints";
     }
 

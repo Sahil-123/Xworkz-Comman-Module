@@ -1,6 +1,6 @@
 package com.xworkz.utils;
 
-public class EmployeeCommonUtils {
+public class CommonUtils {
 
     public static final String IN_PROGRESS = "In Progress";
     public static final String PENDING= "Pending";

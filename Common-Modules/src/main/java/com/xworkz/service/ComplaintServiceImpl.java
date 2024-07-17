@@ -1,6 +1,7 @@
 package com.xworkz.service;
 
 import com.xworkz.dto.ComplaintDTO;
+import com.xworkz.dto.EmployeeDTO;
 import com.xworkz.dto.UserDTO;
 import com.xworkz.exceptions.InfoException;
 import com.xworkz.repository.ComplaintRepository;
@@ -113,5 +114,28 @@ public class ComplaintServiceImpl implements ComplaintService {
         }
 
         return true;
+    }
+
+    @Override
+    public Optional<List<ComplaintDTO>> searchNotResolvedComplaintsForEmployee(RequestFilterComplaintDTO requestFilterComplaintDTO, EmployeeDTO employeeDTO) {
+        System.out.println("Search Not Resolved Complaint For Employee in Complaint service "+requestFilterComplaintDTO);
+        ComplaintDTO complaintDTO = modelMapper.map(requestFilterComplaintDTO,ComplaintDTO.class);
+        addEmployeeDetails(employeeDTO, complaintDTO);
+
+        return complaintRepository.searchAllComplaintsForNotResolved(complaintDTO);
+    }
+
+    @Override
+    public Optional<List<ComplaintDTO>> searchResolvedComplaintsForEmployee(RequestFilterComplaintDTO requestFilterComplaintDTO, EmployeeDTO employeeDTO) {
+        System.out.println("Search Resolved Complaint For Employee in Complaint service "+requestFilterComplaintDTO);
+        ComplaintDTO complaintDTO = modelMapper.map(requestFilterComplaintDTO,ComplaintDTO.class);
+        addEmployeeDetails(employeeDTO, complaintDTO);
+
+        return complaintRepository.searchAllComplaintsForResolved(complaintDTO);
+    }
+
+    private static void addEmployeeDetails(EmployeeDTO employeeDTO, ComplaintDTO complaintDTO) {
+        complaintDTO.setEmpId(employeeDTO.getId());
+        complaintDTO.setDeptId(employeeDTO.getDepartmentId());
     }
 }

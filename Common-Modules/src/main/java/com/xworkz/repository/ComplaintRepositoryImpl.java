@@ -3,6 +3,7 @@ package com.xworkz.repository;
 import com.xworkz.dto.ComplaintDTO;
 import com.xworkz.exceptions.InfoException;
 import com.xworkz.requestDto.RequestUpdateComplaintDTO;
+import com.xworkz.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -137,39 +138,7 @@ public class ComplaintRepositoryImpl implements ComplaintRepository {
             CriteriaQuery<ComplaintDTO> query = cb.createQuery(ComplaintDTO.class);
             Root<ComplaintDTO> root = query.from(ComplaintDTO.class);
 
-            List<Predicate> predicates = new ArrayList<>();
-
-            if (complaintDTO.getId() != null) {
-                predicates.add(cb.equal(root.get("id"), complaintDTO.getId()));
-            }
-            if (complaintDTO.getComplaintType() != null && !complaintDTO.getComplaintType().isEmpty()) {
-                predicates.add(cb.equal(root.get("complaintType"), complaintDTO.getComplaintType()));
-            }
-            if (complaintDTO.getCity() != null && !complaintDTO.getCity().isEmpty()) {
-                predicates.add(cb.equal(root.get("city"), complaintDTO.getCity()));
-            }
-            if (complaintDTO.getStatus() != null && !complaintDTO.getStatus().isEmpty()) {
-                predicates.add(cb.equal(root.get("status"), complaintDTO.getStatus()));
-            }
-            if (complaintDTO.getCountry() != null && !complaintDTO.getCountry().isEmpty()) {
-                predicates.add(cb.equal(root.get("country"), complaintDTO.getCountry()));
-            }
-            if (complaintDTO.getState() != null && !complaintDTO.getState().isEmpty()) {
-                predicates.add(cb.equal(root.get("state"), complaintDTO.getState()));
-            }
-            if (complaintDTO.getAddress() != null && !complaintDTO.getAddress().isEmpty()) {
-                predicates.add(cb.like(root.get("address"), "%" + complaintDTO.getAddress() + "%"));
-            }
-            if (complaintDTO.getEmpId() != null) {
-                predicates.add(cb.equal(root.get("empId"), complaintDTO.getEmpId()));
-            }
-
-            if (complaintDTO.getDescription() != null && !complaintDTO.getDescription().isEmpty()) {
-                predicates.add(cb.like(root.get("description"), "%" + complaintDTO.getDescription() + "%"));
-            }
-            if (complaintDTO.getCreatedDate() != null) {
-                predicates.add(cb.greaterThanOrEqualTo(root.get("createdDate"), complaintDTO.getCreatedDate()));
-            }
+            List<Predicate> predicates = getPredicates(complaintDTO, cb, root);
 
             predicates.add(cb.equal(root.get("userId"), complaintDTO.getUserId()));
 
@@ -189,6 +158,7 @@ public class ComplaintRepositoryImpl implements ComplaintRepository {
         return Optional.empty();
     }
 
+
     @Override
     public Optional<List<ComplaintDTO>> searchAllComplaintsForAdmin(ComplaintDTO complaintDTO) {
         System.out.println("Complaint in repository processing for admin " + complaintDTO);
@@ -199,42 +169,7 @@ public class ComplaintRepositoryImpl implements ComplaintRepository {
             CriteriaQuery<ComplaintDTO> query = cb.createQuery(ComplaintDTO.class);
             Root<ComplaintDTO> root = query.from(ComplaintDTO.class);
 
-            List<Predicate> predicates = new ArrayList<>();
-
-            if (complaintDTO.getId() != null) {
-                predicates.add(cb.equal(root.get("id"), complaintDTO.getId()));
-            }
-            if (complaintDTO.getComplaintType() != null && !complaintDTO.getComplaintType().isEmpty()) {
-                predicates.add(cb.equal(root.get("complaintType"), complaintDTO.getComplaintType()));
-            }
-            if (complaintDTO.getCity() != null && !complaintDTO.getCity().isEmpty()) {
-                predicates.add(cb.equal(root.get("city"), complaintDTO.getCity()));
-            }
-            if (complaintDTO.getStatus() != null && !complaintDTO.getStatus().isEmpty()) {
-                predicates.add(cb.equal(root.get("status"), complaintDTO.getStatus()));
-            }
-            if (complaintDTO.getCountry() != null && !complaintDTO.getCountry().isEmpty()) {
-                predicates.add(cb.equal(root.get("country"), complaintDTO.getCountry()));
-            }
-            if (complaintDTO.getState() != null && !complaintDTO.getState().isEmpty()) {
-                predicates.add(cb.equal(root.get("state"), complaintDTO.getState()));
-            }
-            if (complaintDTO.getAddress() != null && !complaintDTO.getAddress().isEmpty()) {
-                predicates.add(cb.like(root.get("address"), "%" + complaintDTO.getAddress() + "%"));
-            }
-            if (complaintDTO.getDeptId() != null) {
-                predicates.add(cb.equal(root.get("deptId"), complaintDTO.getDeptId()));
-            }
-            if (complaintDTO.getEmpId() != null) {
-                predicates.add(cb.equal(root.get("empId"), complaintDTO.getEmpId()));
-            }
-            if (complaintDTO.getDescription() != null && !complaintDTO.getDescription().isEmpty()) {
-                predicates.add(cb.like(root.get("description"), "%" + complaintDTO.getDescription() + "%"));
-            }
-            if (complaintDTO.getCreatedDate() != null) {
-                predicates.add(cb.greaterThanOrEqualTo(root.get("createdDate"), complaintDTO.getCreatedDate()));
-            }
-
+            List<Predicate> predicates = getPredicatesList(complaintDTO, cb, root);
 
             query.where(cb.and(predicates.toArray(new Predicate[0])));
 
@@ -249,6 +184,72 @@ public class ComplaintRepositoryImpl implements ComplaintRepository {
         }
         return Optional.empty();
     }
+
+    public Optional<List<ComplaintDTO>> searchAllComplaintsForNotResolved(ComplaintDTO complaintDTO) {
+        System.out.println("Complaint in repository processing for admin for not resolved complaints " + complaintDTO);
+
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        try {
+            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+            CriteriaQuery<ComplaintDTO> query = cb.createQuery(ComplaintDTO.class);
+            Root<ComplaintDTO> root = query.from(ComplaintDTO.class);
+
+            List<Predicate> predicates = addPredicates(complaintDTO, cb, root);
+
+//            predicates.add(cb.notLike(root.get("status"), "%" + CommonUtils.RESOLVED + "%"));
+
+            Predicate resolvedStatus = cb.notLike(root.get("status"), "%" + CommonUtils.RESOLVED + "%");
+            Predicate notResolvedStatus = cb.notLike(root.get("status"), "%" + CommonUtils.NOT_RESOLVED + "%");
+            predicates.add(cb.and(resolvedStatus, notResolvedStatus));
+
+            query.where(cb.and(predicates.toArray(new Predicate[0])));
+
+            List<ComplaintDTO> results = entityManager.createQuery(query).getResultList();
+            entityManager.close();
+            return Optional.ofNullable(results);
+
+        } catch (PersistenceException e) {
+            e.printStackTrace();
+        } finally {
+            entityManager.close();
+        }
+        return Optional.empty();
+    }
+
+    public Optional<List<ComplaintDTO>> searchAllComplaintsForResolved(ComplaintDTO complaintDTO) {
+        System.out.println("Complaint in repository processing for admin for resolved complaints " + complaintDTO);
+
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        try {
+            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+            CriteriaQuery<ComplaintDTO> query = cb.createQuery(ComplaintDTO.class);
+            Root<ComplaintDTO> root = query.from(ComplaintDTO.class);
+
+            List<Predicate> predicates = addPredicates(complaintDTO, cb, root);
+
+//            predicates.add(cb.like(root.get("status"), "%" + CommonUtils.RESOLVED + "%"));
+
+            Predicate resolvedStatus = cb.like(root.get("status"), "%" + CommonUtils.RESOLVED + "%");
+            Predicate notResolvedStatus = cb.like(root.get("status"), "%" + CommonUtils.NOT_RESOLVED + "%");
+            predicates.add(cb.or(resolvedStatus, notResolvedStatus));
+
+            query.where(cb.and(predicates.toArray(new Predicate[0])));
+
+            List<ComplaintDTO> results = entityManager.createQuery(query).getResultList();
+            entityManager.close();
+            return Optional.ofNullable(results);
+
+        } catch (PersistenceException e) {
+            e.printStackTrace();
+        } finally {
+            entityManager.close();
+        }
+        return Optional.empty();
+    }
+
+
+
+
 
     @Override
     public Boolean updateComplaint(RequestUpdateComplaintDTO requestUpdateComplaintDTO) {
@@ -281,5 +282,140 @@ public class ComplaintRepositoryImpl implements ComplaintRepository {
         }
 
         return false;
+    }
+
+    private List<Predicate> addPredicates(ComplaintDTO complaintDTO, CriteriaBuilder cb, Root<ComplaintDTO> root) {
+        List<Predicate> predicates = new ArrayList<>();
+
+        if (complaintDTO.getId() != null) {
+            predicates.add(cb.equal(root.get("id"), complaintDTO.getId()));
+        }
+        if (complaintDTO.getComplaintType() != null && !complaintDTO.getComplaintType().isEmpty()) {
+            predicates.add(cb.equal(root.get("complaintType"), complaintDTO.getComplaintType()));
+        }
+        if (complaintDTO.getCity() != null && !complaintDTO.getCity().isEmpty()) {
+            predicates.add(cb.equal(root.get("city"), complaintDTO.getCity()));
+        }
+        if (complaintDTO.getStatus() != null && !complaintDTO.getStatus().isEmpty()) {
+            predicates.add(cb.equal(root.get("status"), complaintDTO.getStatus()));
+        }
+        if (complaintDTO.getCountry() != null && !complaintDTO.getCountry().isEmpty()) {
+            predicates.add(cb.equal(root.get("country"), complaintDTO.getCountry()));
+        }
+        if (complaintDTO.getState() != null && !complaintDTO.getState().isEmpty()) {
+            predicates.add(cb.equal(root.get("state"), complaintDTO.getState()));
+        }
+        if (complaintDTO.getAddress() != null && !complaintDTO.getAddress().isEmpty()) {
+            predicates.add(cb.like(root.get("address"), "%" + complaintDTO.getAddress() + "%"));
+        }
+        if (complaintDTO.getDeptId() != null) {
+            predicates.add(cb.equal(root.get("deptId"), complaintDTO.getDeptId()));
+        }
+        if (complaintDTO.getEmpId() != null) {
+            predicates.add(cb.equal(root.get("empId"), complaintDTO.getEmpId()));
+        }
+        if (complaintDTO.getDescription() != null && !complaintDTO.getDescription().isEmpty()) {
+            predicates.add(cb.like(root.get("description"), "%" + complaintDTO.getDescription() + "%"));
+        }
+        if (complaintDTO.getCreatedDate() != null) {
+            predicates.add(cb.equal(root.get("createdDate"), complaintDTO.getCreatedDate()));
+        }
+        if (complaintDTO.getUpdatedBy() != null && !complaintDTO.getUpdatedBy().isEmpty()) {
+            predicates.add(cb.equal(root.get("updatedBy"), complaintDTO.getUpdatedBy()));
+        }
+        if (complaintDTO.getUpdatedDate() != null) {
+            predicates.add(cb.equal(root.get("updatedDate"), complaintDTO.getUpdatedDate()));
+        }
+        if (complaintDTO.getUserId() != null) {
+            predicates.add(cb.equal(root.get("userId"), complaintDTO.getUserId()));
+        }
+        if (complaintDTO.getOtp() != null && !complaintDTO.getOtp().isEmpty()) {
+            predicates.add(cb.equal(root.get("otp"), complaintDTO.getOtp()));
+        }
+        if (complaintDTO.getOtptime() != null) {
+            predicates.add(cb.equal(root.get("otptime"), complaintDTO.getOtptime()));
+        }
+        if (complaintDTO.getComment() != null && !complaintDTO.getComment().isEmpty()) {
+            predicates.add(cb.like(root.get("comment"), "%" + complaintDTO.getComment() + "%"));
+        }
+
+        return predicates;
+    }
+
+    private List<Predicate> getPredicatesList(ComplaintDTO complaintDTO, CriteriaBuilder cb, Root<ComplaintDTO> root) {
+        List<Predicate> predicates = new ArrayList<>();
+
+        if (complaintDTO.getId() != null) {
+            predicates.add(cb.equal(root.get("id"), complaintDTO.getId()));
+        }
+        if (complaintDTO.getComplaintType() != null && !complaintDTO.getComplaintType().isEmpty()) {
+            predicates.add(cb.equal(root.get("complaintType"), complaintDTO.getComplaintType()));
+        }
+        if (complaintDTO.getCity() != null && !complaintDTO.getCity().isEmpty()) {
+            predicates.add(cb.equal(root.get("city"), complaintDTO.getCity()));
+        }
+        if (complaintDTO.getStatus() != null && !complaintDTO.getStatus().isEmpty()) {
+            predicates.add(cb.equal(root.get("status"), complaintDTO.getStatus()));
+        }
+        if (complaintDTO.getCountry() != null && !complaintDTO.getCountry().isEmpty()) {
+            predicates.add(cb.equal(root.get("country"), complaintDTO.getCountry()));
+        }
+        if (complaintDTO.getState() != null && !complaintDTO.getState().isEmpty()) {
+            predicates.add(cb.equal(root.get("state"), complaintDTO.getState()));
+        }
+        if (complaintDTO.getAddress() != null && !complaintDTO.getAddress().isEmpty()) {
+            predicates.add(cb.like(root.get("address"), "%" + complaintDTO.getAddress() + "%"));
+        }
+        if (complaintDTO.getDeptId() != null) {
+            predicates.add(cb.equal(root.get("deptId"), complaintDTO.getDeptId()));
+        }
+        if (complaintDTO.getEmpId() != null) {
+            predicates.add(cb.equal(root.get("empId"), complaintDTO.getEmpId()));
+        }
+        if (complaintDTO.getDescription() != null && !complaintDTO.getDescription().isEmpty()) {
+            predicates.add(cb.like(root.get("description"), "%" + complaintDTO.getDescription() + "%"));
+        }
+        if (complaintDTO.getCreatedDate() != null) {
+            predicates.add(cb.greaterThanOrEqualTo(root.get("createdDate"), complaintDTO.getCreatedDate()));
+        }
+        return predicates;
+    }
+
+    private List<Predicate> getPredicates(ComplaintDTO complaintDTO,CriteriaBuilder cb,Root<ComplaintDTO> root){
+
+        List<Predicate> predicates = new ArrayList<>();
+
+        if (complaintDTO.getId() != null) {
+            predicates.add(cb.equal(root.get("id"), complaintDTO.getId()));
+        }
+        if (complaintDTO.getComplaintType() != null && !complaintDTO.getComplaintType().isEmpty()) {
+            predicates.add(cb.equal(root.get("complaintType"), complaintDTO.getComplaintType()));
+        }
+        if (complaintDTO.getCity() != null && !complaintDTO.getCity().isEmpty()) {
+            predicates.add(cb.equal(root.get("city"), complaintDTO.getCity()));
+        }
+        if (complaintDTO.getStatus() != null && !complaintDTO.getStatus().isEmpty()) {
+            predicates.add(cb.equal(root.get("status"), complaintDTO.getStatus()));
+        }
+        if (complaintDTO.getCountry() != null && !complaintDTO.getCountry().isEmpty()) {
+            predicates.add(cb.equal(root.get("country"), complaintDTO.getCountry()));
+        }
+        if (complaintDTO.getState() != null && !complaintDTO.getState().isEmpty()) {
+            predicates.add(cb.equal(root.get("state"), complaintDTO.getState()));
+        }
+        if (complaintDTO.getAddress() != null && !complaintDTO.getAddress().isEmpty()) {
+            predicates.add(cb.like(root.get("address"), "%" + complaintDTO.getAddress() + "%"));
+        }
+        if (complaintDTO.getEmpId() != null) {
+            predicates.add(cb.equal(root.get("empId"), complaintDTO.getEmpId()));
+        }
+        if (complaintDTO.getDescription() != null && !complaintDTO.getDescription().isEmpty()) {
+            predicates.add(cb.like(root.get("description"), "%" + complaintDTO.getDescription() + "%"));
+        }
+        if (complaintDTO.getCreatedDate() != null) {
+            predicates.add(cb.greaterThanOrEqualTo(root.get("createdDate"), complaintDTO.getCreatedDate()));
+        }
+
+        return predicates;
     }
 }

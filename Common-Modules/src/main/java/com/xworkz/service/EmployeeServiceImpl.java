@@ -262,6 +262,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     @Override
     public ResponseResolveComplaintDto generateOTP(EmployeeDTO employeeDTO, Long complaintId) {
+        System.out.println("Generate otp process is initiated in employee service "+ complaintId);
 
         ComplaintDTO searchComplaint = new ComplaintDTO();
         searchComplaint.setEmpId(employeeDTO.getId());
@@ -314,7 +315,7 @@ public class EmployeeServiceImpl implements EmployeeService{
             ComplaintDTO complaintDTO = complaintDTOList.get().get(0);
 
             if(complaintDTO.getOtp().equals(requestResolveComplaintDTO.getOtp())){
-                complaintDTO.setStatus(EmployeeCommonUtils.RESOLVED);
+                complaintDTO.setStatus(CommonUtils.RESOLVED);
                 complaintDTO.setComment(requestResolveComplaintDTO.getComment());
                 Boolean status = complaintRepository.update(complaintDTO);
                 return new ResponseResolveComplaintDto(true,"Complaint Resolved Successfully. Thank you ");

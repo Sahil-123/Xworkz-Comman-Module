@@ -1,6 +1,7 @@
 package com.xworkz.service;
 
 import com.xworkz.dto.ComplaintDTO;
+import com.xworkz.dto.EmployeeDTO;
 import com.xworkz.dto.UserDTO;
 import com.xworkz.requestDto.*;
 
@@ -23,5 +24,8 @@ public interface ComplaintService {
     Boolean updateComplaintForDepartmentAdmin(RequestUpdateDepartmentComplaintByAdminDTO requestUpdateDepartmentComplaintByAdminDTO);
 
 
+    Optional<List<ComplaintDTO>> searchNotResolvedComplaintsForEmployee(RequestFilterComplaintDTO requestFilterComplaintDTO, EmployeeDTO employeeDTO);
+
+    Optional<List<ComplaintDTO>> searchResolvedComplaintsForEmployee(RequestFilterComplaintDTO requestFilterComplaintDTO, EmployeeDTO employeeDTO);
 
 }
