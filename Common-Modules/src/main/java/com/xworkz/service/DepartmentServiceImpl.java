@@ -1,6 +1,6 @@
 package com.xworkz.service;
 
-import com.xworkz.dto.DepartmentDTO;
+import com.xworkz.entity.DepartmentDTO;
 import com.xworkz.repository.DepartmentRepository;
 import com.xworkz.responseDto.DepartmentNameAndIdResponseDto;
 import org.modelmapper.ModelMapper;

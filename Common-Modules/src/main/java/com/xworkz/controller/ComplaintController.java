@@ -1,8 +1,7 @@
 package com.xworkz.controller;
 
-import com.xworkz.dto.ComplaintDTO;
-import com.xworkz.dto.DepartmentDTO;
-import com.xworkz.dto.UserDTO;
+import com.xworkz.entity.ComplaintDTO;
+import com.xworkz.entity.UserDTO;
 import com.xworkz.exceptions.InfoException;
 import com.xworkz.requestDto.RequestComplaintDTO;
 import com.xworkz.requestDto.RequestFilterComplaintDTO;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/complaints")

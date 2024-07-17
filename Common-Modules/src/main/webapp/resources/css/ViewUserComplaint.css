@@ -1,8 +1,10 @@
 .customeHeight{
-    height: 70vh;
-    width: 85vw;
-    overflow: scroll;
+    /* height: 70vh; */
+    /* width: 85vw;
+    overflow: auto; */
 }
+
+
 
 label {
     font-weight: bold;

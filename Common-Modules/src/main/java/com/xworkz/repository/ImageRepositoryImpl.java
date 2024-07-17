@@ -1,8 +1,6 @@
 package com.xworkz.repository;
 
-import com.xworkz.dto.ImageDTO;
-import com.xworkz.dto.UserDTO;
-import jdk.nashorn.internal.ir.annotations.Reference;
+import com.xworkz.entity.ImageDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

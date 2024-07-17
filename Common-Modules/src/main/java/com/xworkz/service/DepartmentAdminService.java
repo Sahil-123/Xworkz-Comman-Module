@@ -1,7 +1,6 @@
 package com.xworkz.service;
 
-import com.xworkz.dto.ComplaintDTO;
-import com.xworkz.dto.DepartmentAdminDTO;
+import com.xworkz.entity.ComplaintDTO;
 import com.xworkz.requestDto.RequestFilterComplaintDTO;
 import com.xworkz.requestDto.RequestSigningDTO;
 import org.springframework.ui.Model;

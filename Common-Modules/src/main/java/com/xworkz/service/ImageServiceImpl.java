@@ -1,7 +1,7 @@
 package com.xworkz.service;
 
-import com.xworkz.dto.ImageDTO;
-import com.xworkz.dto.UserDTO;
+import com.xworkz.entity.ImageDTO;
+import com.xworkz.entity.UserDTO;
 import com.xworkz.repository.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

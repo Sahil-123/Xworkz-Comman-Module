@@ -1,7 +1,8 @@
 package com.xworkz.service;
 
+import com.xworkz.dto.DTOListPage;
 import com.xworkz.responseDto.ResponseDTO;
-import com.xworkz.dto.UserDTO;
+import com.xworkz.entity.UserDTO;
 import com.xworkz.requestDto.UserProfileDTO;
 import com.xworkz.requestDto.RequestForgotPasswordDTO;
 import com.xworkz.requestDto.RequestResetPasswordDTO;
@@ -22,7 +23,7 @@ public interface UserService {
 
     String validateAndSetForgotPassword(RequestForgotPasswordDTO requestForgotPasswordDTO, Model model);
 
-    Optional<List<UserDTO>> getAllUser();
+    DTOListPage<UserDTO> getAllUser(Integer offset,Integer pageSize);
 
     boolean editProfile(UserProfileDTO userProfileDTO,Model model) throws IOException;
 

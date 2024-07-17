@@ -1,11 +1,12 @@
 package com.xworkz.repository;
 
-import com.xworkz.dto.UserDTO;
+import com.xworkz.dto.DTOListPage;
+import com.xworkz.entity.UserDTO;
+import com.xworkz.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +17,27 @@ public class UserRepositoryImpl implements UserRepository{
 
     @Autowired
     private EntityManagerFactory entityManagerFactory;
+
+    private Long getCount(){
+        System.out.println("User Repository getting count.");
+
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        try {
+            Query queryTotal = entityManager.createQuery
+                    ("Select count(f.id) from UserDTO f");
+
+            return (Long)queryTotal.getSingleResult();
+
+        }catch(PersistenceException e){
+            e.printStackTrace();
+        }
+        finally {
+            entityManager.close();
+        }
+
+        return 0L;
+    }
 
     @Override
     public Boolean save(UserDTO userDTO) {
@@ -144,13 +166,19 @@ public class UserRepositoryImpl implements UserRepository{
     }
 
     @Override
-    public Optional<List<UserDTO>> getAllUsers() {
+    public DTOListPage<UserDTO> getAllUsers(Integer offset, Integer pageSize) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
 
         try{
+            Long count = getCount();
+            if(offset < 1) offset = 1;
             Query query = entityManager.createQuery("select user from UserDTO user",UserDTO.class);
+            query.setFirstResult((offset-1)* pageSize);
+            query.setMaxResults(pageSize);
+
             List<UserDTO> userDTOList = query.getResultList();
-            return Optional.ofNullable(userDTOList);
+
+            return new DTOListPage<UserDTO>(count,Optional.ofNullable(userDTOList));
         }catch (Exception e){
             System.out.println(e.getMessage());
             System.out.println(e.getCause());
@@ -161,7 +189,7 @@ public class UserRepositoryImpl implements UserRepository{
             entityManager.close();
         }
 
-        return Optional.empty();
+        return new DTOListPage<UserDTO>(0L,Optional.empty());
     }
 
     @Override

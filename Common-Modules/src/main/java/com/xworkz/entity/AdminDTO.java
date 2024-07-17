@@ -1,7 +1,6 @@
-package com.xworkz.dto;
+package com.xworkz.entity;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
 import javax.persistence.*;

@@ -1,16 +1,12 @@
 package com.xworkz.controller;
 
-import com.sun.deploy.net.HttpResponse;
-import com.xworkz.dto.ImageDTO;
+import com.xworkz.entity.ImageDTO;
 import com.xworkz.requestDto.UserProfileDTO;
 import com.xworkz.exceptions.InfoException;
 import com.xworkz.requestDto.RequestForgotPasswordDTO;
 import com.xworkz.requestDto.RequestResetPasswordDTO;
 import com.xworkz.requestDto.RequestSigningDTO;
-import com.xworkz.requestDto.RequestSignupDTO;
 import com.xworkz.service.UserService;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

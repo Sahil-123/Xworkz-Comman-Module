@@ -1,8 +1,7 @@
 package com.xworkz.service;
 
-import com.xworkz.dto.ComplaintDTO;
-import com.xworkz.dto.DepartmentAdminDTO;
-import com.xworkz.exceptions.InfoException;
+import com.xworkz.entity.ComplaintDTO;
+import com.xworkz.entity.DepartmentAdminDTO;
 import com.xworkz.repository.ComplaintRepository; // Assuming you have this repository
 import com.xworkz.repository.DepartmentAdminRepository;
 import com.xworkz.requestDto.RequestFilterComplaintDTO;

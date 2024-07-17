@@ -1,6 +1,6 @@
 package com.xworkz.service;
 
-import com.xworkz.dto.AdminDTO;
+import com.xworkz.entity.AdminDTO;
 import com.xworkz.exceptions.InfoException;
 import com.xworkz.repository.AdminRepository;
 import com.xworkz.requestDto.RequestForgotPasswordDTO;

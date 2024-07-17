@@ -1,6 +1,7 @@
 package com.xworkz.repository;
 
-import com.xworkz.dto.UserDTO;
+import com.xworkz.dto.DTOListPage;
+import com.xworkz.entity.UserDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +18,7 @@ public interface UserRepository {
 
     boolean updateByDto(UserDTO userDTO);
 
-    Optional<List<UserDTO>> getAllUsers();
+    DTOListPage<UserDTO> getAllUsers(Integer offset,Integer pageSize);
 
     boolean merge(UserDTO userDTO);
 

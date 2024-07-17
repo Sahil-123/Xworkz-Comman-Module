@@ -5,11 +5,13 @@
     <head>
         <meta charset="UTF-8">
         <%@ include file="../component/HeaderLink.jsp" %>
-            <link rel="stylesheet" href="resources/css/ViewUserComplaint.css">
-            <%@ include file="../user/UserHeader.jsp" %>
+            <%-- <link rel="stylesheet" href="resources/css/ViewUserComplaint.css"> --%>
+                <link rel="stylesheet" href="resources/css/AdminViewUser.css">
+
+                <%@ include file="../user/UserHeader.jsp" %>
 
 
-                <title>Complaints</title>
+                    <title>Complaints</title>
 
     </head>
 
@@ -17,7 +19,7 @@
 
         <%@ include file="../component/AdminHorizontalNavBar.jsp" %>
 
-            <div class="mt-3 container d-flex justify-content-center ">
+            <div class="mt-3 container-fluid d-flex justify-content-center ">
 
 
                 <div class="">
@@ -63,32 +65,34 @@
                         </form>
 
                         <c:if test="${complaintsList == null || complaintsList.isEmpty() }">
-                            No Records Found
+                            <div class=" d-flex mb-2 p-2 justify-content-center customeWidth" style="width: 85vw;">
+                                No Records Found
+                            </div>
                         </c:if>
 
 
                         <div class="customeHeight">
-                            <table class="table ">
-                                <thead class="table-dark">
-                                    <tr>
-                                        <th scope="col"><strong>ID</strong></th>
-                                        <th scope="col"><strong>Complaint Type</strong></th>
-                                        <th scope="col"><strong>Country</strong></th>
-                                        <th scope="col"><strong>State</strong></th>
-                                        <th scope="col"><strong>City</strong></th>
-                                        <th scope="col"><strong>Address</strong></th>
-                                        <th scope="col"><strong>Employee ID</strong></th>
-                                        <th scope="col"><strong>Description</strong></th>
-                                        <th scope="col"><strong>Created By</strong></th>
-                                        <th scope="col"><strong>Created Date</strong></th>
-                                        <th scope="col"><strong>User ID</strong></th>
-                                        <th scope="col"><strong>Department</strong></th>
-                                        <th scope="col"><strong>Status</strong></th>
-                                        <th scope="col"><strong></strong></th>
-                                    </tr>
-                                </thead>
+                            <c:if test="${complaintsList != null && !complaintsList.isEmpty() }">
+                                <table class="table ">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th scope="col"><strong>ID</strong></th>
+                                            <th scope="col"><strong>Complaint Type</strong></th>
+                                            <th scope="col"><strong>Country</strong></th>
+                                            <th scope="col"><strong>State</strong></th>
+                                            <th scope="col"><strong>City</strong></th>
+                                            <th scope="col"><strong>Address</strong></th>
+                                            <th scope="col"><strong>Employee ID</strong></th>
+                                            <th scope="col"><strong>Description</strong></th>
+                                            <th scope="col"><strong>Created By</strong></th>
+                                            <th scope="col"><strong>Created Date</strong></th>
+                                            <th scope="col"><strong>User ID</strong></th>
+                                            <th scope="col"><strong>Department</strong></th>
+                                            <th scope="col"><strong>Status</strong></th>
+                                            <th scope="col"><strong></strong></th>
+                                        </tr>
+                                    </thead>
 
-                                <c:if test="${complaintsList != null && !complaintsList.isEmpty() }">
                                     <tbody>
                                         <c:forEach items="${complaintsList}" var="complaint">
                                             <tr>
@@ -104,30 +108,35 @@
                                                 <td>${complaint.createdDate}</td>
                                                 <td>${complaint.userId}</td>
                                                 <form action="complaints/adminUpdateComplaint" method="POST">
-                                                <td>
-                                                    <select class="form-control m-1" id="${complaint.deptId}" name="department" >
-                                                        <option value="">Department</option>
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <select class="form-control m-1" id="status" name="status"  >
-                                                        <option value="">Status</option>
-                                                        <option value="Open" <c:if test="${complaint.status == 'Open'}">selected</c:if>>Open</option>
-                                                        <option value="Pending" <c:if test="${complaint.status == 'Pending'}">selected</c:if>>Pending</option>
-                                                        <option value="InProgess" <c:if test="${complaint.status == 'InProgess'}">selected</c:if>>InProgress</option>
-                                                    </select>
-                                                </td>
-                                                <td class="">
-                                                    <input type="number" value="${complaint.id}" name="complaintId" hidden/>
-                                                        <button type="submit" class="btn btn btn-success btn-sm m-1">Submit</button>
-                                                </td>
-                                            </form>
-                                               
-                                            </tr>
-                                        </c:forEach>
+                                                    <td>
+                                                        <select class="form-control m-1" id="${complaint.deptId}"
+                                                            name="department">
+                                                            <option value="">Department</option>
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <select class="form-control m-1" id="status" name="status">
+                                                            <option value="">Status</option>
+                                                            <option value="Open" <c:if
+                                                                test="${complaint.status == 'Open'}">selected
+                            </c:if>>Open</option>
+                            <option value="Pending" <c:if test="${complaint.status == 'Pending'}">selected</c:if>
+                                >Pending</option>
+                            <option value="InProgess" <c:if test="${complaint.status == 'InProgess'}">selected</c:if>
+                                >InProgress</option>
+                            </select>
+                            </td>
+                            <td class="">
+                                <input type="number" value="${complaint.id}" name="complaintId" hidden />
+                                <button type="submit" class="btn btn btn-success btn-sm m-1">Submit</button>
+                            </td>
+                            </form>
 
-                                    </tbody>
-                                </c:if>
+                            </tr>
+                            </c:forEach>
+
+                            </tbody>
+                            </c:if>
                             </table>
                         </div>
                     </div>

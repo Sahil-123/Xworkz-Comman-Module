@@ -1,6 +1,6 @@
 package com.xworkz.service;
 
-import com.xworkz.dto.*;
+import com.xworkz.entity.*;
 import com.xworkz.exceptions.InfoException;
 import com.xworkz.repository.ComplaintRepository;
 import com.xworkz.repository.DepartmentRepository;

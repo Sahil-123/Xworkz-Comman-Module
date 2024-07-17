@@ -38,7 +38,7 @@
                         User
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="admin/users">View Users</a></li>
+                        <li><a class="dropdown-item" href="admin/users/0/7">View Users</a></li>
                     </ul>
                 </li>
 

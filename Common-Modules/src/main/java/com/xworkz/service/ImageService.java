@@ -1,10 +1,9 @@
 package com.xworkz.service;
 
-import com.xworkz.dto.ImageDTO;
-import com.xworkz.dto.UserDTO;
+import com.xworkz.entity.ImageDTO;
+import com.xworkz.entity.UserDTO;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.swing.text.html.Option;
 import java.io.IOException;
 import java.util.Optional;
 

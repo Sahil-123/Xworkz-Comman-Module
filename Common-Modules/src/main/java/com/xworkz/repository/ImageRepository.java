@@ -1,6 +1,6 @@
 package com.xworkz.repository;
 
-import com.xworkz.dto.ImageDTO;
+import com.xworkz.entity.ImageDTO;
 
 import java.util.List;
 import java.util.Optional;

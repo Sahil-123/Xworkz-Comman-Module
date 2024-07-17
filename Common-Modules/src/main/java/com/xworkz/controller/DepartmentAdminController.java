@@ -1,10 +1,9 @@
 package com.xworkz.controller;
 
 
-import com.xworkz.dto.ComplaintDTO;
-import com.xworkz.dto.DepartmentAdminDTO;
-import com.xworkz.dto.EmployeeDTO;
-import com.xworkz.dto.UserDTO;
+import com.xworkz.entity.ComplaintDTO;
+import com.xworkz.entity.DepartmentAdminDTO;
+import com.xworkz.entity.EmployeeDTO;
 import com.xworkz.exceptions.InfoException;
 import com.xworkz.requestDto.*;
 import com.xworkz.responseDto.EmployeeNameAndIdResponseDto;

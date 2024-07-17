@@ -1,6 +1,6 @@
 package com.xworkz.repository;
 
-import com.xworkz.dto.ComplaintDTO;
+import com.xworkz.entity.ComplaintDTO;
 import com.xworkz.exceptions.InfoException;
 import com.xworkz.requestDto.RequestUpdateComplaintDTO;
 import com.xworkz.utils.CommonUtils;

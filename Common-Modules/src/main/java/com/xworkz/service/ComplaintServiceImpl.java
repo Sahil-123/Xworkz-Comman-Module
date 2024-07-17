@@ -1,8 +1,8 @@
 package com.xworkz.service;
 
-import com.xworkz.dto.ComplaintDTO;
-import com.xworkz.dto.EmployeeDTO;
-import com.xworkz.dto.UserDTO;
+import com.xworkz.entity.ComplaintDTO;
+import com.xworkz.entity.EmployeeDTO;
+import com.xworkz.entity.UserDTO;
 import com.xworkz.exceptions.InfoException;
 import com.xworkz.repository.ComplaintRepository;
 import com.xworkz.requestDto.*;

@@ -1,6 +1,6 @@
 package com.xworkz.repository;
 
-import com.xworkz.dto.DepartmentAdminDTO;
+import com.xworkz.entity.DepartmentAdminDTO;
 import java.util.List;
 import java.util.Optional;
 

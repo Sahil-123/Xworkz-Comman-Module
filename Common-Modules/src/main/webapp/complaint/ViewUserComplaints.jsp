@@ -5,7 +5,8 @@
     <head>
         <meta charset="UTF-8">
         <%@ include file="../component/HeaderLink.jsp" %>
-            <link rel="stylesheet" href="resources/css/ViewUserComplaint.css">
+            <link rel="stylesheet" href="resources/css/Table.css">
+            <%-- <link rel="stylesheet" href="resources/css/ViewUserComplaint.css"> --%>
             <%@ include file="../user/UserHeader.jsp" %>
 
 
@@ -17,7 +18,7 @@
         <%@ include file="../user/UserNav.jsp" %>
 
 
-            <div class="mt-3 container d-flex justify-content-center ">
+            <div class="mt-3 container-fluid d-flex justify-content-center ">
 
 
                 <div class="">
@@ -58,7 +59,9 @@
                         </form>
 
                         <c:if test="${complaintsList == null || complaintsList.isEmpty() }">
-                            No Records Found
+                            <div class=" d-flex mb-2 p-2 justify-content-center customeWidth" style="width: 85vw;">
+                                    No Records Found
+                                </div>
                         </c:if>
 
                         <!-- <c:choose>
@@ -69,9 +72,10 @@
                             </c:when>
                             <c:otherwise> -->
 
-                        <div class="customeHeight">
-                            <table class="table ">
-                                <thead class="table-dark">
+                                <c:if test="${complaintsList != null && !complaintsList.isEmpty() }">
+                        <div class="customeHeight" style="width: 85vw;">
+                            <table class="table table-borderless">
+                                <thead class="">
                                     <tr>
                                         <th scope="col"><strong>Complaint Type</strong></th>
                                         <th scope="col"><strong>Country</strong></th>
@@ -88,7 +92,6 @@
                                     </tr>
                                 </thead>
 
-                                <c:if test="${complaintsList != null && !complaintsList.isEmpty() }">
                                     <tbody>
                                         <c:forEach items="${complaintsList}" var="complaint">
                                             <tr>
@@ -100,10 +103,18 @@
                                                 <td>${complaint.description}</td>
                                                 <td>${complaint.createdDate}</td>
                                                 <td>${complaint.status}</td>
-                                                <td><a href="complaints/updateComplaintPage?id=${complaint.id}" class="nav-link nav-item"><i
-                                                            class="fa-solid fa-pen-to-square"></a></i></td>
-                                                <td><a href="#" class="nav-link nav-item"><i
-                                                            class="fa-solid fa-circle-info"></a></i></td>
+                                                <td><a href="complaints/updateComplaintPage?id=${complaint.id}" class=" btn btn-success btn-sm">
+                                                <%-- <i class="fa-solid fa-pen-to-square">
+                                                </i> --%>
+                                                Edit
+                                                </a>
+                                                </td>
+                                                <td><a href="#" class="btn btn-success btn-sm">
+                                                <%-- <i class="fa-solid fa-circle-info">
+                                                </i> --%>
+                                                Status
+                                                </a>
+                                                </td>
 
                                             </tr>
                                         </c:forEach>

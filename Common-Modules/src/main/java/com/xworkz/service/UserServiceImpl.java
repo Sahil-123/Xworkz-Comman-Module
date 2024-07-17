@@ -1,9 +1,10 @@
 package com.xworkz.service;
 
-import com.xworkz.dto.ImageDTO;
+import com.xworkz.dto.DTOListPage;
+import com.xworkz.entity.ImageDTO;
 import com.xworkz.responseDto.ResponseDTO;
 import com.xworkz.responseDto.ResponseDataDTO;
-import com.xworkz.dto.UserDTO;
+import com.xworkz.entity.UserDTO;
 import com.xworkz.exceptions.InfoException;
 import com.xworkz.repository.UserRepository;
 import com.xworkz.requestDto.*;
@@ -212,9 +213,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<List<UserDTO>> getAllUser() {
+    public DTOListPage<UserDTO> getAllUser(Integer offset,Integer pageSize) {
         System.out.println("Running User service impl get all user method to find all the users.");
-        return userRepository.getAllUsers();
+        return userRepository.getAllUsers(offset, pageSize);
     }
 
     @Override

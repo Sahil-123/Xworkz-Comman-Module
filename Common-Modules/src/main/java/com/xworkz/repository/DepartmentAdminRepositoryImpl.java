@@ -1,6 +1,6 @@
 package com.xworkz.repository;
 
-import com.xworkz.dto.DepartmentAdminDTO;
+import com.xworkz.entity.DepartmentAdminDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

@@ -1,5 +1,7 @@
 package com.xworkz.controller;
 
+import com.xworkz.dto.DTOListPage;
+import com.xworkz.entity.UserDTO;
 import com.xworkz.exceptions.InfoException;
 import com.xworkz.requestDto.RequestForgotPasswordDTO;
 import com.xworkz.requestDto.RequestResetPasswordDTO;
@@ -11,12 +13,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/admin")
@@ -120,11 +120,15 @@ public class AdminController {
         return "ResetPassword";
     }
 
-    @GetMapping("/users")
-    public String getUsers(Model model){
+    @GetMapping("/users/{offset}/{pageSize}")
+    public String getUsers(@PathVariable Optional<Integer> offset, @PathVariable Optional<Integer> pageSize, Model model){
         System.out.println("Admin get users method is processing the request");
+
+//        if(!offset.isPresent()) offset.se;
+
+        DTOListPage<UserDTO> userDTODTOListPage = userService.getAllUser(offset.orElse(0),pageSize.orElse(10));
 //        model.addAttribute("action","users");
-        model.addAttribute("userslist",userService.getAllUser().get());
+        model.addAttribute("userslist",userDTODTOListPage.getList().get());
         return "component/AdminUsersView";
     }
 

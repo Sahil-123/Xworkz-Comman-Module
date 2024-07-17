@@ -1,7 +1,6 @@
 package com.xworkz.repository;
 
-import com.xworkz.dto.EmployeeDTO;
-import com.xworkz.dto.UserDTO;
+import com.xworkz.entity.EmployeeDTO;
 
 import java.util.List;
 import java.util.Optional;

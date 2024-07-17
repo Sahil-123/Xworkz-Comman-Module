@@ -1,6 +1,6 @@
 package com.xworkz.service;
 
-import com.xworkz.dto.EmployeeDTO;
+import com.xworkz.entity.EmployeeDTO;
 import com.xworkz.requestDto.*;
 import com.xworkz.responseDto.EmployeeNameAndIdResponseDto;
 import com.xworkz.responseDto.ResponseDTO;
