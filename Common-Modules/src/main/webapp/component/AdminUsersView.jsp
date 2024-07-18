@@ -70,10 +70,9 @@
                   </tbody>
                 </table>
                 <hr>
-                <div class=" d-flex justify-content-center">
+                <!-- <div > -->
                   <%@ include file="../common/Pagination.jsp" %>
-
-                </div>
+                <!-- </div> -->
               </c:if>
             </div>
           </div>

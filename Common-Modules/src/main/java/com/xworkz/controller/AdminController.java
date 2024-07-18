@@ -17,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Controller
@@ -125,22 +126,17 @@ public class AdminController {
     public String getUsers(@PathVariable Optional<Integer> offset, @PathVariable Optional<Integer> pageSize, Model model){
         System.out.println("Admin get users method is processing the request");
 
+        if(offset.isPresent() && offset.get() <=1) offset = Optional.of(1);
 
-        DTOListPage<UserDTO> userDTODTOListPage = userService.getAllUser(offset.orElse(0),pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE));
+        DTOListPage<UserDTO> userDTODTOListPage = userService.getAllUser(offset.orElse(1),pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE));
+        model.addAttribute("userslist", userDTODTOListPage.getList().get());
         int pagesCount = findPageCount(userDTODTOListPage.getCount(),pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE));
         String pageURL = "admin/users";
-        setPagination(offset.orElse(1), pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE), model, pageURL, pagesCount, userDTODTOListPage);
-
+        CommonUtils.setPagination(offset.orElse(1), pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE), pageURL, userDTODTOListPage, pagesCount, model);
         return "component/AdminUsersView";
     }
 
-    private static void setPagination(Integer offset, Integer pageSize, Model model, String pageURL, int pagesCount, DTOListPage<UserDTO> userDTODTOListPage) {
-        model.addAttribute("pageSize", pageSize);
-        model.addAttribute("pageURL", pageURL);
-        model.addAttribute("currentPage", offset);
-        model.addAttribute("pages", pagesCount);
-        model.addAttribute("userslist", userDTODTOListPage.getList().get());
-    }
+
 
 
     private Integer findPageCount(Long totalRecords,Integer pageSize){
