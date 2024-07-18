@@ -266,7 +266,6 @@ public class UserRepositoryImpl implements UserRepository{
         return true;
     }
 
-
     @Override
     public Optional<UserDTO> findById(Long id) {
         System.out.println("User Repository find by ID process is initiated using ID." + id);

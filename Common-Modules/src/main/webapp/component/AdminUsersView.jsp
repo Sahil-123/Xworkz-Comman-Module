@@ -18,7 +18,7 @@
 
       <div class="mt-1 container-fluid d-flex justify-content-center ">
         <div class="">
-          <div class="table-responsive-sm p-4 ">
+          <div class="table-responsive-xxl p-4 ">
             <h5 class="text-center"> User Details </h5>
             <br>
 
@@ -67,10 +67,14 @@
                         <td>${user.lock}</td>
                       </tr>
                     </c:forEach>
-
                   </tbody>
+                </table>
+                <hr>
+                <div class=" d-flex justify-content-center">
+                  <%@ include file="../common/Pagination.jsp" %>
+
+                </div>
               </c:if>
-              </table>
             </div>
           </div>
         </div>

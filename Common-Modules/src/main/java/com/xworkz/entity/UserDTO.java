@@ -66,6 +66,6 @@ public class UserDTO implements Serializable {
     private boolean lock;
 
     public UserDTO(){
-        System.out.println("User entity object is created.");
+//        System.out.println("User entity object is created.");
     }
 }

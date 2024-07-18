@@ -8,6 +8,7 @@ import com.xworkz.requestDto.RequestResetPasswordDTO;
 import com.xworkz.requestDto.RequestSigningDTO;
 import com.xworkz.service.AdminService;
 import com.xworkz.service.UserService;
+import com.xworkz.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -124,12 +125,33 @@ public class AdminController {
     public String getUsers(@PathVariable Optional<Integer> offset, @PathVariable Optional<Integer> pageSize, Model model){
         System.out.println("Admin get users method is processing the request");
 
-//        if(!offset.isPresent()) offset.se;
 
-        DTOListPage<UserDTO> userDTODTOListPage = userService.getAllUser(offset.orElse(0),pageSize.orElse(10));
-//        model.addAttribute("action","users");
-        model.addAttribute("userslist",userDTODTOListPage.getList().get());
+        DTOListPage<UserDTO> userDTODTOListPage = userService.getAllUser(offset.orElse(0),pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE));
+        int pagesCount = findPageCount(userDTODTOListPage.getCount(),pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE));
+        String pageURL = "admin/users";
+        setPagination(offset.orElse(1), pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE), model, pageURL, pagesCount, userDTODTOListPage);
+
         return "component/AdminUsersView";
+    }
+
+    private static void setPagination(Integer offset, Integer pageSize, Model model, String pageURL, int pagesCount, DTOListPage<UserDTO> userDTODTOListPage) {
+        model.addAttribute("pageSize", pageSize);
+        model.addAttribute("pageURL", pageURL);
+        model.addAttribute("currentPage", offset);
+        model.addAttribute("pages", pagesCount);
+        model.addAttribute("userslist", userDTODTOListPage.getList().get());
+    }
+
+
+    private Integer findPageCount(Long totalRecords,Integer pageSize){
+
+        Integer result = Math.toIntExact(totalRecords / pageSize.longValue());
+
+        if(totalRecords % pageSize != 0){
+            result++;
+        }
+
+        return result;
     }
 
 }
