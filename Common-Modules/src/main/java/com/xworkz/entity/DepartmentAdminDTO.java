@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 @Setter
 @ToString
 @AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "departmentadmin")
 public class DepartmentAdminDTO implements Serializable {
@@ -38,7 +37,7 @@ public class DepartmentAdminDTO implements Serializable {
     private Long departmentId;
 
     @Column(name = "loginCount", columnDefinition = "INT DEFAULT 0")
-    private int loginCount;
+    private int loginCount = 0;
 
     @Column(name = "failedAttempts", columnDefinition = "INT DEFAULT 0")
     private int failedAttempts;
@@ -59,6 +58,10 @@ public class DepartmentAdminDTO implements Serializable {
     private LocalDateTime updatedDate;
 
     @Column(name = "admin_lock", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
-    private boolean lock;
+    private boolean lock = false;
+
+    public DepartmentAdminDTO(){
+
+    }
 
 }

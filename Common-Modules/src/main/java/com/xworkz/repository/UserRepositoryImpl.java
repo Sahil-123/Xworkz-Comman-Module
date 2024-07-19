@@ -173,7 +173,7 @@ public class UserRepositoryImpl implements UserRepository{
             Long count = getCount();
             if(offset < 1) offset = 1;
             Query query = entityManager.createQuery("select user from UserDTO user",UserDTO.class);
-            query.setFirstResult((offset-1)* pageSize);
+            query.setFirstResult(CommonUtils.getFirstResultForPagination(offset, pageSize));
             query.setMaxResults(pageSize);
 
             List<UserDTO> userDTOList = query.getResultList();
@@ -191,6 +191,8 @@ public class UserRepositoryImpl implements UserRepository{
 
         return new DTOListPage<UserDTO>(0L,Optional.empty());
     }
+
+
 
     @Override
     public boolean merge(UserDTO userDTO) {

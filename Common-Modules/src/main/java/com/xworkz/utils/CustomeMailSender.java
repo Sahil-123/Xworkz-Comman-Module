@@ -117,4 +117,30 @@ public class CustomeMailSender {
     }
 
 
+    public void sendDepartmentAdminMail(String mail, String password, String departmentName) {
+        System.out.println("Mail has successfully sent to " + mail);
+
+        String subject = String.format("You Have Been Assigned as a Department Admin for the %s Department!", departmentName);
+        String text = String.format(
+                "Hello,\n\n" +
+                        "You have been assigned as the department admin for the %s department.\n\n" +
+                        "Here are your login credentials:\n" +
+                        "Email: %s\n" +
+                        "Password: %s\n\n" +
+                        "Please make sure to change your password after logging in for the first time for security purposes.\n\n" +
+                        "Thank you for joining us!\n" +
+                        "Best regards,\n" +
+                        "The Team",
+                departmentName, mail, password
+        );
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(mail);
+        message.setSubject(subject);
+        message.setText(text);
+
+        javaMailSender.send(message);
+    }
+
+
 }

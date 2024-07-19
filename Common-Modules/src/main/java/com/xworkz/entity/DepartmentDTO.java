@@ -32,8 +32,8 @@ public class DepartmentDTO implements Serializable {
     @Column(name = "address", length = 255)
     private String address;
 
-    @Column(name = "number_of_employees")
-    private Integer numberOfEmployees;
+    @Column(name = "number_of_employees", columnDefinition = "INT DEFAULT 0")
+    private Integer numberOfEmployees = 0;
 
     @Column(name = "created_by", length = 50)
     private String createdBy;

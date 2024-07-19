@@ -53,10 +53,25 @@
                 </li>
 
 
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Department
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="admin/RegisterDepartment.jsp">Add Department</a></li>
+                        <li><a class="dropdown-item" href="admin/RegisterDepartmentAdmin.jsp">Add Department Admin</a></li>
+                        <li><a class="dropdown-item" href="admin/departments/1/7">View Department</a></li>
+                        <li><a class="dropdown-item" href="departmentAdmin/departmentAdmins/1/7">View Department Admin</a></li>
+                    </ul>
+
+                </li>
+
+
 
                 <li class="nav-item">
                     <div class="dropdown dropstart">
-                        
+
                         <a class=" nav-link nav-item text-capitalize nav-link d-flex align-items-center text-white"
                             href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
                             aria-expanded="false">

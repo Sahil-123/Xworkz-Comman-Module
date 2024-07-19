@@ -57,7 +57,6 @@ public class SignupController {
     @ResponseBody
     public ResponseDTO isEmailExists(@RequestParam String email){
         System.out.println("Controller check email process is initiated for email :"+email);
-
         return userService.checkMail(email);
     }
 

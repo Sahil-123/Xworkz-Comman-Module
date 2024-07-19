@@ -1,12 +1,14 @@
 package com.xworkz.controller;
 
 import com.xworkz.dto.DTOListPage;
+import com.xworkz.entity.DepartmentDTO;
 import com.xworkz.entity.UserDTO;
 import com.xworkz.exceptions.InfoException;
 import com.xworkz.requestDto.RequestForgotPasswordDTO;
 import com.xworkz.requestDto.RequestResetPasswordDTO;
 import com.xworkz.requestDto.RequestSigningDTO;
 import com.xworkz.service.AdminService;
+import com.xworkz.service.DepartmentService;
 import com.xworkz.service.UserService;
 import com.xworkz.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,9 @@ public class AdminController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private DepartmentService departmentService;
 
     @GetMapping("/signinPage")
     public String getSigningPage(Model model) {
@@ -130,24 +135,38 @@ public class AdminController {
 
         DTOListPage<UserDTO> userDTODTOListPage = userService.getAllUser(offset.orElse(1),pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE));
         model.addAttribute("userslist", userDTODTOListPage.getList().get());
-        int pagesCount = findPageCount(userDTODTOListPage.getCount(),pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE));
+//        int pagesCount = findPageCount(userDTODTOListPage.getCount(),pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE));
         String pageURL = "admin/users";
-        CommonUtils.setPagination(offset.orElse(1), pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE), pageURL, userDTODTOListPage, pagesCount, model);
+        CommonUtils.setPagination(offset.orElse(1), pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE), pageURL, userDTODTOListPage, model);
         return "component/AdminUsersView";
     }
 
+    @GetMapping("/departments/{offset}/{pageSize}")
+    public String getDepartments(@PathVariable Optional<Integer> offset, @PathVariable Optional<Integer> pageSize, Model model){
+        System.out.println("Admin get departments method is processing the request "+offset.get()+" "+pageSize.get());
 
+        if(offset.isPresent() && offset.get() <=1) offset = Optional.of(1);
 
+        DTOListPage<DepartmentDTO> departmentDTOListPage = departmentService.getAllDepartmentsWithPagination(offset.orElse(1), pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE));
+        System.out.println(departmentDTOListPage);
 
-    private Integer findPageCount(Long totalRecords,Integer pageSize){
-
-        Integer result = Math.toIntExact(totalRecords / pageSize.longValue());
-
-        if(totalRecords % pageSize != 0){
-            result++;
-        }
-
-        return result;
+        model.addAttribute("departmentslist", departmentDTOListPage.getList().get());
+        String pageURL = "admin/departments";
+        CommonUtils.setPagination(offset.orElse(1), pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE), pageURL, departmentDTOListPage, model);
+        return "admin/AdminViewAllDepartment";
     }
+
+
+
+
+
+//    private Integer findPageCount(Long totalRecords,Integer pageSize){
+//        Integer result = Math.toIntExact(totalRecords / pageSize.longValue());
+//
+//        if(totalRecords % pageSize != 0){
+//            result++;
+//        }
+//        return result;
+//    }
 
 }
