@@ -1,0 +1,38 @@
+.customeHeight {
+    /* height: 70vh; */
+    /* width: 85vw; */
+    overflow: auto;
+    /* border: 1px solid red; */
+    border-radius: 15px 15px 0 0;
+    /* padding: 2px; */
+  
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  }
+  
+  table {
+    font-size: 0.92rem;
+    font-family: sans-serif;
+    /* border: 1px solid red; */
+  }
+  
+  th {
+    background-color: rgb(47, 54, 69, 0.9) !important;
+    color: white;
+    /* text-align: center; */
+    /* opacity: 0.5; */
+    /* width: fit-content; */
+  }
+  
+  td,
+  th {
+    /* padding: 8px !important; */
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+    align-content: center;
+    text-align: center;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #f2efef;
+  }
+  
