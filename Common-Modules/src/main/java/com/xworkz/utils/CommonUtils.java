@@ -12,8 +12,11 @@ public class CommonUtils {
     public static final String NOT_RESOLVED="Not Resolved";
     public static final String RESOLVED="Resolved";
     public static final Integer PAGE_SIZE= 10;
-
     public static final Integer DEFAULT_PAGE_SIZE= 10;
+
+    public static final Long DEPARTMENT_ADMIN_NUMBER_OF_ATTEMPTS_ALLOWED_IN_HOURS= 1L;
+    public static final Long DEPARTMENT_ADMIN_PASSWORD_RESET_DURATION= 10L;
+
 
     public static void setPagination(Integer offset, Integer pageSize, String pageURL, DTOListPage<?> listPage, Model model) {
         model.addAttribute("pageSize", pageSize);

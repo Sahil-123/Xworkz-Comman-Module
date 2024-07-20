@@ -62,6 +62,33 @@ public class CustomeMailSender {
         javaMailSender.send(message);
     }
 
+    public void sendResetPasswordMailToDepartmentAdmin(String mail, String newPassword) {
+        System.out.println("Password reset mail has successfully sent to " + mail);
+
+        String subject = "Password Reset Request";
+        String text = String.format(
+                "Hello,\n\n" +
+                        "Your password has been successfully reset. You can now log in using the following new password:\n\n" +
+                        "Email: %s\n" +
+                        "New Password: %s\n\n" +
+                        "We have sent an email containing a temporary password to your registered email address. " +
+                        "You can use this temporary password to log in and reset your password. " +
+                        "Please ensure you use the temporary password within 10 minutes to complete the reset process.\n\n" +
+                        "Thank you!\n" +
+                        "Best regards,\n" +
+                        "The Team",
+                mail, newPassword
+        );
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(mail);
+        message.setSubject(subject);
+        message.setText(text);
+
+        javaMailSender.send(message);
+    }
+
+
 
     public void sendEmployeeRegisterMail(String mail, String password, String departmentName) {
         System.out.println("Mail has successfully sent to " + mail);

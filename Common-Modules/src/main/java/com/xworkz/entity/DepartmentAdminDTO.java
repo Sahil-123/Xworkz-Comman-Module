@@ -60,6 +60,9 @@ public class DepartmentAdminDTO implements Serializable {
     @Column(name = "admin_lock", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
     private boolean lock = false;
 
+    @Column(name = "ResetPasswordDateTime")
+    private LocalDateTime resetPasswordDateTime;
+
     public DepartmentAdminDTO(){
 
     }

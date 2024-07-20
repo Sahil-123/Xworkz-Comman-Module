@@ -64,7 +64,7 @@ public class DepartmentAdminController {
         }
         try {
             System.out.println("department admin login");
-            String result = departmentAdminService.signin(requestSigningDTO, model);
+            String result = departmentAdminService.signIn(requestSigningDTO, model);
             return result;
         } catch (InfoException e) {
             model.addAttribute("infoError", e.getMessage());
@@ -227,6 +227,62 @@ public class DepartmentAdminController {
             model.addAttribute("infoError", "An error occurred while fetching the employees.");
         }
         return "admin/AdminViewAllDepartmentAdmin";
+    }
+
+    @GetMapping("/forgotPasswordPage")
+    public String getForgotPasswordPage(Model model) {
+        model.addAttribute("userAccess", "departmentAdmin");
+        return "ForgotPassword";
+    }
+
+    @PostMapping("/forgotPassword")
+    public String forgotPassword(@Valid RequestForgotPasswordDTO requestForgotPasswordDTO, BindingResult bindingResult, Model model) {
+        System.out.println("Department Admin Forgot password process initiated with dto " + requestForgotPasswordDTO);
+        model.addAttribute("userAccess", "departmentAdmin");
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("errors", bindingResult.getAllErrors());
+            return "ForgotPassword";
+        }
+
+        try {
+            return departmentAdminService.validateAndSetForgotPassword(requestForgotPasswordDTO, model);
+        } catch (InfoException e) {
+            model.addAttribute("infoError", e.getMessage());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println(e.getCause());
+            e.printStackTrace();
+        }
+        return "ForgotPassword";
+    }
+
+    @PostMapping("/resetPassword")
+    public String resetPassword(@Valid RequestResetPasswordDTO requestResetPasswordDTO, BindingResult bindingResult, Model model) {
+        System.out.println("Reset Form processing with dto " + requestResetPasswordDTO);
+//        model.addAttribute("admin", true);
+        model.addAttribute("userAccess", "departmentAdmin");
+
+
+        try {
+            if (bindingResult.hasErrors()) {
+                model.addAttribute("dto", requestResetPasswordDTO);
+                model.addAttribute("errors", bindingResult.getAllErrors());
+                return "ResetPassword";
+            }
+
+            departmentAdminService.validateAndResetPassword(requestResetPasswordDTO);
+            model.addAttribute("successMessage", "Password reset successful! Please login with your new password.");
+            return "SignIn";
+        } catch (InfoException e) {
+            System.out.println(e.getMessage());
+            model.addAttribute("dto", requestResetPasswordDTO);
+            model.addAttribute("infoError", e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "ResetPassword";
     }
 
 }

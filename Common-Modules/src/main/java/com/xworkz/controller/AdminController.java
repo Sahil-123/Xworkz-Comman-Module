@@ -81,7 +81,8 @@ public class AdminController {
     @PostMapping("/forgotPassword")
     public String forgotPassword(@Valid RequestForgotPasswordDTO requestForgotPasswordDTO, BindingResult bindingResult, Model model) {
         System.out.println("Admin Forgot password process initiated with dto " + requestForgotPasswordDTO);
-        model.addAttribute("admin", true);
+        model.addAttribute("userAccess", "admin");
+
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("errors", bindingResult.getAllErrors());
@@ -104,6 +105,7 @@ public class AdminController {
     public String resetPassword(@Valid RequestResetPasswordDTO requestResetPasswordDTO, BindingResult bindingResult, Model model) {
         System.out.println("Reset Form processing with dto " + requestResetPasswordDTO);
         model.addAttribute("admin", true);
+        model.addAttribute("userAccess", "admin");
 
 
         try {

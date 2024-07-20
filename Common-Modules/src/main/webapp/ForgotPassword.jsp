@@ -69,7 +69,10 @@
 
                             <c:choose>
                                 <c:when test="${userAccess.equals('departmentAdmin')}">
-                                    <%-- <form action="departmentAdmin/signin" method="POST"> --%>
+                                    <a class="nav-link" href="departmentAdmin/signinPage">
+                                        <i class="fa-solid fa-right-to-bracket"></i>
+                                        Sign in
+                                    </a>
                                 </c:when>
 
                                 <c:when test="${userAccess.equals('admin')}">
@@ -88,14 +91,14 @@
 
                             <%-- <c:if test="${admin}">
                                 <a class="nav-link" href="admin/signinPage">
-                            </c:if>
-                            <c:if test="${!admin}">
-                                <a class="nav-link" href="SignIn.jsp">
-                            </c:if> --%>
-                            
-                                <i class="fa-solid fa-user"></i>
-                                Sign in
-                            </a>
+                                    </c:if>
+                                    <c:if test="${!admin}">
+                                        <a class="nav-link" href="SignIn.jsp">
+                                    </c:if> --%>
+
+                                    <i class="fa-solid fa-user"></i>
+                                    Sign in
+                                </a>
                         </li>
                     </ul>
                 </div>
@@ -106,53 +109,53 @@
         <div class="mt-3 container d-flex justify-content-center">
             <div class="card w-50 ps-4 pe-4 pt-2 pb-1 shadow p-3 mb-5 bg-body rounded">
 
-            <c:choose>
-                            <c:when test="${userAccess.equals('departmentAdmin')}">
-                                <%-- <form action="departmentAdmin/signin" method="POST"> --%>
-                            </c:when>
+                <c:choose>
+                    <c:when test="${userAccess.equals('departmentAdmin')}">
+                        <form action="departmentAdmin/forgotPassword" method="POST">
+                    </c:when>
 
-                            <c:when test="${userAccess.equals('admin')}">
-                                <form action="admin/forgotPassword" method="POST">
-                            </c:when>
+                    <c:when test="${userAccess.equals('admin')}">
+                        <form action="admin/forgotPassword" method="POST">
+                    </c:when>
 
-                            <c:when test="${userAccess.equals('employee')}">
-                                <form action="employee/forgotPassword" method="POST">
-                            </c:when>
+                    <c:when test="${userAccess.equals('employee')}">
+                        <form action="employee/forgotPassword" method="POST">
+                    </c:when>
 
-                            <c:otherwise>
-                                <form action="forgotPassword" method="POST">
-                            </c:otherwise>
-                        </c:choose>
+                    <c:otherwise>
+                        <form action="forgotPassword" method="POST">
+                    </c:otherwise>
+                </c:choose>
 
                 <%-- <c:if test="${admin}">
                     <form action="admin/forgotPassword" method="POST">
-                </c:if>
-                <c:if test="${!admin}">
-                    <form action="forgotPassword" method="POST">
-                </c:if> --%>
+                        </c:if>
+                        <c:if test="${!admin}">
+                            <form action="forgotPassword" method="POST">
+                        </c:if> --%>
 
-                <div class="card-body d-flex flex-column justify-content-center">
+                        <div class="card-body d-flex flex-column justify-content-center">
 
-                    <span class="compulsary">
-                        ${infoError}
+                            <span class="compulsary">
+                                ${infoError}
 
-                        <c:forEach items="${errors}" var="objectError">
-                            "${objectError.defaultMessage}" <br>
-                        </c:forEach>
-                    </span>
+                                <c:forEach items="${errors}" var="objectError">
+                                    "${objectError.defaultMessage}" <br>
+                                </c:forEach>
+                            </span>
 
-                    <h2 class="card-title text-center mb-5">Enter Your Email</h2>
+                            <h2 class="card-title text-center mb-5">Enter Your Email</h2>
 
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" onblur="emailValidation()"
-                            value="${dto.email}">
-                        <div id="emailError" class="text-danger"></div>
-                    </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" name="email"
+                                    onblur="emailValidation()" value="${dto.email}">
+                                <div id="emailError" class="text-danger"></div>
+                            </div>
 
-                    <input type="submit" class="btn btn-primary mb-3" id="submitButton" value="Submit" />
+                            <input type="submit" class="btn btn-primary mb-3" id="submitButton" value="Submit" />
 
-                </div>
+                        </div>
             </div>
             </form>
 

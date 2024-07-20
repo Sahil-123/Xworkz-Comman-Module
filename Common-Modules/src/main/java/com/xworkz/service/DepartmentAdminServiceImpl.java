@@ -1,20 +1,18 @@
 package com.xworkz.service;
 
 import com.xworkz.dto.DTOListPage;
-import com.xworkz.entity.ComplaintDTO;
-import com.xworkz.entity.DepartmentAdminDTO;
-import com.xworkz.entity.DepartmentDTO;
+import com.xworkz.entity.*;
 import com.xworkz.exceptions.InfoException;
 import com.xworkz.repository.ComplaintRepository; // Assuming you have this repository
 import com.xworkz.repository.DepartmentAdminRepository;
 import com.xworkz.repository.DepartmentRepository;
-import com.xworkz.requestDto.RequestDepartmentAdminDTO;
-import com.xworkz.requestDto.RequestFilterComplaintDTO;
-import com.xworkz.requestDto.RequestSigningDTO;
+import com.xworkz.requestDto.*;
 import com.xworkz.responseDto.ResponseDTO;
 import com.xworkz.responseDto.ResponseDataDTO;
+import com.xworkz.utils.CommonUtils;
 import com.xworkz.utils.CustomeMailSender;
 import com.xworkz.utils.PasswordGenerator;
+import com.xworkz.utils.TimeConversion;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,6 +60,81 @@ public class DepartmentAdminServiceImpl implements DepartmentAdminService {
         model.addAttribute("infoError","Invalid Email or Password");
 
         return "SignIn";
+    }
+
+    @Override
+    public String signIn(RequestSigningDTO requestSigningDTO, Model model) {
+        System.out.println("Department Admin Signing process is initiated with request signin dto " + requestSigningDTO);
+
+        Optional<DepartmentAdminDTO> departmentAdminDTOOptional = departmentAdminRepository.findByEmail(requestSigningDTO.getEmail());
+
+        if (departmentAdminDTOOptional.isPresent()) {
+            DepartmentAdminDTO departmentAdminDTO = departmentAdminDTOOptional.get();
+
+            if(departmentAdminDTO.isLock()){
+                throw new InfoException(" Your account is Locked. Please Reset your password.");
+            }
+
+            if (departmentAdminDTO.getPassword().equals(requestSigningDTO.getPassword())) {
+                if (departmentAdminDTO.getLoginCount() == 0 || departmentAdminDTO.getFailedAttempts() == 3) {
+
+                    return "ResetPassword";
+                }
+
+                departmentAdminDTO.setFailedAttempts(0);
+
+//                save updated counts to database
+                departmentAdminRepository.update(departmentAdminDTO);
+                model.addAttribute("departmentAdminData",departmentAdminDTO);
+
+//                model.addAttribute("userDto", userDTO);
+//
+//                Optional<ImageDTO> imageDTO = imageService.findActiveImageByUserId(userDTO.getId());
+//                if(imageDTO.isPresent()){
+//                    model.addAttribute("imageData",imageDTO.get());
+//                }
+
+                return "DepartmentAdmin";
+            } else {
+
+//                3 time wrong attempts allowed within the 1 hour after that it will be allowed
+//                3 attempts if previous attempts are within 3 then only allowed more 3 attempts in next 1 hour
+
+                long duration = TimeConversion.getDuration(departmentAdminDTO.getFailedAttemptsDateTime());
+                System.out.println("trying to check the attempts");
+                if (duration < CommonUtils.DEPARTMENT_ADMIN_NUMBER_OF_ATTEMPTS_ALLOWED_IN_HOURS && departmentAdminDTO.getFailedAttempts() <= 3) {
+                    System.out.println("under valid attempts : " + departmentAdminDTO.getFailedAttempts());
+                    if (departmentAdminDTO.getFailedAttempts() == 0) {
+                        departmentAdminDTO.setFailedAttemptsDateTime(LocalDateTime.now());
+                    }
+                    departmentAdminDTO.setFailedAttempts(departmentAdminDTO.getFailedAttempts() + 1);
+
+                    if(departmentAdminDTO.getFailedAttempts() == 3){
+                        departmentAdminDTO.setLock(true);
+                    }
+
+//                    save updated counts to database.
+                    departmentAdminRepository.update(departmentAdminDTO);
+
+                } else if (duration >= CommonUtils.DEPARTMENT_ADMIN_NUMBER_OF_ATTEMPTS_ALLOWED_IN_HOURS) {
+                    System.out.println("checking under specified duration attempts are valid or not attempt = "+departmentAdminDTO.getFailedAttempts());
+                    if (departmentAdminDTO.getFailedAttempts() < 3) {
+                        System.out.println("attempts are valid under 3 after an hours so resting the time and count");
+                        departmentAdminDTO.setFailedAttemptsDateTime(LocalDateTime.now());
+                        departmentAdminDTO.setFailedAttempts(1);
+
+//                    save updated counts to database.
+                        departmentAdminRepository.update(departmentAdminDTO);
+
+                    }else{
+                        throw new InfoException("Your have exceeded login attempts. Your account is Locked. Please Reset your password.");
+                    }
+                } else {
+                    throw new InfoException("Your have exceeded login attempts. Your account is Locked. Please Reset your password.");
+                }
+            }
+        }
+        throw new InfoException("Invalid Email or Password");
     }
 
     @Override
@@ -178,5 +251,69 @@ public class DepartmentAdminServiceImpl implements DepartmentAdminService {
     public DTOListPage<DepartmentAdminDTO> findAllDepartmentAdmin(Integer offset, Integer pageSize) {
         System.out.println("Fetching all department process is initiated. "+offset+" "+pageSize);
         return departmentAdminRepository.findAllByPagination(offset,pageSize);
+    }
+
+    @Override
+    public String validateAndSetForgotPassword(RequestForgotPasswordDTO requestForgotPasswordDTO, Model model) {
+        System.out.println("Department Admin forgot password process is initiated with request email dto " + requestForgotPasswordDTO);
+
+        Optional<DepartmentAdminDTO> adminDTOList = departmentAdminRepository.findByEmail(requestForgotPasswordDTO.getEmail());
+
+        if (adminDTOList.isPresent()) {
+            DepartmentAdminDTO departmentAdminDTO = adminDTOList.get();
+            String generatePassword = PasswordGenerator.generatePassword();
+            departmentAdminDTO.setFailedAttempts(3);
+            departmentAdminDTO.setPassword(generatePassword);
+            departmentAdminDTO.setLock(false);
+            departmentAdminDTO.setResetPasswordDateTime(LocalDateTime.now());
+
+            departmentAdminRepository.update(departmentAdminDTO);
+            mailSender.sendResetPasswordMailToDepartmentAdmin(departmentAdminDTO.getEmail(),departmentAdminDTO.getPassword());
+            model.addAttribute("successMessage","We have sent an email containing a temporary password to your registered email address. You can use this temporary password to log in and reset your password. Please ensure you use the temporary password within 10 minutes to complete the reset process. ");
+            return "ForgotPassword";
+        }
+
+        throw new InfoException("Invalid Email!");
+    }
+
+    @Override
+    public Boolean validateAndResetPassword(RequestResetPasswordDTO requestResetPasswordDTO) {
+        System.out.println("Department Admin reset password process is initiated with request password dto " + requestResetPasswordDTO);
+
+        Optional<DepartmentAdminDTO> departmentAdminDTOOptional = departmentAdminRepository.findByEmail(requestResetPasswordDTO.getEmail());
+
+        if (!requestResetPasswordDTO.getNewPassword().equals(requestResetPasswordDTO.getConfirmPassword())) {
+            throw new InfoException("New Password and Conform Password must have same value.");
+        }
+
+        if (departmentAdminDTOOptional.isPresent()) {
+            DepartmentAdminDTO departmentAdminDTO = departmentAdminDTOOptional.get();
+
+            if(departmentAdminDTO.isLock()){
+                throw new InfoException("Please follow forgot password process in order to unlock and reset an account.");
+            }
+
+            if(departmentAdminDTO.getLoginCount() == 0 || departmentAdminDTO.getFailedAttempts() == 3){
+                if (departmentAdminDTO.getPassword().equals(requestResetPasswordDTO.getPassword())) {
+
+                    long minutes = TimeConversion.getDurationInMinutes(departmentAdminDTO.getResetPasswordDateTime());
+
+                    if(minutes > CommonUtils.DEPARTMENT_ADMIN_PASSWORD_RESET_DURATION){
+                        throw new InfoException("The temporary password has expired. Please request a new password reset to proceed.");
+                    }
+
+                    departmentAdminDTO.setPassword(requestResetPasswordDTO.getNewPassword());
+                    departmentAdminDTO.setFailedAttempts(0);
+                    if(departmentAdminDTO.getLoginCount() == 0) departmentAdminDTO.setLoginCount(1);
+
+                    return departmentAdminRepository.update(departmentAdminDTO);
+                }
+            }else {
+                throw new InfoException("Not allowed to reset the password");
+            }
+
+        }
+
+        throw new InfoException("Invalid Email or Password");
     }
 }

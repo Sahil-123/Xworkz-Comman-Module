@@ -65,33 +65,36 @@
 
                         <li class="nav-item">
 
-                        <c:choose>
-                            <c:when test="${userAccess.equals('departmentAdmin')}">
-                                <%-- <form action="departmentAdmin/signin" method="POST"> --%>
-                            </c:when>
+                            <c:choose>
+                                <c:when test="${userAccess.equals('departmentAdmin')}">
+                                    <a class="nav-link" href="departmentAdmin/signinPage">
+                                        <i class="fa-solid fa-right-to-bracket"></i>
+                                        Sign in
+                                    </a>
+                                </c:when>
 
-                            <c:when test="${userAccess.equals('admin')}">
-                                <a class="nav-link" href="admin/signinPage">
-                            </c:when>
+                                <c:when test="${userAccess.equals('admin')}">
+                                    <a class="nav-link" href="admin/signinPage">
+                                        <i class="fa-solid fa-right-to-bracket"></i>
+                                        Sign in
+                                    </a>
+                                </c:when>
 
-                            <c:when test="${userAccess.equals('employee')}">
-                                <a class="nav-link" href="employee/signinPage">
-                            </c:when>
+                                <c:when test="${userAccess.equals('employee')}">
+                                    <a class="nav-link" href="employee/signinPage">
+                                        <i class="fa-solid fa-right-to-bracket"></i>
+                                        Sign in
+                                    </a>
+                                </c:when>
 
-                            <c:otherwise>
-                                <a class="nav-link" href="SignIn.jsp">
-                            </c:otherwise>
-                        </c:choose>
+                                <c:otherwise>
+                                    <a class="nav-link" href="SignIn.jsp">
+                                        <i class="fa-solid fa-right-to-bracket"></i>
+                                        Sign in
+                                    </a>
+                                </c:otherwise>
+                            </c:choose>
 
-                            <%-- <c:if test="${admin}">
-                                <a class="nav-link" href="admin/signinPage">
-                            </c:if>
-                            <c:if test="${!admin}">
-                                <a class="nav-link" href="SignIn.jsp">
-                            </c:if> --%>
-                                <i class="fa-solid fa-right-to-bracket"></i>
-                                Sign in
-                            </a>
                         </li>
 
 
@@ -108,7 +111,7 @@
                 <c:choose>
 
                     <c:when test="${userAccess.equals('departmentAdmin')}">
-                        <%-- <form action="departmentAdmin/signin" method="POST"> --%>
+                        <form action="departmentAdmin/resetPassword" method="POST">
                     </c:when>
 
                     <c:when test="${userAccess.equals('admin')}">
@@ -124,53 +127,47 @@
                     </c:otherwise>
                 </c:choose>
 
-                <%-- <c:if test="${admin}">
-                    <form action="admin/resetPassword" method="POST">
-                </c:if>
-                <c:if test="${!admin}">
-                    <form action="resetPassword" method="POST">
-                </c:if> --%>
 
-                    <div class="card-body d-flex flex-column justify-content-center">
+                <div class="card-body d-flex flex-column justify-content-center">
 
-                        <span class="compulsary">
-                            ${infoError}
+                    <span class="compulsary">
+                        ${infoError}
 
-                            <c:forEach items="${errors}" var="objectError">
-                                "${objectError.defaultMessage}" <br>
-                            </c:forEach>
-                        </span>
+                        <c:forEach items="${errors}" var="objectError">
+                            "${objectError.defaultMessage}" <br>
+                        </c:forEach>
+                    </span>
 
-                        <h2 class="card-title text-center mb-5">Reset Password</h2>
+                    <h2 class="card-title text-center mb-5">Reset Password</h2>
 
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" onblur="emailValidation()"
-                                value="${dto.email}">
-                            <div id="emailError" class="text-danger"></div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Old Password</label>
-                            <input type="password" class="form-control" id="password" name="password"
-                                value="${dto.password}">
-                            <div id="passwordError" class="text-danger"></div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="newPassword" class="form-label">New Password</label>
-                            <input type="password" class="form-control" id="newPassword" name="newPassword">
-                            <div id="newPasswordError" class="text-danger"></div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="confirmPassword" class="form-label">Confirm Password</label>
-                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword">
-                            <div id="confirmPasswordError" class="text-danger"></div>
-                        </div>
-
-                        <input type="submit" class="btn btn-primary mt-3 mb-3" id="submitButton" value="Reset" />
-
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" onblur="emailValidation()"
+                            value="${dto.email}">
+                        <div id="emailError" class="text-danger"></div>
                     </div>
+
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Old Password</label>
+                        <input type="password" class="form-control" id="password" name="password"
+                            value="${dto.password}">
+                        <div id="passwordError" class="text-danger"></div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="newPassword" class="form-label">New Password</label>
+                        <input type="password" class="form-control" id="newPassword" name="newPassword">
+                        <div id="newPasswordError" class="text-danger"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirmPassword" class="form-label">Confirm Password</label>
+                        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword">
+                        <div id="confirmPasswordError" class="text-danger"></div>
+                    </div>
+
+                    <input type="submit" class="btn btn-primary mt-3 mb-3" id="submitButton" value="Reset" />
+
+                </div>
             </div>
             </form>
 

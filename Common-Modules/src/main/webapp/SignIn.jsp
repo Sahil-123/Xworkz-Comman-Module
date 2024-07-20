@@ -164,7 +164,10 @@
                         <c:choose>
 
                             <c:when test="${userAccess.equals('departmentAdmin')}">
-                                <!-- future reference -->
+                                <p>
+                                    <a href="departmentAdmin/forgotPasswordPage" style="text-decoration: none">
+                                        <strong> Forgot password? </strong> </a>
+                                </p>
                             </c:when>
 
                             <c:when test="${userAccess.equals('admin')}">
