@@ -127,12 +127,30 @@ public class ComplaintServiceImpl implements ComplaintService {
     }
 
     @Override
+    public DTOListPage<ComplaintDTO> searchNotResolvedComplaintsForEmployee(RequestFilterComplaintDTO requestFilterComplaintDTO, Integer offset, Integer pageSize, EmployeeDTO employeeDTO) {
+        System.out.println("Search Not Resolved Complaint For Employee in Complaint service with pagination "+requestFilterComplaintDTO);
+        ComplaintDTO complaintDTO = modelMapper.map(requestFilterComplaintDTO,ComplaintDTO.class);
+        addEmployeeDetails(employeeDTO, complaintDTO);
+
+        return complaintRepository.searchAllComplaintsForNotResolved(complaintDTO,offset,pageSize);
+    }
+
+    @Override
     public Optional<List<ComplaintDTO>> searchResolvedComplaintsForEmployee(RequestFilterComplaintDTO requestFilterComplaintDTO, EmployeeDTO employeeDTO) {
         System.out.println("Search Resolved Complaint For Employee in Complaint service "+requestFilterComplaintDTO);
         ComplaintDTO complaintDTO = modelMapper.map(requestFilterComplaintDTO,ComplaintDTO.class);
         addEmployeeDetails(employeeDTO, complaintDTO);
 
         return complaintRepository.searchAllComplaintsForResolved(complaintDTO);
+    }
+
+    @Override
+    public DTOListPage<ComplaintDTO> searchResolvedComplaintsForEmployee(RequestFilterComplaintDTO requestFilterComplaintDTO, Integer offset, Integer pageSize, EmployeeDTO employeeDTO) {
+        System.out.println("Search Resolved Complaint For Employee in Complaint service "+requestFilterComplaintDTO);
+        ComplaintDTO complaintDTO = modelMapper.map(requestFilterComplaintDTO,ComplaintDTO.class);
+        addEmployeeDetails(employeeDTO, complaintDTO);
+
+        return complaintRepository.searchAllComplaintsForResolved(complaintDTO,offset,pageSize);
     }
 
     private static void addEmployeeDetails(EmployeeDTO employeeDTO, ComplaintDTO complaintDTO) {

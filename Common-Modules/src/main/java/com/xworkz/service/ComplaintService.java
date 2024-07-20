@@ -29,6 +29,10 @@ public interface ComplaintService {
 
     Optional<List<ComplaintDTO>> searchNotResolvedComplaintsForEmployee(RequestFilterComplaintDTO requestFilterComplaintDTO, EmployeeDTO employeeDTO);
 
+    DTOListPage<ComplaintDTO> searchNotResolvedComplaintsForEmployee(RequestFilterComplaintDTO requestFilterComplaintDTO, Integer offset,Integer pageSize ,EmployeeDTO employeeDTO);
+
     Optional<List<ComplaintDTO>> searchResolvedComplaintsForEmployee(RequestFilterComplaintDTO requestFilterComplaintDTO, EmployeeDTO employeeDTO);
+
+    DTOListPage<ComplaintDTO> searchResolvedComplaintsForEmployee(RequestFilterComplaintDTO requestFilterComplaintDTO,Integer offset,Integer pageSize, EmployeeDTO employeeDTO);
 
 }

@@ -28,6 +28,11 @@ public interface ComplaintRepository {
 
     public Optional<List<ComplaintDTO>> searchAllComplaintsForNotResolved(ComplaintDTO complaintDTO);
 
+    public DTOListPage<ComplaintDTO > searchAllComplaintsForNotResolved(ComplaintDTO complaintDTO, Integer offset, Integer pageSize);
+
+
     public Optional<List<ComplaintDTO>> searchAllComplaintsForResolved(ComplaintDTO complaintDTO);
+
+    public DTOListPage<ComplaintDTO > searchAllComplaintsForResolved(ComplaintDTO complaintDTO, Integer offset, Integer pageSize);
 
 }

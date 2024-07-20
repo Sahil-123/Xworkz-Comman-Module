@@ -227,7 +227,7 @@ public class ComplaintRepositoryImpl implements ComplaintRepository {
 
     @Override
     public Optional<List<ComplaintDTO>> searchAllComplaintsForAdmin(ComplaintDTO complaintDTO) {
-        System.out.println("Complaint in repository processing for get complaint " + complaintDTO);
+        System.out.println("Complaint in repository processing for  " + complaintDTO);
 
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
@@ -284,6 +284,45 @@ public class ComplaintRepositoryImpl implements ComplaintRepository {
         return Optional.empty();
     }
 
+    @Override
+    public DTOListPage<ComplaintDTO> searchAllComplaintsForNotResolved(ComplaintDTO complaintDTO, Integer offset, Integer pageSize) {
+        System.out.println("Complaint in repository processing for admin for not resolved complaints " + complaintDTO);
+
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        try {
+            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+            CriteriaQuery<ComplaintDTO> query = cb.createQuery(ComplaintDTO.class);
+            Root<ComplaintDTO> root = query.from(ComplaintDTO.class);
+
+            List<Predicate> predicates = addPredicates(complaintDTO, cb, root);
+
+//            predicates.add(cb.notLike(root.get("status"), "%" + CommonUtils.RESOLVED + "%"));
+
+            Predicate resolvedStatus = cb.notLike(root.get("status"), "%" + CommonUtils.RESOLVED + "%");
+            Predicate notResolvedStatus = cb.notLike(root.get("status"), "%" + CommonUtils.NOT_RESOLVED + "%");
+            predicates.add(cb.and(resolvedStatus, notResolvedStatus));
+
+            query.where(cb.and(predicates.toArray(new Predicate[0])));
+
+            Query query1 = entityManager.createQuery(query);
+            query1.setFirstResult(CommonUtils.getFirstResultForPagination(offset,pageSize));
+            query1.setMaxResults(pageSize);
+            List<ComplaintDTO> results = query1.getResultList();
+
+            Query query2 = entityManager.createQuery(query);
+            Long count = (long) query2.getResultList().size();
+
+            entityManager.close();
+            return new DTOListPage<ComplaintDTO>(count, Optional.ofNullable(results));
+
+        } catch (PersistenceException e) {
+            e.printStackTrace();
+        } finally {
+            entityManager.close();
+        }
+        return new DTOListPage<ComplaintDTO>(0L, Optional.empty());
+    }
+
     public Optional<List<ComplaintDTO>> searchAllComplaintsForResolved(ComplaintDTO complaintDTO) {
         System.out.println("Complaint in repository processing for admin for resolved complaints " + complaintDTO);
 
@@ -313,6 +352,45 @@ public class ComplaintRepositoryImpl implements ComplaintRepository {
             entityManager.close();
         }
         return Optional.empty();
+    }
+
+    @Override
+    public DTOListPage<ComplaintDTO> searchAllComplaintsForResolved(ComplaintDTO complaintDTO, Integer offset, Integer pageSize) {
+        System.out.println("Complaint in repository processing for admin for resolved complaints " + complaintDTO);
+
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        try {
+            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+            CriteriaQuery<ComplaintDTO> query = cb.createQuery(ComplaintDTO.class);
+            Root<ComplaintDTO> root = query.from(ComplaintDTO.class);
+
+            List<Predicate> predicates = addPredicates(complaintDTO, cb, root);
+
+//            predicates.add(cb.like(root.get("status"), "%" + CommonUtils.RESOLVED + "%"));
+
+            Predicate resolvedStatus = cb.like(root.get("status"), "%" + CommonUtils.RESOLVED + "%");
+            Predicate notResolvedStatus = cb.like(root.get("status"), "%" + CommonUtils.NOT_RESOLVED + "%");
+            predicates.add(cb.or(resolvedStatus, notResolvedStatus));
+
+            query.where(cb.and(predicates.toArray(new Predicate[0])));
+
+            Query query1 = entityManager.createQuery(query);
+            query1.setFirstResult(CommonUtils.getFirstResultForPagination(offset,pageSize));
+            query1.setMaxResults(pageSize);
+            List<ComplaintDTO> results = query1.getResultList();
+
+            Query query2 = entityManager.createQuery(query);
+            Long count = (long) query2.getResultList().size();
+
+            entityManager.close();
+            return new DTOListPage<>(count, Optional.ofNullable(results));
+
+        } catch (PersistenceException e) {
+            e.printStackTrace();
+        } finally {
+            entityManager.close();
+        }
+        return new DTOListPage<ComplaintDTO>(0L, Optional.empty());
     }
 
 

@@ -39,7 +39,7 @@
                             </c:when>
 
                             <c:otherwise>
-                                <form action="employee/viewEmployeeComplaints" method="POST">
+                                <form action="employee/viewEmployeeComplaints/1/7" method="POST">
                                     <div class=" d-flex mb-2 p-2 border border-1 rounded-3 border-secondary justify-content-between customeWidth"
                                         style="width: 85vw;">
 
@@ -153,6 +153,8 @@
                                             </tbody>
                                         </c:if>
                                     </table>
+                                                                    <hr>
+                                <%@ include file="../common/Pagination.jsp" %>
                                 </div>
                             </c:otherwise>
                         </c:choose>

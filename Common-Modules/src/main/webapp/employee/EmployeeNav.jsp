@@ -20,8 +20,8 @@
                         Complaint
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="employee/viewEmployeeComplaints">View Not Resolved Complaints</a></li>
-                        <li><a class="dropdown-item" href="employee/viewEmployeeResolvedComplaints">View Resolved Complaints</a></li>
+                        <li><a class="dropdown-item" href="employee/viewEmployeeComplaints/1/7">View Not Resolved Complaints</a></li>
+                        <li><a class="dropdown-item" href="employee/viewEmployeeResolvedComplaints/1/7">View Resolved Complaints</a></li>
                     </ul>
                 </li>
 
