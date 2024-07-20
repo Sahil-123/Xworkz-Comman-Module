@@ -3,6 +3,8 @@ package com.xworkz.controller;
 
 import com.xworkz.entity.ComplaintDTO;
 import com.xworkz.entity.EmployeeDTO;
+import com.xworkz.entity.EmployeeImageDTO;
+import com.xworkz.entity.ImageDTO;
 import com.xworkz.exceptions.InfoException;
 import com.xworkz.requestDto.*;
 import com.xworkz.responseDto.ResponseDTO;
@@ -17,13 +19,19 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 
 @Controller
 @RequestMapping("/employee")
-@SessionAttributes({"employeeData","departmentAdminData"})
+@SessionAttributes({"employeeData", "departmentAdminData","employeeImageData"})
 public class EmployeeController {
 
     @Autowired
@@ -134,7 +142,7 @@ public class EmployeeController {
                 return "employee/RegisterEmployee";
             }
 
-            Boolean result = employeeService.validateAndSaveByDeptAdmin(requestRegisterEmployeeDTO,model);
+            Boolean result = employeeService.validateAndSaveByDeptAdmin(requestRegisterEmployeeDTO, model);
             model.addAttribute("successMessage", " Registration successful!.");
         } catch (InfoException e) {
             System.out.println(e.getMessage());
@@ -150,16 +158,16 @@ public class EmployeeController {
 
     @GetMapping("/check-mobile")
     @ResponseBody
-    public ResponseDTO isMobileExists(@RequestParam String mobile){
-        System.out.println("Employee Controller check mobile number process is initiated for mobile :"+mobile);
+    public ResponseDTO isMobileExists(@RequestParam String mobile) {
+        System.out.println("Employee Controller check mobile number process is initiated for mobile :" + mobile);
 
         return employeeService.checkMobile(mobile);
     }
 
     @GetMapping("/check-email")
     @ResponseBody
-    public ResponseDTO isEmailExists(@RequestParam String email){
-        System.out.println("Employee Controller check email process is initiated for email :"+email);
+    public ResponseDTO isEmailExists(@RequestParam String email) {
+        System.out.println("Employee Controller check email process is initiated for email :" + email);
 
         return employeeService.checkMail(email);
     }
@@ -167,11 +175,11 @@ public class EmployeeController {
     @RequestMapping(value = "/viewEmployeeComplaints", method = {RequestMethod.GET, RequestMethod.POST})
     public String viewEmployeeComplaints(RequestFilterComplaintDTO requestFilterComplaintDTO, Model model) {
 
-        System.out.println("Employee view complaints process for not resolved complaint"+requestFilterComplaintDTO);
+        System.out.println("Employee view complaints process for not resolved complaint" + requestFilterComplaintDTO);
         try {
 //            System.out.println("view Complaint " + requestFilterComplaintDTO);
             EmployeeDTO employeeDTO = (EmployeeDTO) model.getAttribute("employeeData");
-            Optional<List<ComplaintDTO>> complaintDTOList = complaintService.searchNotResolvedComplaintsForEmployee(requestFilterComplaintDTO,employeeDTO);
+            Optional<List<ComplaintDTO>> complaintDTOList = complaintService.searchNotResolvedComplaintsForEmployee(requestFilterComplaintDTO, employeeDTO);
             System.out.println(complaintDTOList.get());
 
             model.addAttribute("complaintsList", complaintDTOList.get());
@@ -190,11 +198,11 @@ public class EmployeeController {
     @RequestMapping(value = "/viewEmployeeResolvedComplaints", method = {RequestMethod.GET, RequestMethod.POST})
     public String viewEmployeeResolvedComplaints(RequestFilterComplaintDTO requestFilterComplaintDTO, Model model) {
 
-        System.out.println("Employee view complaints process for resolved complaints. "+requestFilterComplaintDTO);
+        System.out.println("Employee view complaints process for resolved complaints. " + requestFilterComplaintDTO);
         try {
 //            System.out.println("view Complaint " + requestFilterComplaintDTO);
             EmployeeDTO employeeDTO = (EmployeeDTO) model.getAttribute("employeeData");
-            Optional<List<ComplaintDTO>> complaintDTOList = complaintService.searchResolvedComplaintsForEmployee(requestFilterComplaintDTO,employeeDTO);
+            Optional<List<ComplaintDTO>> complaintDTOList = complaintService.searchResolvedComplaintsForEmployee(requestFilterComplaintDTO, employeeDTO);
             System.out.println(complaintDTOList.get());
 
             model.addAttribute("complaintsList", complaintDTOList.get());
@@ -213,20 +221,20 @@ public class EmployeeController {
 
     @GetMapping(value = "/resolveComplaintOtp")
     @ResponseBody
-    public ResponseResolveComplaintDto getResolveComplaintOTP(@RequestParam Long complaintId, Model model){
-        System.out.println("Empliyee otp generation process is initiated "+complaintId);
-        System.out.println("complaint Id "+complaintId);
+    public ResponseResolveComplaintDto getResolveComplaintOTP(@RequestParam Long complaintId, Model model) {
+        System.out.println("Empliyee otp generation process is initiated " + complaintId);
+        System.out.println("complaint Id " + complaintId);
 
-        if(complaintId < 0){
+        if (complaintId < 0) {
             return new ResponseResolveComplaintDto(false, "Complaint Id should be valid");
         }
 
-        try{
+        try {
             EmployeeDTO employeeDTO = (EmployeeDTO) model.getAttribute("employeeData");
-            return employeeService.generateOTP(employeeDTO,complaintId);
-        }catch (InfoException infoException){
-            return new ResponseResolveComplaintDto(false,infoException.getMessage());
-        }catch (Exception e){
+            return employeeService.generateOTP(employeeDTO, complaintId);
+        } catch (InfoException infoException) {
+            return new ResponseResolveComplaintDto(false, infoException.getMessage());
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -237,8 +245,8 @@ public class EmployeeController {
     @ResponseBody
     public ResponseResolveComplaintDto resolveComplaint(@RequestBody @Valid RequestResolveComplaintDTO requestResolveComplaintDTO,
                                                         BindingResult bindingResult,
-                                                        Model model){
-        System.out.println("Employee resolve complaint process is initiated "+requestResolveComplaintDTO);
+                                                        Model model) {
+        System.out.println("Employee resolve complaint process is initiated " + requestResolveComplaintDTO);
 
         if (bindingResult.hasErrors()) {
             String result = "";
@@ -251,31 +259,31 @@ public class EmployeeController {
 
             result = sb.deleteCharAt(sb.length() - 1).toString();
 
-            return new ResponseResolveComplaintDto(false,result);
+            return new ResponseResolveComplaintDto(false, result);
         }
 
         try {
 
             EmployeeDTO employeeDTO = (EmployeeDTO) model.getAttribute("employeeData");
 
-            return employeeService.resolveComplaint(requestResolveComplaintDTO,employeeDTO);
+            return employeeService.resolveComplaint(requestResolveComplaintDTO, employeeDTO);
 
         } catch (InfoException e) {
-            return new ResponseResolveComplaintDto(false,e.getMessage());
+            return new ResponseResolveComplaintDto(false, e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return new ResponseResolveComplaintDto(false,"Something goes wrong. Please try again letter.");
+        return new ResponseResolveComplaintDto(false, "Something goes wrong. Please try again letter.");
     }
 
 
     @PostMapping(value = "/resolveOtherStatusComplaint")
     @ResponseBody
     public ResponseResolveComplaintDto updateOtherStatusComplaint(@RequestBody @Valid RequestOtherStatusComplaintDTO requestResolveComplaintDTO,
-                                                        BindingResult bindingResult,
-                                                        Model model){
-        System.out.println("Employee update other status complaint process is initiated "+requestResolveComplaintDTO);
+                                                                  BindingResult bindingResult,
+                                                                  Model model) {
+        System.out.println("Employee update other status complaint process is initiated " + requestResolveComplaintDTO);
 
         if (bindingResult.hasErrors()) {
             String result = "";
@@ -288,24 +296,86 @@ public class EmployeeController {
 
             result = sb.deleteCharAt(sb.length() - 1).toString();
 
-            return new ResponseResolveComplaintDto(false,result);
+            return new ResponseResolveComplaintDto(false, result);
         }
 
         try {
 
             EmployeeDTO employeeDTO = (EmployeeDTO) model.getAttribute("employeeData");
-            return employeeService.resolveOtherStatusComplaint(requestResolveComplaintDTO,employeeDTO);
+            return employeeService.resolveOtherStatusComplaint(requestResolveComplaintDTO, employeeDTO);
 
         } catch (InfoException e) {
-            return new ResponseResolveComplaintDto(false,e.getMessage());
+            return new ResponseResolveComplaintDto(false, e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return new ResponseResolveComplaintDto(false,"Something goes wrong. Please try again letter.");
+        return new ResponseResolveComplaintDto(false, "Something goes wrong. Please try again letter.");
     }
 
+    @GetMapping("/editProfilePage")
+    public String editProfilePage(Model model) {
 
+//        EmployeeDTO employeeDTO = (EmployeeDTO) model.getAttribute("employeeData");
+//        model.addAttribute("userData",employeeDTO);
+        return "employee/EmployeeEditProfile";
+    }
+
+    @PostMapping("/editProfile")
+    public String editProfile(RequestEmployeeProfileDTO requestEmployeeProfileDTO, BindingResult bindingResult, Model model) {
+        System.out.println("Employee Edit profile process is initiated." + requestEmployeeProfileDTO);
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("errors", bindingResult.getAllErrors());
+            return "employee/EmployeeEditProfile";
+        }
+
+        try {
+            employeeService.editProfile(requestEmployeeProfileDTO, model);
+        } catch (InfoException e) {
+            model.addAttribute("infoError", e.getMessage());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println(e.getCause());
+            e.printStackTrace();
+        }
+
+
+        model.addAttribute("successMessage", "Profile update is completed");
+        return "employee/EmployeeEditProfile";
+    }
+
+    @GetMapping("/profileImage")
+    public void getImage(ServletResponse response, Model model) throws IOException {
+        System.out.println("Employee Image fetching process initiated");
+
+        try {
+            EmployeeImageDTO employeeImageData = (EmployeeImageDTO) model.getAttribute("employeeImageData");
+            System.out.println("Image "+employeeImageData);
+            if (employeeImageData == null) {
+                throw new InfoException("Image data not found in model");
+            }
+
+            // Example file path, replace with your actual image file path
+            Path path = Paths.get("D:\\Xworkz-Comman-Module\\uploadedImages\\" + employeeImageData.getImageName());
+
+            // Set the content type and buffer size
+            response.setContentType(employeeImageData.getImageType());
+            response.setBufferSize(employeeImageData.getImageSize());
+
+            // Write the file to the response output stream
+            OutputStream outputStream = response.getOutputStream();
+            byte[] byteData = Files.readAllBytes(path);
+            outputStream.write(byteData);
+            outputStream.flush();
+        }
+        catch (InfoException infoException){
+            model.addAttribute("infoError", infoException.getMessage());
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 }

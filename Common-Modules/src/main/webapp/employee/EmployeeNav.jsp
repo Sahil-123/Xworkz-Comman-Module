@@ -38,8 +38,15 @@
                                         <img src="profileImages" alt="Profile picture" class="userImg"></img>
                                     </c:if> --%>
                                     <%-- <c:if test="${adminImageData == null}"> --%>
-                                        <i class="fa-solid fa-user-tie defaultUserIcon"></i>
+                                        <%-- <i class="fa-solid fa-user-tie defaultUserIcon"></i> --%>
                                     <%-- </c:if> --%>
+
+                                    <c:if test="${employeeImageData != null}">
+                                        <img src="employee/profileImage" alt="Profile picture" class="userImg"></img>
+                                    </c:if>
+                                    <c:if test="${employeeImageData == null}">
+                                        <i class="fa-solid fa-user-tie defaultUserIcon"></i>
+                                    </c:if>
 
                                 </div>
                             </div>
@@ -47,7 +54,7 @@
 
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                             <li class="nav-item">
-                                <a class=" dropdown-item" href="#">
+                                <a class=" dropdown-item" href="employee/editProfilePage">
                                     Edit Profile
                                 </a>
                             </li>

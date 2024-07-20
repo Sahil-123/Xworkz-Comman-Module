@@ -7,6 +7,7 @@ import com.xworkz.responseDto.ResponseDTO;
 import com.xworkz.responseDto.ResponseResolveComplaintDto;
 import org.springframework.ui.Model;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,4 +35,5 @@ public interface EmployeeService {
 
     ResponseResolveComplaintDto resolveOtherStatusComplaint(RequestOtherStatusComplaintDTO requestResolveComplaintDTO, EmployeeDTO employeeDTO);
 
+    Boolean editProfile(RequestEmployeeProfileDTO requestEmployeeProfileDTO, Model model) throws IOException;
 }

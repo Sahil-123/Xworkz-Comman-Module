@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+        crossorigin="anonymous"></script>
+
+    <style>
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .numberCenterOtp {
+            text-align: center;
+        }
+
+        a {
+            color: black;
+            text-decoration: none;
+            /* padding: 10px 15px; */
+            display: block;
+            margin: 2px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <table>
+        <tr>
+
+            <form id="form-1" method="post" onsubmit="checkSubmit(event,this,1)">
+                <td>
+                    <select class="form-control m-1" name="employeeId">
+                        <option value="">Employee</option>
+                        <option value="e1">Employee1</option>
+                        <option value="e2">Employee2</option>
+                        <option value="e3">Employee3</option>
+                        <option value="e4">Employee4</option>
+                    </select>
+                </td>
+                <td>
+                    <select class="form-control m-1" name="status">
+                        <option value="">Status</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Not Resolved">Not Resolved</option>
+                        <option value="Resolved">Resolved</option>
+                    </select>
+                </td>
+                <td>
+                    <button type="submit" class="btn btn btn-success btn-sm m-1"
+                        >Check</button>
+                </td>
+            </form>
+
+        </tr>
+
+        <tr>
+
+            <form id="form-2" method="post" onsubmit="checkSubmit(event,this,2)">
+                <td>
+                    <select class="form-control m-1" name="employeeId">
+                        <option value="">Employee</option>
+                        <option value="e1">Employee1</option>
+                        <option value="e2">Employee2</option>
+                        <option value="e3">Employee3</option>
+                        <option value="e4">Employee4</option>
+                    </select>
+                </td>
+                <td>
+                    <select class="form-control m-1" name="status">
+                        <option value="">Status</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Not Resolved">Not Resolved</option>
+                        <option value="Resolved">Resolved</option>
+                    </select>
+                </td>
+                <td>
+                    <button type="submit" class="btn btn btn-success btn-sm m-1"
+                       >Check</button>
+                </td>
+            </form>
+
+        </tr>
+
+        <tr>
+
+            <form id="form-3" method="post" onsubmit="checkSubmit(event,this,3)">
+                <td>
+                    <select class="form-control m-1" name="employeeId">
+                        <option value="">Employee</option>
+                        <option value="e1">Employee1</option>
+                        <option value="e2">Employee2</option>
+                        <option value="e3">Employee3</option>
+                        <option value="e4">Employee4</option>
+                    </select>
+                </td>
+                <td>
+                    <select class="form-control m-1" name="status">
+                        <option value="">Status</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Not Resolved">Not Resolved</option>
+                        <option value="Resolved">Resolved</option>
+                    </select>
+                </td>
+                <td>
+                    <button type="submit" class="btn btn btn-success btn-sm m-1">Check</button>
+                </td>
+            </form>
+
+        </tr>
+    </table>
+
+    <!-- Button trigger modal -->
+
+    <!-- <input type="number" value="3" id=""/> -->
+
+    <!-- <button type="button" class="btn btn-primary" id="5"  onclick="onResolve(this)">
+        Resolve
+    </button>
+
+    <button type="button" class="btn btn-primary"  onclick="onOtherStatus(4)">
+        Other
+    </button> -->
+
+    <div class="modal fade" id="otherModel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <textarea class="form-control" rows="5" id="otherTextArea"
+                            placeholder="Leave a comment here"></textarea>
+                        <span class="text-danger" id="otherTextAreaError"></span>
+
+                        <!-- <label for="floatingTextarea">Comments</label> -->
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-between">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="setModelDataOtherStatus(otherModel)"
+                        >Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="resolveModel1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <!-- <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea> -->
+                        <textarea class="form-control" id="resolveTextArea1" rows="5"
+                            placeholder="Leave a comment here"></textarea>
+                        <span class="text-danger" id="textareaError"></span>
+
+                        <!-- <label for="floatingTextarea">Comments</label> -->
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text " id="basic-addon1">OTP : </span>
+                        <input type="number" class="form-control numberCenterOtp" id="otp" max="6"
+                            placeholder="6 digit OTP" aria-label="Username" aria-describedby="basic-addon1">
+                        <span class="input-group-text" id="basic-addon2"><a href="">Resend</a></span>
+                    </div>
+                    <span class="text-danger" id="optError"></span>
+                </div>
+                <div class="modal-footer d-flex justify-content-between">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="setModelDataForResolve(resolveModel1)"
+                        >Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="temp.js"></script>
+
+</body>
+
+</html>

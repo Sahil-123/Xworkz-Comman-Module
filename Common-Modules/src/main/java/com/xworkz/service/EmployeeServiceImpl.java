@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -44,6 +45,8 @@ public class EmployeeServiceImpl implements EmployeeService{
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private EmployeeImageService employeeImageService;
 
 
     @Override
@@ -69,10 +72,11 @@ public class EmployeeServiceImpl implements EmployeeService{
                 employeeRepository.update(employeeDTO);
                 model.addAttribute("employeeData", employeeDTO);
 
-//                Optional<ImageDTO> imageDTO = imageService.findActiveImageByUserId(employeeDTO.getId());
-//                if(imageDTO.isPresent()){
-//                    model.addAttribute("imageData",imageDTO.get());
-//                }
+                Optional<EmployeeImageDTO> employeeImageDTO = employeeImageService.findActiveImageByEmployeeId(employeeDTO.getId());
+                if(employeeImageDTO.isPresent()){
+                    model.addAttribute("employeeImageData",employeeImageDTO.get());
+                    System.out.println(employeeImageDTO);
+                }
 
                 return "Employee";
             }
@@ -351,6 +355,24 @@ public class EmployeeServiceImpl implements EmployeeService{
         }else {
             return new ResponseResolveComplaintDto(false, "Complaint Data not found");
         }
+    }
+
+    @Override
+    public Boolean editProfile(RequestEmployeeProfileDTO requestEmployeeProfileDTO, Model model) throws IOException {
+        System.out.println("Edit profile of employee "+requestEmployeeProfileDTO);
+        EmployeeDTO employeeData = (EmployeeDTO) model.getAttribute("employeeData");
+        employeeData.setFname(requestEmployeeProfileDTO.getFname());
+        employeeData.setLname(requestEmployeeProfileDTO.getLname());
+        employeeData.setMobile(requestEmployeeProfileDTO.getMobile());
+        employeeData.setUpdatedBy(employeeData.getFname()+" "+employeeData.getLname());
+        employeeData.setUpdatedDate(LocalDateTime.now());
+
+        if(requestEmployeeProfileDTO.getProfilePicture() != null){
+            EmployeeImageDTO imageDTO = employeeImageService.uploadImage(requestEmployeeProfileDTO.getProfilePicture(),employeeData);
+            model.addAttribute("employeeImageData",imageDTO);
+        }
+
+        return employeeRepository.update(employeeData);
     }
 
 }
