@@ -1,5 +1,6 @@
 package com.xworkz.repository;
 
+import com.xworkz.dto.DTOListPage;
 import com.xworkz.entity.EmployeeDTO;
 
 import java.util.List;
@@ -20,4 +21,6 @@ public interface EmployeeRepository {
     boolean checkEmail(String email);
 
     Optional<List<EmployeeDTO>> searchAllEmployees(EmployeeDTO employeeDTO);
+    DTOListPage<EmployeeDTO> searchAllEmployees(EmployeeDTO employeeDTO,Integer offset, Integer pageSize);
+
 }

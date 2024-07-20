@@ -1,5 +1,6 @@
 package com.xworkz.service;
 
+import com.xworkz.dto.DTOListPage;
 import com.xworkz.entity.EmployeeDTO;
 import com.xworkz.requestDto.*;
 import com.xworkz.responseDto.EmployeeNameAndIdResponseDto;
@@ -20,6 +21,8 @@ public interface EmployeeService {
     ResponseDTO checkMail(String mail);
 
     Optional<List<EmployeeDTO>> searchEmployees(RequestFilterEmployeeDTO requestFilterEmployeeDTO,Model model);
+
+    DTOListPage<EmployeeDTO> searchEmployees(RequestFilterEmployeeDTO requestFilterEmployeeDTO, Integer offset, Integer pageSize,Model model);
 
     public List<EmployeeNameAndIdResponseDto> searchEmployeesRestService( Model model);
 

@@ -48,7 +48,7 @@
                         Complaint
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="complaints/viewAllComplaints">View Complaint</a></li>
+                        <li><a class="dropdown-item" href="complaints/viewAllComplaints/1/7">View Complaint</a></li>
                     </ul>
                 </li>
 

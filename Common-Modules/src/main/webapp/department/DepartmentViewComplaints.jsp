@@ -6,12 +6,12 @@
         <meta charset="UTF-8">
         <%@ include file="../component/HeaderLink.jsp" %>
             <%-- <link rel="stylesheet" href="resources/css/ViewUserComplaint.css"> --%>
-            <link rel="stylesheet" href="resources/css/Table.css">
+                <link rel="stylesheet" href="resources/css/Table.css">
 
-            <%@ include file="../user/UserHeader.jsp" %>
+                <%@ include file="../user/UserHeader.jsp" %>
 
 
-                <title>Department Complaints</title>
+                    <title>Department Complaints</title>
 
     </head>
 
@@ -26,7 +26,7 @@
                     <div class="table-responsive-sm p-4 ">
                         <h3 class="text-center"> Complaints Details </h3>
                         <br>
-                        <form action="departmentAdmin/viewDepartmentComplaints" method="POST">
+                        <form action="departmentAdmin/viewDepartmentComplaints/1/7" method="POST">
                             <div
                                 class=" d-flex mb-2 p-2 border border-1 rounded-3 border-secondary justify-content-between">
                                 <select class="form-control m-1" id="complaintType" name="complaintType">
@@ -66,30 +66,30 @@
 
                         <c:if test="${complaintsList == null || complaintsList.isEmpty() }">
                             <div class=" d-flex mb-2 p-2 justify-content-center customeWidth" style="width: 85vw;">
-                                    No Records Found
-                                </div>
+                                No Records Found
+                            </div>
                         </c:if>
 
 
-                                <c:if test="${complaintsList != null && !complaintsList.isEmpty() }">
-                        <div class="customeHeight">
-                            <table class="table table-borderless ">
-                                <thead class="">
-                                    <tr>
-                                        <!-- <th scope="col"><strong>ID</strong></th> -->
-                                        <th scope="col"><strong>Complaint Type</strong></th>
-                                        <th scope="col"><strong>Country</strong></th>
-                                        <th scope="col"><strong>State</strong></th>
-                                        <th scope="col"><strong>City</strong></th>
-                                        <th scope="col"><strong>Address</strong></th>
-                                        <th scope="col"><strong>Employee ID</strong></th>
-                                        <th scope="col"><strong>Description</strong></th>
-                                        <th scope="col"><strong>Department</strong></th>
-                                        <th scope="col"><strong>Assign Employee</strong></th>
-                                        <th scope="col"><strong>Status</strong></th>
-                                        <th scope="col"><strong></strong></th>
-                                    </tr>
-                                </thead>
+                        <c:if test="${complaintsList != null && !complaintsList.isEmpty() }">
+                            <div class="customeHeight">
+                                <table class="table table-borderless ">
+                                    <thead class="">
+                                        <tr>
+                                            <!-- <th scope="col"><strong>ID</strong></th> -->
+                                            <th scope="col"><strong>Complaint Type</strong></th>
+                                            <th scope="col"><strong>Country</strong></th>
+                                            <th scope="col"><strong>State</strong></th>
+                                            <th scope="col"><strong>City</strong></th>
+                                            <th scope="col"><strong>Address</strong></th>
+                                            <th scope="col"><strong>Employee ID</strong></th>
+                                            <th scope="col"><strong>Description</strong></th>
+                                            <th scope="col"><strong>Department</strong></th>
+                                            <th scope="col"><strong>Assign Employee</strong></th>
+                                            <th scope="col"><strong>Status</strong></th>
+                                            <th scope="col"><strong></strong></th>
+                                        </tr>
+                                    </thead>
 
                                     <tbody>
                                         <c:forEach items="${complaintsList}" var="complaint">
@@ -103,35 +103,43 @@
                                                 <td>${complaint.empId}</td>
                                                 <td>${complaint.description}</td>
                                                 <td>${complaint.deptId > -1 ? complaint.deptId : '-'}</td>
-                                                <form action="departmentAdmin/departmentAdminUpdateComplaint" method="POST">
+                                                <form action="departmentAdmin/departmentAdminUpdateComplaint"
+                                                    method="POST">
                                                     <td>
-                                                        <select class="form-control m-1" id="${complaint.empId}" name="employeeId"  >
+                                                        <select class="form-control m-1" id="${complaint.empId}"
+                                                            name="employeeId">
                                                             <option value="">Employee</option>
                                                         </select>
                                                     </td>
-                                                <td>
-                                                    <select class="form-control m-1" id="status" name="status"  >
-                                                        <option value="">Status</option>
-                                                        <option value="Open" <c:if test="${complaint.status == 'Open'}">selected</c:if>>Open</option>
-                                                        <option value="Pending" <c:if test="${complaint.status == 'Pending'}">selected</c:if>>Pending</option>
-                                                        <option value="InProgess" <c:if test="${complaint.status == 'InProgess'}">selected</c:if>>InProgress</option>
-                                                    </select>
-                                                </td>
-                                                <td class="">
-                                                    <input type="number" value="${complaint.id}" name="complaintId" hidden/>
-                                                        <button type="submit" class="btn btn btn-success btn-sm m-1">Assign</button>
-                                                </td>
-                                            </form>
-                                               
-                                            </tr>
-                                        </c:forEach>
+                                                    <td>
+                                                        <select class="form-control m-1" id="status" name="status">
+                                                            <option value="">Status</option>
+                                                            <option value="Open" <c:if
+                                                                test="${complaint.status == 'Open'}">selected
+                        </c:if>>Open</option>
+                        <option value="Pending" <c:if test="${complaint.status == 'Pending'}">selected</c:if>>Pending
+                        </option>
+                        <option value="InProgess" <c:if test="${complaint.status == 'InProgess'}">selected</c:if>
+                            >InProgress</option>
+                        </select>
+                        </td>
+                        <td class="">
+                            <input type="number" value="${complaint.id}" name="complaintId" hidden />
+                            <button type="submit" class="btn btn btn-success btn-sm m-1">Assign</button>
+                        </td>
+                        </form>
 
-                                    </tbody>
-                                </c:if>
-                            </table>
-                        </div>
+                        </tr>
+                        </c:forEach>
+
+                        </tbody>
+                        </table>
+                        <hr>
+                        <%@ include file="../common/Pagination.jsp" %>
+                            </c:if>
                     </div>
                 </div>
+            </div>
 
             </div>
 

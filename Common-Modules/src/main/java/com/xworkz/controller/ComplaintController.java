@@ -1,5 +1,6 @@
 package com.xworkz.controller;
 
+import com.xworkz.dto.DTOListPage;
 import com.xworkz.entity.ComplaintDTO;
 import com.xworkz.entity.UserDTO;
 import com.xworkz.exceptions.InfoException;
@@ -9,6 +10,7 @@ import com.xworkz.requestDto.RequestUpdateComplaintByAdminDTO;
 import com.xworkz.requestDto.RequestUpdateComplaintDTO;
 import com.xworkz.service.ComplaintService;
 import com.xworkz.service.DepartmentService;
+import com.xworkz.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -61,17 +63,23 @@ public class ComplaintController {
 //        return "user/RaiseUserComplaint";
 //    }
 
-    @RequestMapping(value = "/viewUserComplaints", method = {RequestMethod.GET, RequestMethod.POST})
-    public String viewComplaints(RequestFilterComplaintDTO requestFilterComplaintDTO, Model model) {
+    @RequestMapping(value = "/viewUserComplaints/{offset}/{pageSize}", method = {RequestMethod.GET, RequestMethod.POST})
+    public String viewComplaints(RequestFilterComplaintDTO requestFilterComplaintDTO,@PathVariable Optional<Integer> offset, @PathVariable Optional<Integer> pageSize, Model model) {
+        System.out.println("User Complaints fetching "+offset.get()+" "+pageSize.get());
+
+        if(offset.isPresent() && offset.get() <= 1) offset = Optional.of(1);
 
         try {
             System.out.println("view Complaint " + requestFilterComplaintDTO);
             UserDTO userDTO = (UserDTO) model.getAttribute("userData");
             System.out.println("user data == > "+userDTO);
             requestFilterComplaintDTO.setUserId(userDTO.getId());
-            Optional<List<ComplaintDTO>> complaintDTOList = complaintService.searchComplaints(requestFilterComplaintDTO);
-            System.out.println(complaintDTOList.get());
-            model.addAttribute("complaintsList", complaintDTOList.get());
+            DTOListPage<ComplaintDTO> complaintDTODTOListPage = complaintService.searchComplaints(requestFilterComplaintDTO,offset.orElse(1),pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE));
+            System.out.println(complaintDTODTOListPage);
+            model.addAttribute("complaintsList", complaintDTODTOListPage.getList().get());
+
+            CommonUtils.setPagination(offset.orElse(1),pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE),"complaints/viewUserComplaints",complaintDTODTOListPage,model);
+
         } catch (InfoException e) {
             model.addAttribute("infoError", e.getMessage());
         } catch (Exception e) {
@@ -112,16 +120,20 @@ public class ComplaintController {
 //        return "admin/AdminViewComplaints";
 //    }
 
-    @RequestMapping(value = "/viewAllComplaints", method = {RequestMethod.GET, RequestMethod.POST})
-    public String viewComplaintsForAdmin(RequestFilterComplaintDTO requestFilterComplaintDTO, Model model) {
+    @RequestMapping(value = "/viewAllComplaints/{offset}/{pageSize}", method = {RequestMethod.GET, RequestMethod.POST})
+    public String viewComplaintsForAdmin(RequestFilterComplaintDTO requestFilterComplaintDTO,@PathVariable Optional<Integer> offset, @PathVariable Optional<Integer> pageSize, Model model) {
         try {
-            Optional<List<ComplaintDTO>> complaintDTOList = complaintService.searchComplaintsForAdmin(requestFilterComplaintDTO);
+            if(offset.isPresent() && offset.get() <= 1) offset = Optional.of(1);
 
-            if (complaintDTOList.isPresent() && !complaintDTOList.get().isEmpty()) {
-                model.addAttribute("complaintsList", complaintDTOList.get());
+            DTOListPage<ComplaintDTO> complaintDTODTOListPage = complaintService.searchComplaintsForAdmin(requestFilterComplaintDTO,offset.orElse(1),pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE));
+
+            if (complaintDTODTOListPage.getList().isPresent() && !complaintDTODTOListPage.getList().get().isEmpty()) {
+                model.addAttribute("complaintsList", complaintDTODTOListPage.getList().get());
             } else {
                 model.addAttribute("infoError", "No complaints found.");
             }
+
+            CommonUtils.setPagination(offset.orElse(1),pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE),"complaints/viewAllComplaints",complaintDTODTOListPage,model);
 
             return "admin/AdminViewComplaints";
 
@@ -172,7 +184,7 @@ public class ComplaintController {
         try{
             if(complaintService.updateComplaint(requestUpdateComplaintDTO)){
                 model.addAttribute("successMessage", "Complaint updated successfully.");
-                return viewComplaints(new RequestFilterComplaintDTO(),model);
+                return viewComplaints(new RequestFilterComplaintDTO(),Optional.empty(), Optional.empty(), model);
             }else{
                 model.addAttribute("infoError", "Something is wrong. Update is not successful");
             }
@@ -196,13 +208,13 @@ public class ComplaintController {
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("errors", bindingResult.getAllErrors());
-            return viewComplaintsForAdmin(new RequestFilterComplaintDTO(),model);
+            return viewComplaintsForAdmin(new RequestFilterComplaintDTO(),Optional.empty(), Optional.empty(),model);
         }
 
         try {
             complaintService.updateComplaintForAdmin(requestUpdateComplaintByAdminDTO);
             model.addAttribute("successMessage", "Complaint with Id "+ requestUpdateComplaintByAdminDTO.getComplaintId()+" updated successfully.");
-            return viewComplaintsForAdmin(new RequestFilterComplaintDTO(),model);
+//            return viewComplaintsForAdmin(new RequestFilterComplaintDTO(),model);
         } catch (InfoException e) {
             model.addAttribute("infoError", e.getMessage());
         } catch (Exception e) {
@@ -211,7 +223,7 @@ public class ComplaintController {
             e.printStackTrace();
         }
 
-        return viewComplaintsForAdmin(new RequestFilterComplaintDTO(),model);
+        return viewComplaintsForAdmin(new RequestFilterComplaintDTO(),Optional.empty(), Optional.empty(),model);
     }
 
 }

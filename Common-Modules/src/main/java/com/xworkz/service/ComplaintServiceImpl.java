@@ -1,5 +1,6 @@
 package com.xworkz.service;
 
+import com.xworkz.dto.DTOListPage;
 import com.xworkz.entity.ComplaintDTO;
 import com.xworkz.entity.EmployeeDTO;
 import com.xworkz.entity.UserDTO;
@@ -66,17 +67,17 @@ public class ComplaintServiceImpl implements ComplaintService {
     }
 
     @Override
-    public Optional<List<ComplaintDTO>> searchComplaints(RequestFilterComplaintDTO requestFilterComplaintDTO) {
+    public DTOListPage<ComplaintDTO> searchComplaints(RequestFilterComplaintDTO requestFilterComplaintDTO, Integer offset, Integer pageSize) {
         System.out.println("Search Complaint "+requestFilterComplaintDTO);
         ComplaintDTO complaintDTO = modelMapper.map(requestFilterComplaintDTO,ComplaintDTO.class);
-        return complaintRepository.searchComplaints(complaintDTO);
+        return complaintRepository.searchComplaints(complaintDTO,offset,pageSize);
     }
 
     @Override
-    public Optional<List<ComplaintDTO>> searchComplaintsForAdmin(RequestFilterComplaintDTO requestFilterComplaintDTO) {
+    public DTOListPage<ComplaintDTO> searchComplaintsForAdmin(RequestFilterComplaintDTO requestFilterComplaintDTO, Integer offset, Integer pageSize) {
         System.out.println("Search Complaint For admin in service "+requestFilterComplaintDTO);
         ComplaintDTO complaintDTO = modelMapper.map(requestFilterComplaintDTO,ComplaintDTO.class);
-        return complaintRepository.searchAllComplaintsForAdmin(complaintDTO);
+        return complaintRepository.searchAllComplaintsForAdmin(complaintDTO,offset,pageSize);
     }
 
     @Override

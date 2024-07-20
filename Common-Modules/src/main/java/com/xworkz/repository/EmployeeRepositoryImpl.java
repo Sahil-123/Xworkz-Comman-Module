@@ -1,6 +1,8 @@
 package com.xworkz.repository;
 
+import com.xworkz.dto.DTOListPage;
 import com.xworkz.entity.EmployeeDTO;
+import com.xworkz.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -190,30 +192,9 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
             CriteriaQuery<EmployeeDTO> query = cb.createQuery(EmployeeDTO.class);
             Root<EmployeeDTO> root = query.from(EmployeeDTO.class);
 
-            List<Predicate> predicates = new ArrayList<>();
+            List<Predicate> predicates = getPredicates(employeeDTO, cb, root);;
 
-            if (employeeDTO.getId() != null) {
-                predicates.add(cb.equal(root.get("id"), employeeDTO.getId()));
-            }
-            if (employeeDTO.getFname() != null && !employeeDTO.getFname().isEmpty()) {
-                predicates.add(cb.equal(root.get("fname"), employeeDTO.getFname()));
-            }
-            if (employeeDTO.getLname() != null && !employeeDTO.getLname().isEmpty()) {
-                predicates.add(cb.equal(root.get("lname"), employeeDTO.getLname()));
-            }
-            if (employeeDTO.getEmail() != null && !employeeDTO.getEmail().isEmpty()) {
-                predicates.add(cb.equal(root.get("email"), employeeDTO.getEmail()));
-            }
-            if (employeeDTO.getPassword() != null && !employeeDTO.getPassword().isEmpty()) {
-                predicates.add(cb.equal(root.get("password"), employeeDTO.getPassword()));
-            }
-            if (employeeDTO.getMobile() != null && !employeeDTO.getMobile().isEmpty()) {
-                predicates.add(cb.equal(root.get("mobile"), employeeDTO.getMobile()));
-            }
-            if (employeeDTO.getDepartmentId() != null) {
-                System.out.println("dept is "+employeeDTO.getDepartmentId());
-                predicates.add(cb.equal(root.get("departmentId"), employeeDTO.getDepartmentId()));
-            }
+
 //            if (employeeDTO.getLoginCount() != 0) {
 //                predicates.add(cb.equal(root.get("loginCount"), employeeDTO.getLoginCount()));
 //            }
@@ -254,6 +235,70 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
             entityManager.close();
         }
         return Optional.empty();
+    }
+
+    private static  List<Predicate>  getPredicates(EmployeeDTO employeeDTO, CriteriaBuilder cb, Root<EmployeeDTO> root) {
+        List<Predicate> predicates = new ArrayList<>();
+
+        if (employeeDTO.getId() != null) {
+            predicates.add(cb.equal(root.get("id"), employeeDTO.getId()));
+        }
+        if (employeeDTO.getFname() != null && !employeeDTO.getFname().isEmpty()) {
+            predicates.add(cb.equal(root.get("fname"), employeeDTO.getFname()));
+        }
+        if (employeeDTO.getLname() != null && !employeeDTO.getLname().isEmpty()) {
+            predicates.add(cb.equal(root.get("lname"), employeeDTO.getLname()));
+        }
+        if (employeeDTO.getEmail() != null && !employeeDTO.getEmail().isEmpty()) {
+            predicates.add(cb.equal(root.get("email"), employeeDTO.getEmail()));
+        }
+        if (employeeDTO.getPassword() != null && !employeeDTO.getPassword().isEmpty()) {
+            predicates.add(cb.equal(root.get("password"), employeeDTO.getPassword()));
+        }
+        if (employeeDTO.getMobile() != null && !employeeDTO.getMobile().isEmpty()) {
+            predicates.add(cb.equal(root.get("mobile"), employeeDTO.getMobile()));
+        }
+        if (employeeDTO.getDepartmentId() != null) {
+            System.out.println("dept is "+ employeeDTO.getDepartmentId());
+            predicates.add(cb.equal(root.get("departmentId"), employeeDTO.getDepartmentId()));
+        }
+
+        return predicates;
+    }
+
+    @Override
+    public DTOListPage<EmployeeDTO> searchAllEmployees(EmployeeDTO employeeDTO, Integer offset, Integer pageSize) {
+        System.out.println("Employee in repository processing " + employeeDTO);
+
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        try {
+            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+            CriteriaQuery<EmployeeDTO> query = cb.createQuery(EmployeeDTO.class);
+            Root<EmployeeDTO> root = query.from(EmployeeDTO.class);
+
+            List<Predicate> predicates = getPredicates(employeeDTO, cb, root);;
+
+            query.where(cb.and(predicates.toArray(new Predicate[0])));
+
+            Query query1 = entityManager.createQuery(query);
+            query1.setFirstResult(CommonUtils.getFirstResultForPagination(offset,pageSize));
+            query1.setMaxResults(pageSize);
+            List<EmployeeDTO> results = query1.getResultList();
+
+            Query query2 = entityManager.createQuery(query);
+            long count = (long) query2.getResultList().size();
+
+            entityManager.close();
+            System.out.println(results);
+
+            return new DTOListPage<>(count,Optional.ofNullable(results));
+
+        } catch (PersistenceException e) {
+            e.printStackTrace();
+        } finally {
+            entityManager.close();
+        }
+        return new DTOListPage<>(0L,Optional.empty());
     }
 
 

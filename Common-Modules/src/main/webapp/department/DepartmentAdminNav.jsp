@@ -39,7 +39,7 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="employee/RegisterEmployee.jsp">Register Employee</a></li>
-                        <li><a class="dropdown-item" href="departmentAdmin/viewAllEmployees">View Employee's</a></li>
+                        <li><a class="dropdown-item" href="departmentAdmin/viewAllEmployees/1/7">View Employee's</a></li>
                     </ul>
                 </li>
 
@@ -49,7 +49,7 @@
                         Complaint
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="departmentAdmin/viewDepartmentComplaints">View Complaints</a></li>
+                        <li><a class="dropdown-item" href="departmentAdmin/viewDepartmentComplaints/1/7">View Complaints</a></li>
                     </ul>
                 </li>
 

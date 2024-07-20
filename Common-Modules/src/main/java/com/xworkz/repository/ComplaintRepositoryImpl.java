@@ -1,5 +1,6 @@
 package com.xworkz.repository;
 
+import com.xworkz.dto.DTOListPage;
 import com.xworkz.entity.ComplaintDTO;
 import com.xworkz.exceptions.InfoException;
 import com.xworkz.requestDto.RequestUpdateComplaintDTO;
@@ -103,6 +104,7 @@ public class ComplaintRepositoryImpl implements ComplaintRepository {
         return false;
     }
 
+
     @Override
     public Boolean deleteById(Long id) {
         System.out.println("Complaint Repository delete process is initiated using id." + id);
@@ -129,11 +131,12 @@ public class ComplaintRepositoryImpl implements ComplaintRepository {
     }
 
     @Override
-    public Optional<List<ComplaintDTO>> searchComplaints(ComplaintDTO complaintDTO) {
+    public DTOListPage<ComplaintDTO> searchComplaints(ComplaintDTO complaintDTO, Integer offset, Integer pageSize) {
         System.out.println("Search Complaint in repository processing " + complaintDTO);
 
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
+
             CriteriaBuilder cb = entityManager.getCriteriaBuilder();
             CriteriaQuery<ComplaintDTO> query = cb.createQuery(ComplaintDTO.class);
             Root<ComplaintDTO> root = query.from(ComplaintDTO.class);
@@ -146,21 +149,51 @@ public class ComplaintRepositoryImpl implements ComplaintRepository {
 
             System.out.println("Query " + query);
 
-            List<ComplaintDTO> results = entityManager.createQuery(query).getResultList();
+//            Fetching data
+            Query query1 = entityManager.createQuery(query);
+            query1.setFirstResult(CommonUtils.getFirstResultForPagination(offset, pageSize));
+            query1.setMaxResults(pageSize);
+            List<ComplaintDTO> results = query1.getResultList();
+
+//            Getting count
+            Query query2 = entityManager.createQuery(query);
+            Long count = (long) query2.getResultList().size();
+
             entityManager.close();
-            return Optional.ofNullable(results);
+            return new DTOListPage<ComplaintDTO>(count, Optional.ofNullable(results));
 
         } catch (PersistenceException e) {
             e.printStackTrace();
         } finally {
             entityManager.close();
         }
-        return Optional.empty();
+        return new DTOListPage<>(0L, Optional.empty());
     }
+
+//    private Long getCount(){
+//        System.out.println("Complaint Repository getting count.");
+//
+//        EntityManager entityManager = entityManagerFactory.createEntityManager();
+//
+//        try {
+//            Query queryTotal = entityManager.createQuery
+//                    ("Select count(f.id) from ComplaintDTO f");
+//
+//            return (Long)queryTotal.getSingleResult();
+//
+//        }catch(PersistenceException e){
+//            e.printStackTrace();
+//        }
+//        finally {
+//            entityManager.close();
+//        }
+//
+//        return 0L;
+//    }
 
 
     @Override
-    public Optional<List<ComplaintDTO>> searchAllComplaintsForAdmin(ComplaintDTO complaintDTO) {
+    public DTOListPage<ComplaintDTO> searchAllComplaintsForAdmin(ComplaintDTO complaintDTO, Integer offset, Integer pageSize) {
         System.out.println("Complaint in repository processing for admin " + complaintDTO);
 
         EntityManager entityManager = entityManagerFactory.createEntityManager();
@@ -173,7 +206,42 @@ public class ComplaintRepositoryImpl implements ComplaintRepository {
 
             query.where(cb.and(predicates.toArray(new Predicate[0])));
 
-            List<ComplaintDTO> results = entityManager.createQuery(query).getResultList();
+            Query query1 = entityManager.createQuery(query);
+            query1.setFirstResult(CommonUtils.getFirstResultForPagination(offset,pageSize));
+            query1.setMaxResults(pageSize);
+            List<ComplaintDTO> results = query1.getResultList();
+
+            Query query2 = entityManager.createQuery(query);
+            Long count = (long) query2.getResultList().size();
+
+            entityManager.close();
+            return new DTOListPage<ComplaintDTO>(count, Optional.ofNullable(results));
+
+        } catch (PersistenceException e) {
+            e.printStackTrace();
+        } finally {
+            entityManager.close();
+        }
+        return new DTOListPage<ComplaintDTO>(0L, Optional.empty());
+    }
+
+    @Override
+    public Optional<List<ComplaintDTO>> searchAllComplaintsForAdmin(ComplaintDTO complaintDTO) {
+        System.out.println("Complaint in repository processing for get complaint " + complaintDTO);
+
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        try {
+            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+            CriteriaQuery<ComplaintDTO> query = cb.createQuery(ComplaintDTO.class);
+            Root<ComplaintDTO> root = query.from(ComplaintDTO.class);
+
+            List<Predicate> predicates = getPredicatesList(complaintDTO, cb, root);
+
+            query.where(cb.and(predicates.toArray(new Predicate[0])));
+
+            Query query1 = entityManager.createQuery(query);
+            List<ComplaintDTO> results = query1.getResultList();
+
             entityManager.close();
             return Optional.ofNullable(results);
 
@@ -248,13 +316,10 @@ public class ComplaintRepositoryImpl implements ComplaintRepository {
     }
 
 
-
-
-
     @Override
     public Boolean updateComplaint(RequestUpdateComplaintDTO requestUpdateComplaintDTO) {
 
-        System.out.println("Repository update complaint "+ requestUpdateComplaintDTO);
+        System.out.println("Repository update complaint " + requestUpdateComplaintDTO);
 
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         EntityTransaction entityTransaction = entityManager.getTransaction();
@@ -263,12 +328,12 @@ public class ComplaintRepositoryImpl implements ComplaintRepository {
             entityTransaction.begin();
 //            SELECT c FROM ComplaintDTO c WHERE c.id = :id
             Query query = entityManager.createQuery("update ComplaintDTO c set c.description = : description where c.id=:id");
-            query.setParameter("description",requestUpdateComplaintDTO.getDescription());
-            query.setParameter("id",requestUpdateComplaintDTO.getComplaintId());
+            query.setParameter("description", requestUpdateComplaintDTO.getDescription());
+            query.setParameter("id", requestUpdateComplaintDTO.getComplaintId());
             int count = query.executeUpdate();
             entityTransaction.commit();
 
-            if(count>0){
+            if (count > 0) {
                 return true;
             }
 
@@ -381,7 +446,7 @@ public class ComplaintRepositoryImpl implements ComplaintRepository {
         return predicates;
     }
 
-    private List<Predicate> getPredicates(ComplaintDTO complaintDTO,CriteriaBuilder cb,Root<ComplaintDTO> root){
+    private List<Predicate> getPredicates(ComplaintDTO complaintDTO, CriteriaBuilder cb, Root<ComplaintDTO> root) {
 
         List<Predicate> predicates = new ArrayList<>();
 
@@ -418,4 +483,6 @@ public class ComplaintRepositoryImpl implements ComplaintRepository {
 
         return predicates;
     }
+
+
 }

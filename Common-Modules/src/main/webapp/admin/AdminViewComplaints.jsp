@@ -26,7 +26,7 @@
                     <div class="table-responsive-sm p-4 ">
                         <h3 class="text-center"> Complaints Details </h3>
                         <br>
-                        <form action="complaints/viewAllComplaints" method="POST">
+                        <form action="complaints/viewAllComplaints/1/7" method="POST">
                             <div
                                 class=" d-flex mb-2 p-2 border border-1 rounded-3 border-secondary justify-content-between">
                                 <select class="form-control m-1" id="complaintType" name="complaintType">
@@ -136,8 +136,11 @@
                             </c:forEach>
 
                             </tbody>
-                            </c:if>
-                            </table>
+                            
+                        </table>
+                        <hr>
+                              <%@ include file="../common/Pagination.jsp" %>
+                    </c:if>
                         </div>
                     </div>
                 </div>

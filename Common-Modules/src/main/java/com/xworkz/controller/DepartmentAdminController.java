@@ -79,19 +79,23 @@ public class DepartmentAdminController {
 
 
 
-    @RequestMapping(value = "/viewDepartmentComplaints", method = {RequestMethod.GET, RequestMethod.POST})
-    public String viewDepartmentComplaints(RequestFilterComplaintDTO requestFilterComplaintDTO, Model model) {
+    @RequestMapping(value = "/viewDepartmentComplaints/{offset}/{pageSize}", method = {RequestMethod.GET, RequestMethod.POST})
+    public String viewDepartmentComplaints(RequestFilterComplaintDTO requestFilterComplaintDTO,@PathVariable Optional<Integer> offset, @PathVariable Optional<Integer> pageSize, Model model) {
 
         System.out.println("Department Admin view complaints process "+requestFilterComplaintDTO);
         try {
+            if(offset.isPresent() && offset.get() <= 1) offset = Optional.of(1);
+
 //            System.out.println("view Complaint " + requestFilterComplaintDTO);
             DepartmentAdminDTO departmentAdminDTO = (DepartmentAdminDTO) model.getAttribute("departmentAdminData");
             requestFilterComplaintDTO.setDeptId(departmentAdminDTO.getDepartmentId());
-            Optional<List<ComplaintDTO>> complaintDTOList = complaintService.searchComplaintsForAdmin(requestFilterComplaintDTO);
-            System.out.println(complaintDTOList.get());
+            DTOListPage<ComplaintDTO> complaintDTODTOListPage = complaintService.searchComplaintsForAdmin(requestFilterComplaintDTO, offset.orElse(1), pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE));
+            System.out.println(complaintDTODTOListPage);
 
             model.addAttribute("departmentAdminData",departmentAdminDTO);
-            model.addAttribute("complaintsList", complaintDTOList.get());
+            model.addAttribute("complaintsList", complaintDTODTOListPage.getList().get());
+            CommonUtils.setPagination(offset.orElse(1),pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE),"departmentAdmin/viewDepartmentComplaints",complaintDTODTOListPage,model);
+
         } catch (InfoException e) {
             model.addAttribute("infoError", e.getMessage());
         } catch (Exception e) {
@@ -103,17 +107,22 @@ public class DepartmentAdminController {
         return "department/DepartmentViewComplaints";
     }
 
-    @RequestMapping(value = "/viewAllEmployees", method = {RequestMethod.GET, RequestMethod.POST})
-    public String viewEmployees(RequestFilterEmployeeDTO requestFilterEmployeeDTO, Model model) {
+    @RequestMapping(value = "/viewAllEmployees/{offset}/{pageSize}", method = {RequestMethod.GET, RequestMethod.POST})
+    public String viewEmployees(RequestFilterEmployeeDTO requestFilterEmployeeDTO, @PathVariable Optional<Integer> offset, @PathVariable Optional<Integer> pageSize, Model model) {
+        System.out.println("Search Employees initiated by department admin");
         try {
-            Optional<List<EmployeeDTO>> employeeDTOList = employeeService.searchEmployees(requestFilterEmployeeDTO,model);
 
-            if (employeeDTOList.isPresent() && !employeeDTOList.get().isEmpty()) {
-                model.addAttribute("employeeList", employeeDTOList.get());
+            if(offset.isPresent() && offset.get() <= 1) offset = Optional.of(1);
+
+            DTOListPage<EmployeeDTO> employeeDTODTOListPage = employeeService.searchEmployees(requestFilterEmployeeDTO,offset.orElse(1),pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE),model);
+
+            if (employeeDTODTOListPage.getList().isPresent() && !employeeDTODTOListPage.getList().get().isEmpty()) {
+                model.addAttribute("employeeList", employeeDTODTOListPage.getList().get());
             } else {
                 model.addAttribute("infoError", "No employees found.");
             }
 
+            CommonUtils.setPagination(offset.orElse(1),pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE),"departmentAdmin/viewAllEmployees",employeeDTODTOListPage,model);
             return "employee/ViewEmployees";
 
         } catch (Exception e) {
@@ -142,13 +151,13 @@ public class DepartmentAdminController {
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("errors", bindingResult.getAllErrors());
-            return viewDepartmentComplaints(new RequestFilterComplaintDTO(),model);
+            return viewDepartmentComplaints(new RequestFilterComplaintDTO(),Optional.empty(), Optional.empty(),model);
         }
 
         try {
             complaintService.updateComplaintForDepartmentAdmin(requestUpdateDepartmentComplaintByAdminDTO);
             model.addAttribute("successMessage", "Complaint with Id "+ requestUpdateDepartmentComplaintByAdminDTO.getComplaintId()+" updated successfully.");
-            return viewDepartmentComplaints(new RequestFilterComplaintDTO(),model);
+            return viewDepartmentComplaints(new RequestFilterComplaintDTO(),Optional.empty(), Optional.empty(),model);
         } catch (InfoException e) {
             model.addAttribute("infoError", e.getMessage());
         } catch (Exception e) {
@@ -157,7 +166,7 @@ public class DepartmentAdminController {
             e.printStackTrace();
         }
 
-        return viewDepartmentComplaints(new RequestFilterComplaintDTO(),model);
+        return viewDepartmentComplaints(new RequestFilterComplaintDTO(),Optional.empty(), Optional.empty(),model);
     }
 
     @PostMapping(value = "/register")
@@ -203,7 +212,7 @@ public class DepartmentAdminController {
     }
 
 
-    @GetMapping(value = "/departmentAdmins//{offset}/{pageSize}")
+    @GetMapping(value = "/departmentAdmins/{offset}/{pageSize}")
     public String viewAllDepartmentAdmins(@PathVariable Optional<Integer> offset, @PathVariable Optional<Integer> pageSize, Model model) {
         System.out.println("Fetching All department admins");
         try {

@@ -20,7 +20,7 @@ public interface DepartmentAdminService {
 
     Boolean assignEmployee();
 
-    Optional<List<ComplaintDTO>> viewComplaints(RequestFilterComplaintDTO requestFilterComplaintDTO, Model model);
+    DTOListPage<ComplaintDTO> viewComplaints(RequestFilterComplaintDTO requestFilterComplaintDTO, Integer offset, Integer pageSize, Model model);
 
     Boolean validateAndSave(RequestDepartmentAdminDTO requestDepartmentAdminDTO, Model model);
 

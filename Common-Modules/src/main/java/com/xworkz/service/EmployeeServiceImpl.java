@@ -1,5 +1,6 @@
 package com.xworkz.service;
 
+import com.xworkz.dto.DTOListPage;
 import com.xworkz.entity.*;
 import com.xworkz.exceptions.InfoException;
 import com.xworkz.repository.ComplaintRepository;
@@ -243,6 +244,16 @@ public class EmployeeServiceImpl implements EmployeeService{
 
         employeeDTO.setDepartmentId(departmentAdminDTO.getDepartmentId());
         return employeeRepository.searchAllEmployees(employeeDTO);
+    }
+
+    @Override
+    public DTOListPage<EmployeeDTO> searchEmployees(RequestFilterEmployeeDTO requestFilterEmployeeDTO, Integer offset, Integer pageSize, Model model) {
+        System.out.println("Search Employees in service " + requestFilterEmployeeDTO);
+        DepartmentAdminDTO departmentAdminDTO = (DepartmentAdminDTO) model.getAttribute("departmentAdminData");
+        EmployeeDTO employeeDTO = modelMapper.map(requestFilterEmployeeDTO, EmployeeDTO.class);
+
+        employeeDTO.setDepartmentId(departmentAdminDTO.getDepartmentId());
+        return employeeRepository.searchAllEmployees(employeeDTO,offset,pageSize);
     }
 
     @Override

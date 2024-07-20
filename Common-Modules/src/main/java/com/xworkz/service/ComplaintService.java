@@ -1,5 +1,6 @@
 package com.xworkz.service;
 
+import com.xworkz.dto.DTOListPage;
 import com.xworkz.entity.ComplaintDTO;
 import com.xworkz.entity.EmployeeDTO;
 import com.xworkz.entity.UserDTO;
@@ -14,9 +15,11 @@ public interface ComplaintService {
     ComplaintDTO saveComplaint(RequestComplaintDTO requestComplaintDTO, UserDTO userDTO);
     void deleteComplaint(Long id);
     ComplaintDTO updateComplaint(ComplaintDTO complaint);
-    Optional<List<ComplaintDTO>> searchComplaints(RequestFilterComplaintDTO requestFilterComplaintDTO);
+//    Optional<List<ComplaintDTO>> searchComplaints(RequestFilterComplaintDTO requestFilterComplaintDTO);
 
-    Optional<List<ComplaintDTO>> searchComplaintsForAdmin(RequestFilterComplaintDTO requestFilterComplaintDTO);
+    DTOListPage<ComplaintDTO> searchComplaints(RequestFilterComplaintDTO requestFilterComplaintDTO, Integer offset, Integer pageSize);
+
+    DTOListPage<ComplaintDTO> searchComplaintsForAdmin(RequestFilterComplaintDTO requestFilterComplaintDTO, Integer offset, Integer pageSize);
     Boolean updateComplaint(RequestUpdateComplaintDTO requestUpdateComplaintDTO);
 
     Boolean updateComplaintForAdmin(RequestUpdateComplaintByAdminDTO requestUpdateComplaintByAdminDTO);

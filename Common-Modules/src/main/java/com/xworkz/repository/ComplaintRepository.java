@@ -1,5 +1,6 @@
 package com.xworkz.repository;
 
+import com.xworkz.dto.DTOListPage;
 import com.xworkz.entity.ComplaintDTO;
 import com.xworkz.requestDto.RequestUpdateComplaintDTO;
 
@@ -17,7 +18,9 @@ public interface ComplaintRepository {
 
     Boolean deleteById(Long id);
 
-    Optional<List<ComplaintDTO>> searchComplaints(ComplaintDTO complaintDTO);
+    DTOListPage<ComplaintDTO> searchComplaints(ComplaintDTO complaintDTO, Integer offset, Integer pageSize);
+
+    DTOListPage<ComplaintDTO> searchAllComplaintsForAdmin(ComplaintDTO complaintDTO, Integer offset, Integer pageSize);
 
     Optional<List<ComplaintDTO>> searchAllComplaintsForAdmin(ComplaintDTO complaintDTO);
 

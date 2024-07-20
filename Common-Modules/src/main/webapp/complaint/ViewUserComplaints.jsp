@@ -7,14 +7,14 @@
         <%@ include file="../component/HeaderLink.jsp" %>
             <link rel="stylesheet" href="resources/css/Table.css">
             <%-- <link rel="stylesheet" href="resources/css/ViewUserComplaint.css"> --%>
-            <%@ include file="../user/UserHeader.jsp" %>
+                <%@ include file="../user/UserHeader.jsp" %>
 
 
-                <title>User Complaints</title>
+                    <title>User Complaints</title>
 
     </head>
 
-    <body >
+    <body>
         <%@ include file="../user/UserNav.jsp" %>
 
 
@@ -25,7 +25,7 @@
                     <div class="table-responsive-sm p-4 ">
                         <h3 class="text-center"> Complaints Details </h3>
                         <br>
-                        <form action="complaints/viewUserComplaints" method="POST">
+                        <form action="complaints/viewUserComplaints/1/7" method="POST">
                             <div
                                 class=" d-flex mb-2 p-2 border border-1 rounded-3 border-secondary justify-content-between">
                                 <select class="form-control m-1" id="complaintType" name="complaintType">
@@ -60,8 +60,8 @@
 
                         <c:if test="${complaintsList == null || complaintsList.isEmpty() }">
                             <div class=" d-flex mb-2 p-2 justify-content-center customeWidth" style="width: 85vw;">
-                                    No Records Found
-                                </div>
+                                No Records Found
+                            </div>
                         </c:if>
 
                         <!-- <c:choose>
@@ -72,25 +72,25 @@
                             </c:when>
                             <c:otherwise> -->
 
-                                <c:if test="${complaintsList != null && !complaintsList.isEmpty() }">
-                        <div class="customeHeight" style="width: 85vw;">
-                            <table class="table table-borderless">
-                                <thead class="">
-                                    <tr>
-                                        <th scope="col"><strong>Complaint Type</strong></th>
-                                        <th scope="col"><strong>Country</strong></th>
-                                        <th scope="col"><strong>State</strong></th>
-                                        <th scope="col"><strong>City</strong></th>
-                                        <th scope="col"><strong>Address</strong></th>
-                                        <th scope="col"><strong>Description</strong></th>
-                                        <th scope="col"><strong>Created Date</strong></th>
-                                        <th scope="col"><strong>Status</strong></th>
-                                        <th scope="col"><strong></strong></th>
-                                        <th scope="col"><strong></strong></th>
+                        <c:if test="${complaintsList != null && !complaintsList.isEmpty() }">
+                            <div class="customeHeight" style="width: 85vw;">
+                                <table class="table table-borderless">
+                                    <thead class="">
+                                        <tr>
+                                            <th scope="col"><strong>Complaint Type</strong></th>
+                                            <th scope="col"><strong>Country</strong></th>
+                                            <th scope="col"><strong>State</strong></th>
+                                            <th scope="col"><strong>City</strong></th>
+                                            <th scope="col"><strong>Address</strong></th>
+                                            <th scope="col"><strong>Description</strong></th>
+                                            <th scope="col"><strong>Created Date</strong></th>
+                                            <th scope="col"><strong>Status</strong></th>
+                                            <th scope="col"><strong></strong></th>
+                                            <th scope="col"><strong></strong></th>
 
 
-                                    </tr>
-                                </thead>
+                                        </tr>
+                                    </thead>
 
                                     <tbody>
                                         <c:forEach items="${complaintsList}" var="complaint">
@@ -103,30 +103,40 @@
                                                 <td>${complaint.description}</td>
                                                 <td>${complaint.createdDate}</td>
                                                 <td>${complaint.status}</td>
-                                                <td><a href="complaints/updateComplaintPage?id=${complaint.id}" class=" btn btn-success btn-sm">
-                                                <%-- <i class="fa-solid fa-pen-to-square">
-                                                </i> --%>
-                                                Edit
-                                                </a>
+                                                <td><a href="complaints/updateComplaintPage?id=${complaint.id}"
+                                                        class=" btn btn-success btn-sm
+                                                        
+                                                        <c:if test="${complaint.status.equalsIgnoreCase('resolved') || complaint.status.equalsIgnoreCase('not resolved') }">
+                                                            disabled
+                                                        </c:if>
+                                                        
+                                                        ">
+                                                        <%-- <i class="fa-solid fa-pen-to-square">
+                                                            </i> --%>
+                                                            Edit
+                                                    </a>
                                                 </td>
                                                 <td><a href="#" class="btn btn-success btn-sm">
-                                                <%-- <i class="fa-solid fa-circle-info">
-                                                </i> --%>
-                                                Status
-                                                </a>
+                                                        <%-- <i class="fa-solid fa-circle-info">
+                                                            </i> --%>
+                                                            Status
+                                                    </a>
                                                 </td>
 
                                             </tr>
                                         </c:forEach>
 
                                     </tbody>
-                                </c:if>
-                            </table>
-                        </div>
-                        <!-- </c:otherwise>
-                        </c:choose> -->
+                        </c:if>
+                        </table>
+
+                        <hr>
+                        <%@ include file="../common/Pagination.jsp" %>
                     </div>
+                    <!-- </c:otherwise>
+                        </c:choose> -->
                 </div>
+            </div>
 
 
 

@@ -31,7 +31,7 @@
                                     Raise Complaint
                                 </a>
             
-                                <a class="nav-link" href="complaints/viewUserComplaints">
+                                <a class="nav-link" href="complaints/viewUserComplaints/1/7">
                                     View Compliant's
                                 </a>
                             </li>

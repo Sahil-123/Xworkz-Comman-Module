@@ -162,10 +162,10 @@ public class DepartmentAdminServiceImpl implements DepartmentAdminService {
     }
 
     @Override
-    public Optional<List<ComplaintDTO>> viewComplaints(RequestFilterComplaintDTO requestFilterComplaintDTO, Model model) {
+    public DTOListPage<ComplaintDTO> viewComplaints(RequestFilterComplaintDTO requestFilterComplaintDTO, Integer offset, Integer pageSize, Model model) {
 
         ComplaintDTO complaintDTO = modelMapper.map(requestFilterComplaintDTO,ComplaintDTO.class);
-        Optional<List<ComplaintDTO>> complaintDTOList = complaintRepository.searchAllComplaintsForAdmin(complaintDTO);
+        DTOListPage<ComplaintDTO> complaintDTOList = complaintRepository.searchAllComplaintsForAdmin(complaintDTO,offset,pageSize);
 
         return complaintDTOList;
     }
