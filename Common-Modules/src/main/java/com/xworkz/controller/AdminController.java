@@ -183,15 +183,15 @@ public class AdminController {
     @GetMapping(value = "departments/downloadCSV/{offset}/{pageSize}")
     public void downloadCSVForDepartmentData( @PathVariable Optional<Integer> offset, @PathVariable Optional<Integer> pageSize, HttpServletResponse response) throws IOException {
 
-        System.out.println("Exporting complaints with pagination "+offset.get()+" "+pageSize.get());
+        System.out.println("Exporting Departments with pagination in CSV"+offset.get()+" "+pageSize.get());
         if (offset.isPresent() && offset.get() <= 1) offset = Optional.of(1);
 
-        DTOListPage<UserDTO> userDTODTOListPage = userService.getAllUser(offset.orElse(1),pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE));
+        DTOListPage<DepartmentDTO> departmentDTOListPage = departmentService.getAllDepartmentsWithPagination(offset.orElse(1), pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE));
 
         response.setContentType("text/csv");
         response.setHeader("Content-Disposition", "attachment; filename=\"data.csv\"");
 
-        CSVExport.sendCSV(response.getWriter(),userDTODTOListPage.getList().get(),UserDTO.exportToAdmin());
+        CSVExport.sendCSV(response.getWriter(),departmentDTOListPage.getList().get(),DepartmentDTO.exportToAdmin());
     }
 
 

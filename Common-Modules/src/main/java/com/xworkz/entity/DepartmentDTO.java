@@ -46,4 +46,18 @@ public class DepartmentDTO implements Serializable {
 
     @Column(name = "updated_date")
     private LocalDateTime updatedDate;
+
+    public static String[] exportToAdmin() {
+        return new String[]{
+                "id",
+                "departmentName",
+                "area",
+                "address",
+                "numberOfEmployees",
+                "createdBy",
+                "createdDate",
+                "updatedBy",
+                "updatedDate"
+        };
+    }
 }

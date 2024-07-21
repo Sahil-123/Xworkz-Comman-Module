@@ -12,6 +12,7 @@ import com.xworkz.responseDto.ResponseDTO;
 import com.xworkz.responseDto.ResponseResolveComplaintDto;
 import com.xworkz.service.ComplaintService;
 import com.xworkz.service.EmployeeService;
+import com.xworkz.utils.CSVExport;
 import com.xworkz.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -186,6 +188,8 @@ public class EmployeeController {
             System.out.println(complaintDTODTOListPage);
 
             model.addAttribute("complaintsList", complaintDTODTOListPage.getList().get());
+            model.addAttribute("downloadCSV","employee/viewEmployeeComplaints/downloadCSV");
+            model.addAttribute("employeeFilter",requestFilterComplaintDTO);
 
             CommonUtils.setPagination(offset.orElse(1),pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE),"employee/viewEmployeeComplaints",complaintDTODTOListPage,model);
         } catch (InfoException e) {
@@ -198,6 +202,21 @@ public class EmployeeController {
 
         model.addAttribute("status", CommonUtils.NOT_RESOLVED);
         return "employee/EmployeeViewComplaints";
+    }
+
+    @RequestMapping(value = "/viewEmployeeComplaints/downloadCSV/{offset}/{pageSize}", method = {RequestMethod.GET, RequestMethod.POST})
+    public void downloadCSVForDepartmentEmployeesData(RequestFilterComplaintDTO requestFilterComplaintDTO, @PathVariable Optional<Integer> offset, @PathVariable Optional<Integer> pageSize, HttpServletResponse response, Model model) throws IOException {
+
+        System.out.println("Exporting to Department admin with pagination in CSV"+offset.get()+" "+pageSize.get());
+        if (offset.isPresent() && offset.get() <= 1) offset = Optional.of(1);
+
+        EmployeeDTO employeeDTO = (EmployeeDTO) model.getAttribute("employeeData");
+        DTOListPage<ComplaintDTO> complaintDTODTOListPage = complaintService.searchNotResolvedComplaintsForEmployee(requestFilterComplaintDTO,offset.orElse(1),pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE), employeeDTO);
+
+        response.setContentType("text/csv");
+        response.setHeader("Content-Disposition", "attachment; filename=\"data.csv\"");
+
+        CSVExport.sendCSV(response.getWriter(),complaintDTODTOListPage.getList().get(),ComplaintDTO.exportToEmployee());
     }
 
     @RequestMapping(value = "/viewEmployeeResolvedComplaints/{offset}/{pageSize}", method = {RequestMethod.GET, RequestMethod.POST})
@@ -214,6 +233,9 @@ public class EmployeeController {
             System.out.println(complaintDTODTOListPage);
 
             model.addAttribute("complaintsList", complaintDTODTOListPage.getList().get());
+            model.addAttribute("downloadCSV","employee/viewEmployeeResolvedComplaints/downloadCSV");
+            model.addAttribute("employeeFilter",null);
+
             CommonUtils.setPagination(offset.orElse(1),pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE),"employee/viewEmployeeResolvedComplaints",complaintDTODTOListPage,model);
 
         } catch (InfoException e) {
@@ -228,6 +250,20 @@ public class EmployeeController {
         return "employee/EmployeeViewComplaints";
     }
 
+    @RequestMapping(value = "/viewEmployeeResolvedComplaints/downloadCSV/{offset}/{pageSize}", method = {RequestMethod.GET, RequestMethod.POST})
+    public void downloadCSVForDepartmentEmployeesResolvedData(RequestFilterComplaintDTO requestFilterComplaintDTO, @PathVariable Optional<Integer> offset, @PathVariable Optional<Integer> pageSize, HttpServletResponse response, Model model) throws IOException {
+
+        System.out.println("Exporting to Department admin with pagination in CSV"+offset.get()+" "+pageSize.get());
+        if (offset.isPresent() && offset.get() <= 1) offset = Optional.of(1);
+
+        EmployeeDTO employeeDTO = (EmployeeDTO) model.getAttribute("employeeData");
+        DTOListPage<ComplaintDTO> complaintDTODTOListPage = complaintService.searchResolvedComplaintsForEmployee(requestFilterComplaintDTO,offset.orElse(1),pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE) ,employeeDTO);
+
+        response.setContentType("text/csv");
+        response.setHeader("Content-Disposition", "attachment; filename=\"data.csv\"");
+
+        CSVExport.sendCSV(response.getWriter(),complaintDTODTOListPage.getList().get(),ComplaintDTO.exportToEmployeeWithResolved());
+    }
 
     @GetMapping(value = "/resolveComplaintOtp")
     @ResponseBody

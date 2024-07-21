@@ -66,7 +66,7 @@
 
                         <c:if test="${complaintsList != null && !complaintsList.isEmpty()}">
 
-                            <div id="filterData" class=" d-flex mb-2 p-2 justify-content-end customeWidth">
+                            <!-- <div id="filterData" class=" d-flex mb-2 p-2 justify-content-end customeWidth">
                                 <form action="${downloadCSV}/${currentPage}/${pageSize}" method="post" target="_blank">
 
                                     <input type="hidden" value="${filter.complaintType}" name="complaintType" />
@@ -79,7 +79,10 @@
                                         <i class="fa-solid fa-file-csv"></i> Download CSV
                                     </button>
                                 </form>
-                            </div>
+                            </div> -->
+
+                            <%@ include file="../common/CSVDownload.jsp" %>
+
                         </c:if>
 
                         <c:if test="${complaintsList == null || complaintsList.isEmpty() }">

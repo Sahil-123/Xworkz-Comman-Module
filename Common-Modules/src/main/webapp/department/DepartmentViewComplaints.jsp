@@ -64,6 +64,10 @@
                             </div>
                         </form>
 
+                        <c:if test="${complaintsList != null && !complaintsList.isEmpty() }">
+                            <%@ include file="../common/CSVDownload.jsp" %>
+                        </c:if>
+
                         <c:if test="${complaintsList == null || complaintsList.isEmpty() }">
                             <div class=" d-flex mb-2 p-2 justify-content-center customeWidth" style="width: 85vw;">
                                 No Records Found

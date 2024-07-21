@@ -14,6 +14,7 @@ import com.xworkz.service.ComplaintService;
 import com.xworkz.service.DepartmentAdminService;
 import com.xworkz.service.DepartmentService;
 import com.xworkz.service.EmployeeService;
+import com.xworkz.utils.CSVExport;
 import com.xworkz.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,7 +22,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -94,6 +97,9 @@ public class DepartmentAdminController {
 
             model.addAttribute("departmentAdminData",departmentAdminDTO);
             model.addAttribute("complaintsList", complaintDTODTOListPage.getList().get());
+            model.addAttribute("downloadCSV","departmentAdmin/viewDepartmentComplaints/downloadCSV");
+            model.addAttribute("filter",requestFilterComplaintDTO);
+
             CommonUtils.setPagination(offset.orElse(1),pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE),"departmentAdmin/viewDepartmentComplaints",complaintDTODTOListPage,model);
 
         } catch (InfoException e) {
@@ -105,6 +111,22 @@ public class DepartmentAdminController {
         }
 
         return "department/DepartmentViewComplaints";
+    }
+
+    @RequestMapping(value = "/viewDepartmentComplaints/downloadCSV/{offset}/{pageSize}", method = {RequestMethod.GET, RequestMethod.POST})
+    public void downloadCSVForDepartmentComplaintsData( RequestFilterComplaintDTO requestFilterComplaintDTO, @PathVariable Optional<Integer> offset, @PathVariable Optional<Integer> pageSize, HttpServletResponse response, Model model) throws IOException {
+
+        System.out.println("Exporting Department admin with pagination in CSV"+offset.get()+" "+pageSize.get());
+        if (offset.isPresent() && offset.get() <= 1) offset = Optional.of(1);
+
+        DepartmentAdminDTO departmentAdminDTO = (DepartmentAdminDTO) model.getAttribute("departmentAdminData");
+        requestFilterComplaintDTO.setDeptId(departmentAdminDTO.getDepartmentId());
+        DTOListPage<ComplaintDTO> complaintDTODTOListPage = complaintService.searchComplaintsForAdmin(requestFilterComplaintDTO, offset.orElse(1), pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE));
+
+        response.setContentType("text/csv");
+        response.setHeader("Content-Disposition", "attachment; filename=\"data.csv\"");
+
+        CSVExport.sendCSV(response.getWriter(),complaintDTODTOListPage.getList().get(),ComplaintDTO.exportToDepartmentAdmin());
     }
 
     @RequestMapping(value = "/viewAllEmployees/{offset}/{pageSize}", method = {RequestMethod.GET, RequestMethod.POST})
@@ -122,6 +144,9 @@ public class DepartmentAdminController {
                 model.addAttribute("infoError", "No employees found.");
             }
 
+            model.addAttribute("downloadCSV","departmentAdmin/viewAllEmployees/downloadCSV");
+            model.addAttribute("employeesFilter",requestFilterEmployeeDTO);
+
             CommonUtils.setPagination(offset.orElse(1),pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE),"departmentAdmin/viewAllEmployees",employeeDTODTOListPage,model);
             return "employee/ViewEmployees";
 
@@ -130,6 +155,20 @@ public class DepartmentAdminController {
         }
 
         return "employee/ViewEmployees";
+    }
+
+    @RequestMapping(value = "/viewAllEmployees/downloadCSV/{offset}/{pageSize}", method = {RequestMethod.GET, RequestMethod.POST})
+    public void downloadCSVForDepartmentEmployeesData( RequestFilterEmployeeDTO requestFilterEmployeeDTO, @PathVariable Optional<Integer> offset, @PathVariable Optional<Integer> pageSize, HttpServletResponse response, Model model) throws IOException {
+
+        System.out.println("Exporting to Department admin with pagination in CSV"+offset.get()+" "+pageSize.get());
+        if (offset.isPresent() && offset.get() <= 1) offset = Optional.of(1);
+
+        DTOListPage<EmployeeDTO> employeeDTODTOListPage = employeeService.searchEmployees(requestFilterEmployeeDTO,offset.orElse(1),pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE),model);
+
+        response.setContentType("text/csv");
+        response.setHeader("Content-Disposition", "attachment; filename=\"data.csv\"");
+
+        CSVExport.sendCSV(response.getWriter(),employeeDTODTOListPage.getList().get(),EmployeeDTO.exportToDepartmentAdmin());
     }
 
     @GetMapping(value = "/getDepartmentEmployees")
@@ -229,6 +268,8 @@ public class DepartmentAdminController {
 
             model.addAttribute("departmentMap",departmentMap);
 
+            model.addAttribute("downloadCSV","departmentAdmin/admin/downloadCSV");
+
             CommonUtils.setPagination(offset.orElse(1),pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE),"departmentAdmin/departmentAdmins",departmentAdminDTOS,model);
 
             return "admin/AdminViewAllDepartmentAdmin";
@@ -237,6 +278,21 @@ public class DepartmentAdminController {
         }
         return "admin/AdminViewAllDepartmentAdmin";
     }
+
+    @GetMapping(value = "/admin/downloadCSV/{offset}/{pageSize}")
+    public void downloadCSVForDepartmentData( @PathVariable Optional<Integer> offset, @PathVariable Optional<Integer> pageSize, HttpServletResponse response) throws IOException {
+
+        System.out.println("Exporting Department admin with pagination in CSV"+offset.get()+" "+pageSize.get());
+        if (offset.isPresent() && offset.get() <= 1) offset = Optional.of(1);
+
+        DTOListPage<DepartmentAdminDTO> departmentAdminDTOS = departmentAdminService.findAllDepartmentAdmin(offset.orElse(1),pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE));
+
+        response.setContentType("text/csv");
+        response.setHeader("Content-Disposition", "attachment; filename=\"data.csv\"");
+
+        CSVExport.sendCSV(response.getWriter(),departmentAdminDTOS.getList().get(),DepartmentAdminDTO.exportToAdmin());
+    }
+
 
     @GetMapping("/forgotPasswordPage")
     public String getForgotPasswordPage(Model model) {

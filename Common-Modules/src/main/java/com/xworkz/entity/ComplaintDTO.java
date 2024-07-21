@@ -99,4 +99,45 @@ public class ComplaintDTO implements Serializable {
         return fieldNames;
     }
 
+    public static String[] exportToDepartmentAdmin() {
+        String[] fieldNames = {
+                "complaintType",
+                "country",
+                "state",
+                "city",
+                "address",
+                "empId",
+                "description",
+                "status",
+        };
+
+        return fieldNames;
+    }
+
+    public static String[] exportToEmployee() {
+        String[] fieldNames = {
+                "country",
+                "state",
+                "city",
+                "address",
+                "description",
+                "status"
+        };
+
+        return fieldNames;
+    }
+
+    public static String[] exportToEmployeeWithResolved() {
+        String[] fieldNames = {
+                "country",
+                "state",
+                "city",
+                "address",
+                "description",
+                "status",
+                "comment"
+        };
+
+        return fieldNames;
+    }
 }

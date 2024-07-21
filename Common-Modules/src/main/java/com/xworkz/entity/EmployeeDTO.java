@@ -66,4 +66,24 @@ public class EmployeeDTO implements Serializable {
     public EmployeeDTO() {
 //        System.out.println("EmployeeDTO object is created.");
     }
+
+    public static String[] exportToDepartmentAdmin() {
+        return new String[]{
+                "id",
+                "fname",
+                "lname",
+                "email",
+                "password",
+                "mobile",
+                "departmentId",
+                "loginCount",
+                "failedAttempts",
+                "failedAttemptsDateTime",
+                "createdBy",
+                "createdDate",
+                "updatedBy",
+                "updatedDate",
+                "lock"
+        };
+    }
 }

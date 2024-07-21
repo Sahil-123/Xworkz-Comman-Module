@@ -6,12 +6,12 @@
         <meta charset="UTF-8">
         <%@ include file="../component/HeaderLink.jsp" %>
             <%-- <link rel="stylesheet" href="resources/css/ViewUserComplaint.css"> --%>
-            <link rel="stylesheet" href="resources/css/ViewEmployeeComplaint.css">
-            <link rel="stylesheet" href="resources/css/Table.css">
-            <%@ include file="../user/UserHeader.jsp" %>
+                <link rel="stylesheet" href="resources/css/ViewEmployeeComplaint.css">
+                <link rel="stylesheet" href="resources/css/Table.css">
+                <%@ include file="../user/UserHeader.jsp" %>
 
 
-                <title>Employee Assigned Complaints</title>
+                    <title>Employee Assigned Complaints</title>
 
     </head>
 
@@ -71,95 +71,107 @@
 
                             <c:otherwise>
 
+                                <%@ include file="../common/CSVDownload.jsp" %>
 
-                                <div class="customeHeight " style="width: 85vw;">
-                                    <table class="table table-borderless ">
-                                        <thead class="">
-                                            <tr>
-                                                <th scope="col"><strong>Country</strong></th>
-                                                <th scope="col"><strong>State</strong></th>
-                                                <th scope="col"><strong>City</strong></th>
-                                                <th scope="col"><strong>Address</strong></th>
-                                                <th scope="col"><strong>Description</strong></th>
-                                                <th scope="col"><strong>Status</strong></th>
-                                                <c:choose>
+                                    <div class="customeHeight " style="width: 85vw;">
+                                        <table class="table table-borderless ">
+                                            <thead class="">
+                                                <tr>
+                                                    <th scope="col"><strong>Country</strong></th>
+                                                    <th scope="col"><strong>State</strong></th>
+                                                    <th scope="col"><strong>City</strong></th>
+                                                    <th scope="col"><strong>Address</strong></th>
+                                                    <th scope="col"><strong>Description</strong></th>
+                                                    <th scope="col"><strong>Status</strong></th>
+                                                    <c:choose>
 
-                                                    <c:when test="${status.equalsIgnoreCase('Resolved')}">
-                                                        <th scope="col"><strong>Comment</strong></th>
-                                                    </c:when>
+                                                        <c:when test="${status.equalsIgnoreCase('Resolved')}">
+                                                            <th scope="col"><strong>Comment</strong></th>
+                                                        </c:when>
 
-                                                    <c:otherwise>
-                                                        <th scope="col"><strong></strong></th>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </tr>
-                                        </thead>
+                                                        <c:otherwise>
+                                                            <th scope="col"><strong></strong></th>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </tr>
+                                            </thead>
 
-                                        <c:if test="${complaintsList != null && !complaintsList.isEmpty() }">
-                                            <tbody>
-                                                <c:forEach items="${complaintsList}" var="complaint">
-                                                    <tr>
-                                                        <!-- <td>${complaint.id}</td> -->
+                                            <c:if test="${complaintsList != null && !complaintsList.isEmpty() }">
+                                                <tbody>
+                                                    <c:forEach items="${complaintsList}" var="complaint">
+                                                        <tr>
+                                                            <!-- <td>${complaint.id}</td> -->
 
-                                                        <td>${complaint.country}</td>
-                                                        <td>${complaint.state}</td>
-                                                        <td>${complaint.city}</td>
-                                                        <td>${complaint.address}</td>
-                                                        <td>${complaint.description}</td>
+                                                            <td>${complaint.country}</td>
+                                                            <td>${complaint.state}</td>
+                                                            <td>${complaint.city}</td>
+                                                            <td>${complaint.address}</td>
+                                                            <td>${complaint.description}</td>
 
-                                                        <c:choose>
-                                                            <c:when test="${status.equalsIgnoreCase('Resolved')}">
-                                                                <c:choose>
-                                                                    <c:when
-                                                                        test="${complaint.status.equalsIgnoreCase('Resolved')}">
-                                                                        <td class="text-success">${complaint.status}
-                                                                        </td>
-                                                                    </c:when>
+                                                            <c:choose>
+                                                                <c:when test="${status.equalsIgnoreCase('Resolved')}">
+                                                                    <c:choose>
+                                                                        <c:when
+                                                                            test="${complaint.status.equalsIgnoreCase('Resolved')}">
+                                                                            <td class="text-success">${complaint.status}
+                                                                            </td>
+                                                                        </c:when>
 
-                                                                    <c:when
-                                                                        test="${complaint.status.equalsIgnoreCase('Not Resolved')}">
-                                                                        <td class="text-danger">${complaint.status}</td>
-                                                                    </c:when>
-                                                                </c:choose>
+                                                                        <c:when
+                                                                            test="${complaint.status.equalsIgnoreCase('Not Resolved')}">
+                                                                            <td class="text-danger">${complaint.status}
+                                                                            </td>
+                                                                        </c:when>
+                                                                    </c:choose>
 
-                                                                <td >${complaint.comment}</td>
-                                                            </c:when>
+                                                                    <td>${complaint.comment}</td>
+                                                                </c:when>
 
-                                                            <c:otherwise>
-                                                                <form id="form-${complaint.id}" method="post"
-                                                                    onsubmit="updateStatus(event,this,'${complaint.id}',spinner)">
+                                                                <c:otherwise>
+                                                                    <form id="form-${complaint.id}" method="post"
+                                                                        onsubmit="updateStatus(event,this,'${complaint.id}',spinner)">
 
-                                                                    <td>
-                                                                        <select class="form-control m-1" name="status">
-                                                                            <option value="" >Status</option>
-                                                                            <option value="In Progress" <c:if test="${complaint.status.equalsIgnoreCase('In Progress')}">selected</c:if>>In Progress
-                                                                            </option>
-                                                                            <option value="Pending" <c:if test="${complaint.status.equalsIgnoreCase('Pending')}">selected</c:if>>Pending</option>
-                                                                            <option value="Not Resolved" <c:if test="${complaint.status.equalsIgnoreCase('Not Resolved')}">selected</c:if>>Not Resolved
-                                                                            </option>
-                                                                            <option value="Resolved" <c:if test="${complaint.status.equalsIgnoreCase('Resolved')}">selected</c:if>>Resolved</option>
-                                                                        </select>
-                                                                    </td>
-                                                                    <td class="d-flex justify-content-center">
-                                                                        <button type="submit"
-                                                                            class="btn btn btn-success btn-sm m-1">Update</button>
-                                                                    </td>
-                                                                </form>
-                                                            </c:otherwise>
-                                                        </c:choose>
-                                                    </tr>
-                                                </c:forEach>
-
-                                            </tbody>
-                                        </c:if>
-                                    </table>
-                                                                    <hr>
-                                <%@ include file="../common/Pagination.jsp" %>
-                                </div>
+                                                                        <td>
+                                                                            <select class="form-control m-1"
+                                                                                name="status">
+                                                                                <option value="">Status</option>
+                                                                                <option value="In Progress" <c:if
+                                                                                    test="${complaint.status.equalsIgnoreCase('In Progress')}">
+                                                                                    selected
+                                            </c:if>>In Progress
+                                            </option>
+                                            <option value="Pending" <c:if
+                                                test="${complaint.status.equalsIgnoreCase('Pending')}">selected</c:if>
+                                                >Pending</option>
+                                            <option value="Not Resolved" <c:if
+                                                test="${complaint.status.equalsIgnoreCase('Not Resolved')}">selected
+                                                </c:if>>Not Resolved
+                                            </option>
+                                            <option value="Resolved" <c:if
+                                                test="${complaint.status.equalsIgnoreCase('Resolved')}">selected</c:if>
+                                                >Resolved</option>
+                                            </select>
+                                            </td>
+                                            <td class="d-flex justify-content-center">
+                                                <button type="submit"
+                                                    class="btn btn btn-success btn-sm m-1">Update</button>
+                                            </td>
+                                            </form>
                             </c:otherwise>
                         </c:choose>
+                        </tr>
+                        </c:forEach>
+
+                        </tbody>
+                        </c:if>
+                        </table>
+                        <hr>
+                        <%@ include file="../common/Pagination.jsp" %>
                     </div>
+                    </c:otherwise>
+                    </c:choose>
                 </div>
+            </div>
 
             </div>
 

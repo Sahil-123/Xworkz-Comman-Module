@@ -67,4 +67,24 @@ public class DepartmentAdminDTO implements Serializable {
 
     }
 
+    public static String[] exportToAdmin() {
+        return new String[]{
+                "id",
+                "fname",
+                "lname",
+                "email",
+                "password",
+                "mobile",
+                "departmentId",
+                "loginCount",
+                "failedAttempts",
+                "failedAttemptsDateTime",
+                "createdBy",
+                "createdDate",
+                "updatedBy",
+                "updatedDate",
+                "lock",
+                "resetPasswordDateTime"
+        };
+    }
 }
