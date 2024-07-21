@@ -130,6 +130,7 @@ public class ComplaintController {
 
     @RequestMapping(value = "user/downloadCSV/{offset}/{pageSize}", method = {RequestMethod.GET, RequestMethod.POST})
     public void exportAllComplaints(RequestFilterComplaintDTO requestFilterComplaintDTO, @PathVariable Optional<Integer> offset, @PathVariable Optional<Integer> pageSize, Model model, HttpServletResponse response) throws IOException {
+        System.out.println("View all complaints export to csv "+requestFilterComplaintDTO);
 
         System.out.println("Exporting complaints with pagination "+offset.get()+" "+pageSize.get());
         if (offset.isPresent() && offset.get() <= 1) offset = Optional.of(1);
@@ -144,6 +145,8 @@ public class ComplaintController {
 
     @RequestMapping(value = "/viewAllComplaints/{offset}/{pageSize}", method = {RequestMethod.GET, RequestMethod.POST})
     public String viewComplaintsForAdmin(RequestFilterComplaintDTO requestFilterComplaintDTO, @PathVariable Optional<Integer> offset, @PathVariable Optional<Integer> pageSize, Model model) {
+        System.out.println("View all complaints "+requestFilterComplaintDTO);
+
         try {
             if (offset.isPresent() && offset.get() <= 1) offset = Optional.of(1);
 
@@ -154,7 +157,7 @@ public class ComplaintController {
             } else {
                 model.addAttribute("infoError", "No complaints found.");
             }
-
+            model.addAttribute("filter",requestFilterComplaintDTO);
             model.addAttribute("downloadCSV","complaints/user/downloadCSV");
             CommonUtils.setPagination(offset.orElse(1), pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE), "complaints/viewAllComplaints", complaintDTODTOListPage, model);
 

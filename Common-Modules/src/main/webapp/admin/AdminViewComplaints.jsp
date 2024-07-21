@@ -62,12 +62,25 @@
 
                                 <input type="submit" class="btn btn-primary m-1" id="submitButton" value="Filter" />
                             </div>
-                            
-                            <div class=" d-flex mb-2 p-2 justify-content-end customeWidth">
-                                <a href="${downloadCSV}/${currentPage}/${pageSize}" class="btn btn-default border border-primary" role="button">
-                                 <i class="fa-solid fa-file-csv"></i> Download CSV</a>
-                            </div>
                         </form>
+
+                        <c:if test="${complaintsList != null && !complaintsList.isEmpty()}">
+
+                            <div id="filterData" class=" d-flex mb-2 p-2 justify-content-end customeWidth">
+                                <form action="${downloadCSV}/${currentPage}/${pageSize}" method="post" target="_blank">
+
+                                    <input type="hidden" value="${filter.complaintType}" name="complaintType" />
+                                    <input type="hidden" value="${filter.country}" name="country" />
+                                    <input type="hidden" value="${filter.state}" name="state" />
+                                    <input type="hidden" value="${filter.city}" name="city" />
+                                    <input type="hidden" value="${filter.status}" name="status" />
+
+                                    <button type="submit" class="btn btn-default border border-primary" role="button">
+                                        <i class="fa-solid fa-file-csv"></i> Download CSV
+                                    </button>
+                                </form>
+                            </div>
+                        </c:if>
 
                         <c:if test="${complaintsList == null || complaintsList.isEmpty() }">
                             <div class=" d-flex mb-2 p-2 justify-content-center customeWidth" style="width: 85vw;">
@@ -141,11 +154,11 @@
                             </c:forEach>
 
                             </tbody>
-                            
-                        </table>
-                        <hr>
-                              <%@ include file="../common/Pagination.jsp" %>
-                    </c:if>
+
+                            </table>
+                            <hr>
+                            <%@ include file="../common/Pagination.jsp" %>
+                                </c:if>
                         </div>
                     </div>
                 </div>
