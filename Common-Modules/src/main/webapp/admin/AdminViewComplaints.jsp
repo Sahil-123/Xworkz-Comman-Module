@@ -62,6 +62,11 @@
 
                                 <input type="submit" class="btn btn-primary m-1" id="submitButton" value="Filter" />
                             </div>
+                            
+                            <div class=" d-flex mb-2 p-2 justify-content-end customeWidth">
+                                <a href="${downloadCSV}/${currentPage}/${pageSize}" class="btn btn-default border border-primary" role="button">
+                                 <i class="fa-solid fa-file-csv"></i> Download CSV</a>
+                            </div>
                         </form>
 
                         <c:if test="${complaintsList == null || complaintsList.isEmpty() }">

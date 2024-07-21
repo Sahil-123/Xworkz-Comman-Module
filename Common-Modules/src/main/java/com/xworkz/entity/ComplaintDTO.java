@@ -4,7 +4,11 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -70,8 +74,29 @@ public class ComplaintDTO implements Serializable {
     @Column(name = "comment")
     private String comment;
 
-//    public ComplaintDTO() {
-//        System.out.println("Complaint DTO object is created.");
-//    }
+    public static String[] exportToAdmin(){
+        String[] fieldNames = {
+                "id",
+                "complaintType",
+                "country",
+                "state",
+                "city",
+                "address",
+                "deptId",
+                "empId",
+                "description",
+                "createdBy",
+                "createdDate",
+                "updatedBy",
+                "updatedDate",
+                "status",
+                "userId",
+                "otp",
+                "otptime",
+                "comment"
+        };
+
+        return fieldNames;
+    }
 
 }

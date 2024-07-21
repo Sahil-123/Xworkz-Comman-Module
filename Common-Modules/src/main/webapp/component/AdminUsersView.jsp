@@ -27,7 +27,12 @@
                 No Records Found
               </div>
             </c:if>
-
+            <c:if test="${userslist != null || !userslist.isEmpty() }">
+              <div class=" d-flex mb-2 p-2 justify-content-end customeWidth">
+                  <a href="${downloadCSV}/${currentPage}/${pageSize}" class="btn btn-default border border-primary" role="button">
+                   <i class="fa-solid fa-file-csv"></i> Download CSV</a>
+              </div>
+            </c:if>
             <div class="customeHeight">
               <c:if test="${userslist != null && !userslist.isEmpty() }">
                 <table class="table table-borderless">

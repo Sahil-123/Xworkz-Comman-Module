@@ -68,4 +68,25 @@ public class UserDTO implements Serializable {
     public UserDTO(){
 //        System.out.println("User entity object is created.");
     }
+
+    public static String[] exportToAdmin() {
+        String[] fieldNames = {
+                "id",
+                "fname",
+                "lname",
+                "email",
+                "mobile",
+                "password",
+                "agree",
+                "createdBy",
+                "createdDate",
+                "updatedBy",
+                "updatedDate",
+                "loginCount",
+                "failedAttemptsCount",
+                "failedAttemptDateTime",
+                "lock"
+        };
+        return fieldNames;
+    }
 }

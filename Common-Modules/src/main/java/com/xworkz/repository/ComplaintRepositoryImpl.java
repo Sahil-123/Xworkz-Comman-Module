@@ -146,6 +146,7 @@ public class ComplaintRepositoryImpl implements ComplaintRepository {
             predicates.add(cb.equal(root.get("userId"), complaintDTO.getUserId()));
 
             query.where(cb.and(predicates.toArray(new Predicate[0])));
+            query.orderBy(cb.desc(root.get("createdDate")));
 
             System.out.println("Query " + query);
 

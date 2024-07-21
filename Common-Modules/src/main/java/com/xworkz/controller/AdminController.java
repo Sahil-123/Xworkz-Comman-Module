@@ -1,15 +1,18 @@
 package com.xworkz.controller;
 
 import com.xworkz.dto.DTOListPage;
+import com.xworkz.entity.ComplaintDTO;
 import com.xworkz.entity.DepartmentDTO;
 import com.xworkz.entity.UserDTO;
 import com.xworkz.exceptions.InfoException;
+import com.xworkz.requestDto.RequestFilterComplaintDTO;
 import com.xworkz.requestDto.RequestForgotPasswordDTO;
 import com.xworkz.requestDto.RequestResetPasswordDTO;
 import com.xworkz.requestDto.RequestSigningDTO;
 import com.xworkz.service.AdminService;
 import com.xworkz.service.DepartmentService;
 import com.xworkz.service.UserService;
+import com.xworkz.utils.CSVExport;
 import com.xworkz.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,7 +21,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -137,10 +142,25 @@ public class AdminController {
 
         DTOListPage<UserDTO> userDTODTOListPage = userService.getAllUser(offset.orElse(1),pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE));
         model.addAttribute("userslist", userDTODTOListPage.getList().get());
+        model.addAttribute("downloadCSV","admin/downloadCSV");
 //        int pagesCount = findPageCount(userDTODTOListPage.getCount(),pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE));
         String pageURL = "admin/users";
         CommonUtils.setPagination(offset.orElse(1), pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE), pageURL, userDTODTOListPage, model);
         return "component/AdminUsersView";
+    }
+
+    @GetMapping(value = "/downloadCSV/{offset}/{pageSize}")
+    public void downloadCSVForUserData( @PathVariable Optional<Integer> offset, @PathVariable Optional<Integer> pageSize, HttpServletResponse response) throws IOException {
+
+        System.out.println("Exporting complaints with pagination "+offset.get()+" "+pageSize.get());
+        if (offset.isPresent() && offset.get() <= 1) offset = Optional.of(1);
+
+        DTOListPage<UserDTO> userDTODTOListPage = userService.getAllUser(offset.orElse(1),pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE));
+
+        response.setContentType("text/csv");
+        response.setHeader("Content-Disposition", "attachment; filename=\"data.csv\"");
+
+        CSVExport.sendCSV(response.getWriter(),userDTODTOListPage.getList().get(),UserDTO.exportToAdmin());
     }
 
     @GetMapping("/departments/{offset}/{pageSize}")
@@ -153,11 +173,26 @@ public class AdminController {
         System.out.println(departmentDTOListPage);
 
         model.addAttribute("departmentslist", departmentDTOListPage.getList().get());
+        model.addAttribute("downloadCSV","admin/departments/downloadCSV");
+
         String pageURL = "admin/departments";
         CommonUtils.setPagination(offset.orElse(1), pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE), pageURL, departmentDTOListPage, model);
         return "admin/AdminViewAllDepartment";
     }
 
+    @GetMapping(value = "departments/downloadCSV/{offset}/{pageSize}")
+    public void downloadCSVForDepartmentData( @PathVariable Optional<Integer> offset, @PathVariable Optional<Integer> pageSize, HttpServletResponse response) throws IOException {
+
+        System.out.println("Exporting complaints with pagination "+offset.get()+" "+pageSize.get());
+        if (offset.isPresent() && offset.get() <= 1) offset = Optional.of(1);
+
+        DTOListPage<UserDTO> userDTODTOListPage = userService.getAllUser(offset.orElse(1),pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE));
+
+        response.setContentType("text/csv");
+        response.setHeader("Content-Disposition", "attachment; filename=\"data.csv\"");
+
+        CSVExport.sendCSV(response.getWriter(),userDTODTOListPage.getList().get(),UserDTO.exportToAdmin());
+    }
 
 
 
