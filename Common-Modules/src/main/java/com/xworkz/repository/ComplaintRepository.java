@@ -24,6 +24,8 @@ public interface ComplaintRepository {
 
     Optional<List<ComplaintDTO>> searchAllComplaintsForAdmin(ComplaintDTO complaintDTO);
 
+//    Optional<List<ComplaintDTO>> findUserComplaintsInNotification(Long empId, Long deptId);
+
     Boolean updateComplaint(RequestUpdateComplaintDTO requestUpdateComplaintDTO);
 
     public Optional<List<ComplaintDTO>> searchAllComplaintsForNotResolved(ComplaintDTO complaintDTO);
@@ -35,4 +37,9 @@ public interface ComplaintRepository {
 
     public DTOListPage<ComplaintDTO > searchAllComplaintsForResolved(ComplaintDTO complaintDTO, Integer offset, Integer pageSize);
 
+    Optional<List<ComplaintDTO>> findAdminComplaintsInNotification();
+
+    Optional<List<ComplaintDTO>> findDeptAdminComplaintsInNotification(Long deptId);
+
+    Optional<List<ComplaintDTO>> findUserComplaintsInNotification(Long empId, Long deptId);
 }

@@ -208,7 +208,7 @@ public class ComplaintRepositoryImpl implements ComplaintRepository {
             query.where(cb.and(predicates.toArray(new Predicate[0])));
 
             Query query1 = entityManager.createQuery(query);
-            query1.setFirstResult(CommonUtils.getFirstResultForPagination(offset,pageSize));
+            query1.setFirstResult(CommonUtils.getFirstResultForPagination(offset, pageSize));
             query1.setMaxResults(pageSize);
             List<ComplaintDTO> results = query1.getResultList();
 
@@ -306,7 +306,7 @@ public class ComplaintRepositoryImpl implements ComplaintRepository {
             query.where(cb.and(predicates.toArray(new Predicate[0])));
 
             Query query1 = entityManager.createQuery(query);
-            query1.setFirstResult(CommonUtils.getFirstResultForPagination(offset,pageSize));
+            query1.setFirstResult(CommonUtils.getFirstResultForPagination(offset, pageSize));
             query1.setMaxResults(pageSize);
             List<ComplaintDTO> results = query1.getResultList();
 
@@ -376,7 +376,7 @@ public class ComplaintRepositoryImpl implements ComplaintRepository {
             query.where(cb.and(predicates.toArray(new Predicate[0])));
 
             Query query1 = entityManager.createQuery(query);
-            query1.setFirstResult(CommonUtils.getFirstResultForPagination(offset,pageSize));
+            query1.setFirstResult(CommonUtils.getFirstResultForPagination(offset, pageSize));
             query1.setMaxResults(pageSize);
             List<ComplaintDTO> results = query1.getResultList();
 
@@ -392,6 +392,97 @@ public class ComplaintRepositoryImpl implements ComplaintRepository {
             entityManager.close();
         }
         return new DTOListPage<ComplaintDTO>(0L, Optional.empty());
+    }
+
+    @Override
+    public Optional<List<ComplaintDTO>> findAdminComplaintsInNotification() {
+
+        System.out.println("Complaint repo getting admin complaints in repo.");
+
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        try {
+            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+            CriteriaQuery<ComplaintDTO> query = cb.createQuery(ComplaintDTO.class);
+            Root<ComplaintDTO> root = query.from(ComplaintDTO.class);
+
+            List<Predicate> predicates = new ArrayList<>();
+
+            predicates.add(cb.isNull(root.get("deptId")));
+            predicates.add(cb.isNull(root.get("empId")));
+
+            query.where(cb.and(predicates.toArray(new Predicate[0])));
+
+            List<ComplaintDTO> complaintDTOList = entityManager.createQuery(query).getResultList();
+
+            return Optional.ofNullable(complaintDTOList);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<List<ComplaintDTO>> findDeptAdminComplaintsInNotification(Long deptId) {
+        System.out.println("Complaint repo getting dept admin complaints in repo. "+deptId);
+
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        try {
+            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+            CriteriaQuery<ComplaintDTO> query = cb.createQuery(ComplaintDTO.class);
+            Root<ComplaintDTO> root = query.from(ComplaintDTO.class);
+
+            List<Predicate> predicates = new ArrayList<>();
+
+            predicates.add(cb.equal(root.get("deptId"), deptId));
+            predicates.add(cb.isNull(root.get("empId")));
+
+            query.where(cb.and(predicates.toArray(new Predicate[0])));
+
+            List<ComplaintDTO> complaintDTOList = entityManager.createQuery(query).getResultList();
+
+            return Optional.ofNullable(complaintDTOList);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<List<ComplaintDTO>> findUserComplaintsInNotification(Long empId, Long deptId) {
+        System.out.println("Complaint repo getting employee complaints in repo. "+empId+" "+deptId);
+
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        try {
+            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+            CriteriaQuery<ComplaintDTO> query = cb.createQuery(ComplaintDTO.class);
+            Root<ComplaintDTO> root = query.from(ComplaintDTO.class);
+
+            List<Predicate> predicates = new ArrayList<>();
+
+            predicates.add(cb.equal(root.get("deptId"), deptId));
+            predicates.add(cb.equal(root.get("empId"), empId));
+            predicates.add(cb.like(root.get("status"), "%"+CommonUtils.IN_PROGRESS+"%"));
+
+//            predicates.add(cb.isNull(root.get("empId")));
+
+            query.where(cb.and(predicates.toArray(new Predicate[0])));
+
+            List<ComplaintDTO> complaintDTOList = entityManager.createQuery(query).getResultList();
+
+            return Optional.ofNullable(complaintDTOList);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return Optional.empty();
     }
 
 

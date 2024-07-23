@@ -350,4 +350,25 @@ public class DepartmentAdminController {
         return "ResetPassword";
     }
 
+
+    @GetMapping(value = "/notification")
+    @ResponseBody
+    public List<ComplaintDTO> getAdminNotification(Model model) throws IOException {
+
+        System.out.println("Admin get notification ");
+
+        try{
+            DepartmentAdminDTO departmentAdminDTO = (DepartmentAdminDTO) model.getAttribute("departmentAdminData");
+            System.out.println(departmentAdminDTO);
+            List<ComplaintDTO> complaintDTOList = complaintService.getDeptAdminComplaintNotification(departmentAdminDTO.getDepartmentId());
+            System.out.println(complaintDTOList);
+
+            return complaintDTOList;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return Collections.emptyList();
+    }
+
 }

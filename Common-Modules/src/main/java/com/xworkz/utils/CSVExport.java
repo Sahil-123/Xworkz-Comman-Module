@@ -1,18 +1,17 @@
 package com.xworkz.utils;
 
-import com.xworkz.entity.ComplaintDTO;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class CSVExport {
-
-
 
     private static Map<String, Object> toFieldMap(Object object) {
         Map<String, Object> fieldMap = new HashMap<>();

@@ -1,11 +1,15 @@
 package com.xworkz.controller;
 
+import com.xworkz.entity.ComplaintDTO;
+import com.xworkz.entity.DepartmentAdminDTO;
 import com.xworkz.entity.ImageDTO;
+import com.xworkz.entity.UserDTO;
 import com.xworkz.requestDto.UserProfileDTO;
 import com.xworkz.exceptions.InfoException;
 import com.xworkz.requestDto.RequestForgotPasswordDTO;
 import com.xworkz.requestDto.RequestResetPasswordDTO;
 import com.xworkz.requestDto.RequestSigningDTO;
+import com.xworkz.service.ComplaintService;
 import com.xworkz.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +25,8 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collections;
+import java.util.List;
 
 @Controller
 @RequestMapping("/")
@@ -28,6 +34,9 @@ import java.nio.file.Paths;
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ComplaintService complaintService;
 
     @PostMapping("/signin")
     public String signin(@Valid RequestSigningDTO requestSigningDTO, BindingResult bindingResult, Model model) {
@@ -199,6 +208,7 @@ public class UserController {
         model.addAttribute("link","raiseComplaint");
         return "User";
     }
+
 
 
 }

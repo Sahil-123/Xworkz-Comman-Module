@@ -35,4 +35,10 @@ public interface ComplaintService {
 
     DTOListPage<ComplaintDTO> searchResolvedComplaintsForEmployee(RequestFilterComplaintDTO requestFilterComplaintDTO,Integer offset,Integer pageSize, EmployeeDTO employeeDTO);
 
+    List<ComplaintDTO> getAdminComplaintNotification();
+
+    List<ComplaintDTO> getDeptAdminComplaintNotification(Long deptId);
+
+    List<ComplaintDTO> getUserComplaintNotification(Long empId, Long deptId);
+
 }

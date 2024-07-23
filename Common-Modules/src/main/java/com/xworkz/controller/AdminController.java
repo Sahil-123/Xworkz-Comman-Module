@@ -10,6 +10,7 @@ import com.xworkz.requestDto.RequestForgotPasswordDTO;
 import com.xworkz.requestDto.RequestResetPasswordDTO;
 import com.xworkz.requestDto.RequestSigningDTO;
 import com.xworkz.service.AdminService;
+import com.xworkz.service.ComplaintService;
 import com.xworkz.service.DepartmentService;
 import com.xworkz.service.UserService;
 import com.xworkz.utils.CSVExport;
@@ -25,6 +26,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -40,6 +43,9 @@ public class AdminController {
 
     @Autowired
     private DepartmentService departmentService;
+
+    @Autowired
+    private ComplaintService complaintService;
 
     @GetMapping("/signinPage")
     public String getSigningPage(Model model) {
@@ -192,6 +198,26 @@ public class AdminController {
         response.setHeader("Content-Disposition", "attachment; filename=\"data.csv\"");
 
         CSVExport.sendCSV(response.getWriter(),departmentDTOListPage.getList().get(),DepartmentDTO.exportToAdmin());
+    }
+
+
+    @GetMapping(value = "/notification")
+    @ResponseBody
+    public List<ComplaintDTO> getAdminNotification() throws IOException {
+
+        System.out.println("Admin get notification ");
+
+        try{
+            List<ComplaintDTO> complaintDTOList = complaintService.getAdminComplaintNotification();
+            System.out.println(complaintDTOList);
+
+            return complaintDTOList;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+        return Collections.emptyList();
     }
 
 

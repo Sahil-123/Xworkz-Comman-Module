@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,6 +47,7 @@ public class ComplaintServiceImpl implements ComplaintService {
         complaintDTO.setCreatedBy(userDTO.getFname()+" "+userDTO.getLname());
         complaintDTO.setCreatedDate(LocalDateTime.now());
         complaintDTO.setUserId(userDTO.getId());
+//        complaintDTO
 
         if (complaintRepository.save(complaintDTO)) {
             return complaintDTO;
@@ -93,7 +95,7 @@ public class ComplaintServiceImpl implements ComplaintService {
         ComplaintDTO complaintDTO = complaintRepository.findById(requestUpdateComplaintByAdminDTO.getComplaintId()).get();
         complaintDTO.setDeptId(requestUpdateComplaintByAdminDTO.getDepartment());
         complaintDTO.setStatus(requestUpdateComplaintByAdminDTO.getStatus());
-        complaintDTO.setEmpId(-1L);
+//        complaintDTO.setEmpId(-1L);
 
         if(!complaintRepository.update(complaintDTO)){
             throw new InfoException("Something is wrong complaint with id = "+requestUpdateComplaintByAdminDTO.getComplaintId()+" not updated");
@@ -151,6 +153,27 @@ public class ComplaintServiceImpl implements ComplaintService {
         addEmployeeDetails(employeeDTO, complaintDTO);
 
         return complaintRepository.searchAllComplaintsForResolved(complaintDTO,offset,pageSize);
+    }
+
+    @Override
+    public List<ComplaintDTO> getAdminComplaintNotification() {
+        System.out.println("Admin complaint notification service.");
+        Optional<List<ComplaintDTO>> complaintDTOList = complaintRepository.findAdminComplaintsInNotification();
+        return complaintDTOList.orElse(new ArrayList<>());
+    }
+
+    @Override
+    public List<ComplaintDTO> getDeptAdminComplaintNotification(Long deptId) {
+        System.out.println("Dept Admin complaint notification service. " +deptId);
+        Optional<List<ComplaintDTO>> complaintDTOList = complaintRepository.findDeptAdminComplaintsInNotification(deptId);
+        return complaintDTOList.orElse(new ArrayList<>());
+    }
+
+    @Override
+    public List<ComplaintDTO> getUserComplaintNotification(Long empId, Long deptId) {
+        System.out.println("user complaint notification service. " +empId+" "+deptId);
+        Optional<List<ComplaintDTO>> complaintDTOList = complaintRepository.findUserComplaintsInNotification(empId, deptId);
+        return complaintDTOList.orElse(new ArrayList<>());
     }
 
     private static void addEmployeeDetails(EmployeeDTO employeeDTO, ComplaintDTO complaintDTO) {

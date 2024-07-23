@@ -1,6 +1,5 @@
 package com.xworkz.controller;
 
-import com.sun.deploy.net.HttpResponse;
 import com.xworkz.dto.DTOListPage;
 import com.xworkz.entity.ComplaintDTO;
 import com.xworkz.entity.UserDTO;
@@ -13,11 +12,7 @@ import com.xworkz.service.ComplaintService;
 import com.xworkz.service.DepartmentService;
 import com.xworkz.utils.CSVExport;
 import com.xworkz.utils.CommonUtils;
-import com.xworkz.utils.CsvUtil;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVPrinter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.*;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/complaints")
@@ -130,9 +125,9 @@ public class ComplaintController {
 
     @RequestMapping(value = "user/downloadCSV/{offset}/{pageSize}", method = {RequestMethod.GET, RequestMethod.POST})
     public void exportAllComplaints(RequestFilterComplaintDTO requestFilterComplaintDTO, @PathVariable Optional<Integer> offset, @PathVariable Optional<Integer> pageSize, Model model, HttpServletResponse response) throws IOException {
-        System.out.println("View all complaints export to csv "+requestFilterComplaintDTO);
+        System.out.println("View all complaints export to csv " + requestFilterComplaintDTO);
 
-        System.out.println("Exporting complaints with pagination "+offset.get()+" "+pageSize.get());
+        System.out.println("Exporting complaints with pagination " + offset.get() + " " + pageSize.get());
         if (offset.isPresent() && offset.get() <= 1) offset = Optional.of(1);
 
         DTOListPage<ComplaintDTO> complaintDTODTOListPage = complaintService.searchComplaintsForAdmin(requestFilterComplaintDTO, offset.orElse(1), pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE));
@@ -140,12 +135,12 @@ public class ComplaintController {
         response.setContentType("text/csv");
         response.setHeader("Content-Disposition", "attachment; filename=\"data.csv\"");
 
-        CSVExport.sendCSV(response.getWriter(),complaintDTODTOListPage.getList().get(),ComplaintDTO.exportToAdmin());
+        CSVExport.sendCSV(response.getWriter(), complaintDTODTOListPage.getList().get(), ComplaintDTO.exportToAdmin());
     }
 
     @RequestMapping(value = "/viewAllComplaints/{offset}/{pageSize}", method = {RequestMethod.GET, RequestMethod.POST})
     public String viewComplaintsForAdmin(RequestFilterComplaintDTO requestFilterComplaintDTO, @PathVariable Optional<Integer> offset, @PathVariable Optional<Integer> pageSize, Model model) {
-        System.out.println("View all complaints "+requestFilterComplaintDTO);
+        System.out.println("View all complaints " + requestFilterComplaintDTO);
 
         try {
             if (offset.isPresent() && offset.get() <= 1) offset = Optional.of(1);
@@ -157,8 +152,8 @@ public class ComplaintController {
             } else {
                 model.addAttribute("infoError", "No complaints found.");
             }
-            model.addAttribute("filter",requestFilterComplaintDTO);
-            model.addAttribute("downloadCSV","complaints/user/downloadCSV");
+            model.addAttribute("filter", requestFilterComplaintDTO);
+            model.addAttribute("downloadCSV", "complaints/user/downloadCSV");
             CommonUtils.setPagination(offset.orElse(1), pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE), "complaints/viewAllComplaints", complaintDTODTOListPage, model);
 
             return "admin/AdminViewComplaints";

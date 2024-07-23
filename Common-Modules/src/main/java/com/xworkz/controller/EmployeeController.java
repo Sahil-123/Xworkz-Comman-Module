@@ -2,10 +2,7 @@ package com.xworkz.controller;
 
 
 import com.xworkz.dto.DTOListPage;
-import com.xworkz.entity.ComplaintDTO;
-import com.xworkz.entity.EmployeeDTO;
-import com.xworkz.entity.EmployeeImageDTO;
-import com.xworkz.entity.ImageDTO;
+import com.xworkz.entity.*;
 import com.xworkz.exceptions.InfoException;
 import com.xworkz.requestDto.*;
 import com.xworkz.responseDto.ResponseDTO;
@@ -29,6 +26,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -421,6 +419,26 @@ public class EmployeeController {
         catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+
+    @GetMapping(value = "/notification")
+    @ResponseBody
+    public List<ComplaintDTO> getAdminNotification(Model model) throws IOException {
+
+        System.out.println("Employee get notification ");
+
+        try{
+            EmployeeDTO employeeDTO = (EmployeeDTO) model.getAttribute("employeeData");
+            System.out.println(employeeDTO);
+            List<ComplaintDTO> complaintDTOList = complaintService.getUserComplaintNotification(employeeDTO.getId(),employeeDTO.getDepartmentId());
+            System.out.println(complaintDTOList);
+            return complaintDTOList;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return Collections.emptyList();
     }
 
 
