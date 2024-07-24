@@ -60,9 +60,11 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="admin/RegisterDepartment.jsp">Add Department</a></li>
-                        <li><a class="dropdown-item" href="admin/RegisterDepartmentAdmin.jsp">Add Department Admin</a></li>
+                        <li><a class="dropdown-item" href="admin/RegisterDepartmentAdmin.jsp">Add Department Admin</a>
+                        </li>
                         <li><a class="dropdown-item" href="admin/departments/1/7">View Department</a></li>
-                        <li><a class="dropdown-item" href="departmentAdmin/departmentAdmins/1/7">View Department Admin</a></li>
+                        <li><a class="dropdown-item" href="departmentAdmin/departmentAdmins/1/7">View Department
+                                Admin</a></li>
                     </ul>
 
                 </li>
@@ -102,7 +104,27 @@
                         </ul>
                     </div>
                 </li>
+
+
+                <li class="me-2">
+                    <a class="nav-link notification" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button"
+                        data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                        <i class="fa-solid fa-bell fa-lg"></i>
+                        <span class="badge" id="notificationCount">3</span>
+                    </a>
+                </li>
+
             </ul>
         </div>
     </div>
 </nav>
+
+
+<div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasRight"
+    aria-labelledby="offcanvasRightLabel">
+    <div class="offcanvas-header">
+        <h5 id="offcanvasRightLabel">Offcanvas right</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">...</div>
+</div>
