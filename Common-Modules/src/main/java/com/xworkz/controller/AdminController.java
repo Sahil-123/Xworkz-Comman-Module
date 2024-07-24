@@ -1,6 +1,7 @@
 package com.xworkz.controller;
 
 import com.xworkz.dto.DTOListPage;
+import com.xworkz.dto.NotificationList;
 import com.xworkz.entity.ComplaintDTO;
 import com.xworkz.entity.DepartmentDTO;
 import com.xworkz.entity.UserDTO;
@@ -203,12 +204,12 @@ public class AdminController {
 
     @GetMapping(value = "/notification")
     @ResponseBody
-    public List<ComplaintDTO> getAdminNotification() throws IOException {
+    public NotificationList<ComplaintDTO> getAdminNotification() throws IOException {
 
         System.out.println("Admin get notification ");
 
         try{
-            List<ComplaintDTO> complaintDTOList = complaintService.getAdminComplaintNotification();
+            NotificationList<ComplaintDTO> complaintDTOList = complaintService.getAdminComplaintNotification();
             System.out.println(complaintDTOList);
 
             return complaintDTOList;
@@ -217,7 +218,7 @@ public class AdminController {
         }
 
 
-        return Collections.emptyList();
+        return new NotificationList<ComplaintDTO>();
     }
 
 

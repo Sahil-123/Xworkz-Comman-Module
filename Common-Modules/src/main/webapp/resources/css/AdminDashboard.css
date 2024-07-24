@@ -107,3 +107,45 @@ label {
 }
 
 
+.cardHead{
+    font-size: 0.80rem;
+    font-family: sans-serif;
+}
+
+.cardBody{
+    font-size: 0.85rem;
+    font-family: sans-serif;
+}
+
+::-webkit-scrollbar {
+    width: 0;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #bcb9b9; 
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888; 
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
+
+  .hoverEffect{
+    transition: 0.2s;
+  }
+
+  .hoverEffect:hover{
+    padding: 1px;
+    background-color: rgb(214, 211, 211) ;
+    cursor: pointer;
+  }
+
+  #notificationBody{
+   
+  }

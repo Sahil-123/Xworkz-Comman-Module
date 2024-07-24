@@ -1,6 +1,7 @@
 package com.xworkz.service;
 
 import com.xworkz.dto.DTOListPage;
+import com.xworkz.dto.NotificationList;
 import com.xworkz.entity.ComplaintDTO;
 import com.xworkz.entity.EmployeeDTO;
 import com.xworkz.entity.UserDTO;
@@ -35,7 +36,7 @@ public interface ComplaintService {
 
     DTOListPage<ComplaintDTO> searchResolvedComplaintsForEmployee(RequestFilterComplaintDTO requestFilterComplaintDTO,Integer offset,Integer pageSize, EmployeeDTO employeeDTO);
 
-    List<ComplaintDTO> getAdminComplaintNotification();
+    NotificationList<ComplaintDTO> getAdminComplaintNotification();
 
     List<ComplaintDTO> getDeptAdminComplaintNotification(Long deptId);
 

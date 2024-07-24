@@ -1,6 +1,7 @@
 package com.xworkz.service;
 
 import com.xworkz.dto.DTOListPage;
+import com.xworkz.dto.NotificationList;
 import com.xworkz.entity.ComplaintDTO;
 import com.xworkz.entity.EmployeeDTO;
 import com.xworkz.entity.UserDTO;
@@ -12,6 +13,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -156,10 +158,30 @@ public class ComplaintServiceImpl implements ComplaintService {
     }
 
     @Override
-    public List<ComplaintDTO> getAdminComplaintNotification() {
+    public NotificationList<ComplaintDTO> getAdminComplaintNotification() {
         System.out.println("Admin complaint notification service.");
         Optional<List<ComplaintDTO>> complaintDTOList = complaintRepository.findAdminComplaintsInNotification();
-        return complaintDTOList.orElse(new ArrayList<>());
+
+        if(complaintDTOList.isPresent()){
+            NotificationList<ComplaintDTO> notificationList = new NotificationList<>();
+            notificationList.setCount(complaintDTOList.get().size());
+            LocalDate todaysDate = LocalDate.now();
+            complaintDTOList.get().forEach(e->{
+                if(todaysDate.equals(e.getCreatedDate().toLocalDate())){
+                    notificationList.getToDays().add(e);
+                }else{
+                    notificationList.getOlder().add(e);
+                }
+            });
+
+            notificationList.getOlder().sort((obj1, obj2)-> obj2.getCreatedDate().compareTo(obj1.getCreatedDate()));
+
+            notificationList.getToDays().sort((obj1, obj2)-> obj2.getCreatedDate().compareTo(obj1.getCreatedDate()));
+
+            return notificationList;
+        }
+
+        return new NotificationList<>();
     }
 
     @Override
