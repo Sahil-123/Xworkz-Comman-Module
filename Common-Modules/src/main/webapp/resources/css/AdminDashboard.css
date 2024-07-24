@@ -1,0 +1,109 @@
+label {
+  font-weight: bold;
+}
+
+.error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 8px;
+  color: red;
+}
+
+.compulsary {
+  color: red;
+}
+
+#successIcon {
+  hight: 100vmin;
+  width: 10vmin;
+  background: red;
+}
+
+.userProfile {
+  display: flex;
+  justify-content: center;
+  align-item: center;
+  background: grey;
+  width: 38px;
+  height: 38px;
+  border-radius: 60%;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.userImg {
+  width: 50px;
+  height: 50px;
+}
+
+.defaultUserIcon {
+  margin-top: 10px;
+}
+
+.customized-item {
+  width: 6vmax;
+  text-align: center;
+  cursor: pointer;
+}
+
+.cutomize-vertical-nav {
+  width: 8vmax;
+  height: 41vmax;
+}
+
+.data-page {
+  padding: 20px;
+}
+
+.customeHeight {
+  height: 70vh;
+  width: 85vw;
+  overflow: scroll;
+  overflow-x: scroll;
+}
+
+.notificationIcon {
+  display: flex;
+  justify-content: center;
+  align-item: center;
+  /* background: grey; */
+  width: 50px;
+  height: 50px;
+  border-radius: 60%;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.notification {
+  /* background-color: #555; */
+  /* color: white; */
+  /* text-decoration: none; */
+  /* padding: 15px 26px; */
+  position: relative;
+  /* display: inline-block; */
+  /* border-radius: 2px; */
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 60%;
+  width: 40px;
+  height: 40px;
+}
+
+.notification .badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  /* padding: 5px 10px; */
+  padding: 3px;
+  padding-left: 4px;
+  padding-right: 4px;
+
+  border-radius: 20%;
+  background: red;
+  color: white;
+}
+
+
