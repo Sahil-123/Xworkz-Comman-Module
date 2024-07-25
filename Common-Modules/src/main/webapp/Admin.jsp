@@ -27,7 +27,6 @@
 
             </div>
 
-            <script type="module" src="resources/js/admin/AdminNotification.js"></script>
 
     </body>
 

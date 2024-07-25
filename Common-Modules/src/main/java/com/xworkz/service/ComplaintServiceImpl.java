@@ -71,6 +71,11 @@ public class ComplaintServiceImpl implements ComplaintService {
     }
 
     @Override
+    public ComplaintDTO searchComplaints(RequestFilterComplaintDTO requestFilterComplaintDTO) {
+        return null;
+    }
+
+    @Override
     public DTOListPage<ComplaintDTO> searchComplaints(RequestFilterComplaintDTO requestFilterComplaintDTO, Integer offset, Integer pageSize) {
         System.out.println("Search Complaint "+requestFilterComplaintDTO);
         ComplaintDTO complaintDTO = modelMapper.map(requestFilterComplaintDTO,ComplaintDTO.class);
@@ -185,10 +190,30 @@ public class ComplaintServiceImpl implements ComplaintService {
     }
 
     @Override
-    public List<ComplaintDTO> getDeptAdminComplaintNotification(Long deptId) {
+    public NotificationList<ComplaintDTO> getDeptAdminComplaintNotification(Long deptId) {
         System.out.println("Dept Admin complaint notification service. " +deptId);
         Optional<List<ComplaintDTO>> complaintDTOList = complaintRepository.findDeptAdminComplaintsInNotification(deptId);
-        return complaintDTOList.orElse(new ArrayList<>());
+
+        if(complaintDTOList.isPresent()){
+            NotificationList<ComplaintDTO> notificationList = new NotificationList<>();
+            notificationList.setCount(complaintDTOList.get().size());
+            LocalDate todaysDate = LocalDate.now();
+            complaintDTOList.get().forEach(e->{
+                if(todaysDate.equals(e.getCreatedDate().toLocalDate())){
+                    notificationList.getToDays().add(e);
+                }else{
+                    notificationList.getOlder().add(e);
+                }
+            });
+
+            notificationList.getOlder().sort((obj1, obj2)-> obj2.getCreatedDate().compareTo(obj1.getCreatedDate()));
+
+            notificationList.getToDays().sort((obj1, obj2)-> obj2.getCreatedDate().compareTo(obj1.getCreatedDate()));
+
+            return notificationList;
+        }
+
+        return new NotificationList<>();
     }
 
     @Override

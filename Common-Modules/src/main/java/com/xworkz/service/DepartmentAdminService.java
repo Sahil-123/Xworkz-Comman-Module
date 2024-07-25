@@ -33,4 +33,6 @@ public interface DepartmentAdminService {
     String validateAndSetForgotPassword(RequestForgotPasswordDTO requestForgotPasswordDTO, Model model);
 
     Boolean validateAndResetPassword(RequestResetPasswordDTO requestResetPasswordDTO);
+
+    ComplaintDTO searchComplaint(int complaintId, Long deptId);
 }

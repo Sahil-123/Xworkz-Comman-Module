@@ -8,6 +8,8 @@
             <%-- <link rel="stylesheet" href="resources/css/AdminViewUser.css"> --%>
                 <link rel="stylesheet" href="resources/css/Table.css">
                 <%@ include file="../user/UserHeader.jsp" %>
+        <%@ include file="../component/AdminHeaderLink.jsp" %>
+
 
                     <title>Departments</title>
     </head>

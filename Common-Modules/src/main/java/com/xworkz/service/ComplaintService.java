@@ -18,6 +18,8 @@ public interface ComplaintService {
     ComplaintDTO updateComplaint(ComplaintDTO complaint);
 //    Optional<List<ComplaintDTO>> searchComplaints(RequestFilterComplaintDTO requestFilterComplaintDTO);
 
+    ComplaintDTO searchComplaints(RequestFilterComplaintDTO requestFilterComplaintDTO);
+
     DTOListPage<ComplaintDTO> searchComplaints(RequestFilterComplaintDTO requestFilterComplaintDTO, Integer offset, Integer pageSize);
 
     DTOListPage<ComplaintDTO> searchComplaintsForAdmin(RequestFilterComplaintDTO requestFilterComplaintDTO, Integer offset, Integer pageSize);
@@ -38,7 +40,7 @@ public interface ComplaintService {
 
     NotificationList<ComplaintDTO> getAdminComplaintNotification();
 
-    List<ComplaintDTO> getDeptAdminComplaintNotification(Long deptId);
+    NotificationList<ComplaintDTO> getDeptAdminComplaintNotification(Long deptId);
 
     List<ComplaintDTO> getUserComplaintNotification(Long empId, Long deptId);
 

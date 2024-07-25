@@ -2,12 +2,14 @@ package com.xworkz.controller;
 
 
 import com.xworkz.dto.DTOListPage;
+import com.xworkz.dto.NotificationList;
 import com.xworkz.entity.ComplaintDTO;
 import com.xworkz.entity.DepartmentAdminDTO;
 import com.xworkz.entity.DepartmentDTO;
 import com.xworkz.entity.EmployeeDTO;
 import com.xworkz.exceptions.InfoException;
 import com.xworkz.requestDto.*;
+import com.xworkz.responseDto.DepartmentNameAndIdResponseDto;
 import com.xworkz.responseDto.EmployeeNameAndIdResponseDto;
 import com.xworkz.responseDto.ResponseDTO;
 import com.xworkz.service.ComplaintService;
@@ -353,14 +355,14 @@ public class DepartmentAdminController {
 
     @GetMapping(value = "/notification")
     @ResponseBody
-    public List<ComplaintDTO> getAdminNotification(Model model) throws IOException {
+    public NotificationList<ComplaintDTO> getAdminNotification(Model model) throws IOException {
 
-        System.out.println("Admin get notification ");
+        System.out.println("Department Admin get notification ");
 
         try{
             DepartmentAdminDTO departmentAdminDTO = (DepartmentAdminDTO) model.getAttribute("departmentAdminData");
             System.out.println(departmentAdminDTO);
-            List<ComplaintDTO> complaintDTOList = complaintService.getDeptAdminComplaintNotification(departmentAdminDTO.getDepartmentId());
+            NotificationList<ComplaintDTO> complaintDTOList = complaintService.getDeptAdminComplaintNotification(departmentAdminDTO.getDepartmentId());
             System.out.println(complaintDTOList);
 
             return complaintDTOList;
@@ -368,7 +370,29 @@ public class DepartmentAdminController {
             e.printStackTrace();
         }
 
-        return Collections.emptyList();
+        return new NotificationList<>();
+    }
+
+    @GetMapping("/viewComplaint")
+    public String getComplaintDetails(@RequestParam int complaintId ,Model model) {
+//        model.addAttribute("admin", true);
+
+        try{
+            DepartmentAdminDTO departmentAdminDTO = (DepartmentAdminDTO) model.getAttribute("departmentAdminData");
+            ComplaintDTO complaintDTO = departmentAdminService.searchComplaint(complaintId,departmentAdminDTO.getDepartmentId());
+
+            model.addAttribute("complaint",complaintDTO);
+            model.addAttribute("viewAccess", "departmentAdmin");
+
+
+            return "common/ViewComplaint";
+        }catch (InfoException e){
+            model.addAttribute("infoError", e.getMessage());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return "common/ViewComplaint";
     }
 
 }

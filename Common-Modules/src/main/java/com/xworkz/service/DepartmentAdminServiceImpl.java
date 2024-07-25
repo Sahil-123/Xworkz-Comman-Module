@@ -316,4 +316,18 @@ public class DepartmentAdminServiceImpl implements DepartmentAdminService {
 
         throw new InfoException("Invalid Email or Password");
     }
+
+    @Override
+    public ComplaintDTO searchComplaint(int complaintId, Long deptId) {
+        ComplaintDTO complaintDTO = new ComplaintDTO();
+        complaintDTO.setId((long) complaintId);
+        complaintDTO.setDeptId(deptId);
+        Optional<List<ComplaintDTO>> optionalComplaintDTOList = complaintRepository.searchAllComplaintsForAdmin(complaintDTO);
+
+        if(!optionalComplaintDTOList.isPresent() && optionalComplaintDTOList.get().isEmpty()){
+            throw new InfoException("Complaint Not Found");
+        }
+
+        return optionalComplaintDTOList.get().get(0);
+    }
 }

@@ -10,6 +10,7 @@ import com.xworkz.requestDto.RequestFilterComplaintDTO;
 import com.xworkz.requestDto.RequestForgotPasswordDTO;
 import com.xworkz.requestDto.RequestResetPasswordDTO;
 import com.xworkz.requestDto.RequestSigningDTO;
+import com.xworkz.responseDto.DepartmentNameAndIdResponseDto;
 import com.xworkz.service.AdminService;
 import com.xworkz.service.ComplaintService;
 import com.xworkz.service.DepartmentService;
@@ -222,6 +223,27 @@ public class AdminController {
     }
 
 
+    @GetMapping("/viewComplaint")
+    public String getComplaintDetails(@RequestParam int complaintId ,Model model) {
+//        model.addAttribute("admin", true);
+
+        try{
+            ComplaintDTO complaintDTO = adminService.searchComplaint(complaintId);
+
+            List<DepartmentNameAndIdResponseDto> departmentNameAndIdResponseDtos = departmentService.getAllDepartmentsNameAndId();
+
+            model.addAttribute("complaint",complaintDTO);
+            model.addAttribute("viewAccess", "admin");
+            model.addAttribute("departments",departmentNameAndIdResponseDtos);
+            return "common/ViewComplaint";
+        }catch (InfoException e){
+            model.addAttribute("infoError", e.getMessage());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return "common/ViewComplaint";
+    }
 
 
 //    private Integer findPageCount(Long totalRecords,Integer pageSize){

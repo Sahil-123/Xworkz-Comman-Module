@@ -1,5 +1,6 @@
 package com.xworkz.service;
 
+import com.xworkz.entity.ComplaintDTO;
 import com.xworkz.requestDto.RequestForgotPasswordDTO;
 import com.xworkz.requestDto.RequestResetPasswordDTO;
 import com.xworkz.requestDto.RequestSigningDTO;
@@ -12,4 +13,6 @@ public interface AdminService {
     String validateAndSetForgotPassword(RequestForgotPasswordDTO requestForgotPasswordDTO,Model model);
 
     boolean validateAndResetPassword(RequestResetPasswordDTO requestResetPasswordDTO);
+
+    ComplaintDTO searchComplaint(int complaintId);
 }

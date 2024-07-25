@@ -7,6 +7,9 @@
         <%@ include file="../component/HeaderLink.jsp" %>
             <base href="http://localhost:8080/Common-Modules/">
             <link rel="stylesheet" href="resources/css/RegisterCommon.css">
+            <%@ include file="../component/AdminHeaderLink.jsp" %>
+
+
 
             <title>Register Department Admin</title>
 

@@ -6,6 +6,7 @@
         <meta charset="UTF-8">
         <%@ include file="../component/HeaderLink.jsp" %>
             <base href="http://localhost:8080/Common-Modules/">
+                <%@ include file="../department/DepartmentAdminHeaderLinks.jsp" %>
 
 
             <title>Register Employee</title>

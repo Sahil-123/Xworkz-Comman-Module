@@ -9,9 +9,9 @@
                 <link rel="stylesheet" href="resources/css/Table.css">
 
                 <%@ include file="../user/UserHeader.jsp" %>
+                <%@ include file="../department/DepartmentAdminHeaderLinks.jsp" %>
 
-
-                    <title>Department Complaints</title>
+                <title>Department Complaints</title>
 
     </head>
 

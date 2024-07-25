@@ -7,6 +7,8 @@
         <%@ include file="../component/HeaderLink.jsp" %>
             <link rel="stylesheet" href="resources/css/Table.css">
             <%@ include file="../user/UserHeader.jsp" %>
+        <%@ include file="../component/AdminHeaderLink.jsp" %>
+
 
                 <title>Department Admin Details</title>
     </head>

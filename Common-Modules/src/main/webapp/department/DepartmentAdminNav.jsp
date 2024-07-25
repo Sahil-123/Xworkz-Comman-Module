@@ -86,9 +86,50 @@
                         </ul>
                     </div>
                 </li>
+
+                <li class="me-3">
+                    <a class="position-relative nav-link" data-bs-toggle="offcanvas" href="#offcanvasExample"
+                        role="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+                        aria-controls="offcanvasRight">
+                        <i class="fa-solid fa-bell fa-lg"></i>
+                        <!-- <span class="badge" id="notificationCount">3</span> -->
+                        <!-- <span class="position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-danger p-2"><span class="visually-hidden">unread messages</span></span> -->
+                        <span
+                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary bg-danger" id="notificationCount">0
+                            <span class="visually-hidden">unread messages</span></span>
+
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
 </nav>
 
 <%-- ${departmentAdminData} --%>
+
+<div class="offcanvas offcanvas-end bg-dark bg-gradient rounded-3 p-2" data-bs-scroll="true" data-bs-backdrop="false"
+    tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+    <div class="offcanvas-header border-bottom nav-link">
+        <h5 id="offcanvasRightLabel" class="text-white">Notification</h5>
+        <button type="button" class="btn-close text-reset btn-close-white" data-bs-dismiss="offcanvas"
+            aria-label="Close"></button>
+    </div>
+
+    <div class="offcanvas-body" id="notificationBody">
+
+        <!-- <div class="row mb-2" id="2" onclick="showComplaint(this)">
+            <div class="card w-100 hoverEffect">
+                <div class="card-body ">
+                    <div class="d-flex justify-content-between cardHead">
+                        <span class="card-title">HR Department</span>
+                        <span>hi</span>
+                    </div>
+                    <div class="cardBody">
+                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+
+    </div>
+</div>

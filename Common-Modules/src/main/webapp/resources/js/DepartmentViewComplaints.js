@@ -25,4 +25,7 @@ async function loadContent() {
 
 }
 
-window.onload = loadContent;
+// window.onload = loadContent;
+window.loadContent = loadContent;
+loadContent();
+

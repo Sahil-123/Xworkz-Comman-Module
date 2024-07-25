@@ -3,6 +3,7 @@ import * as ajax from "./Ajax.js";
 var departments = [];
 
 async function loadDepartment() {
+  alert("loading department")
   console.log("loading department");
   await ajax.get("department/getAllDepartments", (response) => {
     console.log(response);
@@ -28,4 +29,8 @@ async function loadDepartment() {
 
 }
 
+loadDepartment();
+
 window.loadDepartment = loadDepartment;
+// window.onload = loadDepartment;
+

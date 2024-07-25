@@ -1,8 +1,10 @@
 package com.xworkz.service;
 
 import com.xworkz.entity.AdminDTO;
+import com.xworkz.entity.ComplaintDTO;
 import com.xworkz.exceptions.InfoException;
 import com.xworkz.repository.AdminRepository;
+import com.xworkz.repository.ComplaintRepository;
 import com.xworkz.requestDto.RequestForgotPasswordDTO;
 import com.xworkz.requestDto.RequestResetPasswordDTO;
 import com.xworkz.requestDto.RequestSigningDTO;
@@ -25,6 +27,9 @@ public class AdminServiceImpl implements AdminService{
 
     @Autowired
     private CustomeMailSender mailSender;
+
+    @Autowired
+    private ComplaintRepository complaintRepository;
 
     @Override
     public String signin(RequestSigningDTO requestSigningDTO, Model model) {
@@ -163,5 +168,15 @@ public class AdminServiceImpl implements AdminService{
         }
 
         throw new InfoException("Invalid Email or Password");
+    }
+
+    @Override
+    public ComplaintDTO searchComplaint(int complaintId) {
+        Optional<ComplaintDTO> complaintDTOOptional = complaintRepository.findById((long)complaintId);
+        if(!complaintDTOOptional.isPresent()){
+            throw new InfoException("Complaint Not Found");
+        }
+
+        return complaintDTOOptional.get();
     }
 }
