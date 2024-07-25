@@ -215,14 +215,16 @@ async function updateStatus(event, element, complaintId, spinner) {
     }
 }
 
-async function resendOTP() {
+async function resendOTP(spinner) {
     try {
+        bootstrap.Modal.getOrCreateInstance(spinner).show();
         await ajax.get(
             "employee/resolveComplaintOtp?complaintId=" + data.complaintId,
             (response) => {
                 if (response.status) {
                     message = response.message;
                     addAlert(response.message, "success", "resolverModelAlert");
+                    bootstrap.Modal.getOrCreateInstance(spinner).hide();
                 } else {
                     alert(response.message);
                 }
@@ -245,6 +247,7 @@ function addAlert(message, type, element) {
         "</div>",
     ].join("");
 
+    alertPlaceholder.innerHTML='';
     alertPlaceholder.append(wrapper);
 }
 

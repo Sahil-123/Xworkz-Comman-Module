@@ -42,6 +42,6 @@ public interface ComplaintService {
 
     NotificationList<ComplaintDTO> getDeptAdminComplaintNotification(Long deptId);
 
-    List<ComplaintDTO> getUserComplaintNotification(Long empId, Long deptId);
+    NotificationList<ComplaintDTO> getUserComplaintNotification(Long empId, Long deptId);
 
 }

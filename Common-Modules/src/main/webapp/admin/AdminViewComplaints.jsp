@@ -28,6 +28,27 @@
                     <div class="table-responsive-sm p-4 ">
                         <h3 class="text-center"> Complaints Details </h3>
                         <br>
+                        <c:if test="${complaintsList != null && !complaintsList.isEmpty()}">
+
+                            <!-- <div id="filterData" class=" d-flex mb-2 p-2 justify-content-end customeWidth">
+                                <form action="${downloadCSV}/${currentPage}/${pageSize}" method="post" target="_blank">
+
+                                    <input type="hidden" value="${filter.complaintType}" name="complaintType" />
+                                    <input type="hidden" value="${filter.country}" name="country" />
+                                    <input type="hidden" value="${filter.state}" name="state" />
+                                    <input type="hidden" value="${filter.city}" name="city" />
+                                    <input type="hidden" value="${filter.status}" name="status" />
+
+                                    <button type="submit" class="btn btn-default border border-primary" role="button">
+                                        <i class="fa-solid fa-file-csv"></i> Download CSV
+                                    </button>
+                                </form>
+                            </div> -->
+
+                            <%@ include file="../common/CSVDownload.jsp" %>
+
+                        </c:if>
+                        
                         <form action="complaints/viewAllComplaints/1/7" method="POST">
                             <div
                                 class=" d-flex mb-2 p-2 border border-1 rounded-3 border-secondary justify-content-between">
@@ -66,26 +87,7 @@
                             </div>
                         </form>
 
-                        <c:if test="${complaintsList != null && !complaintsList.isEmpty()}">
-
-                            <!-- <div id="filterData" class=" d-flex mb-2 p-2 justify-content-end customeWidth">
-                                <form action="${downloadCSV}/${currentPage}/${pageSize}" method="post" target="_blank">
-
-                                    <input type="hidden" value="${filter.complaintType}" name="complaintType" />
-                                    <input type="hidden" value="${filter.country}" name="country" />
-                                    <input type="hidden" value="${filter.state}" name="state" />
-                                    <input type="hidden" value="${filter.city}" name="city" />
-                                    <input type="hidden" value="${filter.status}" name="status" />
-
-                                    <button type="submit" class="btn btn-default border border-primary" role="button">
-                                        <i class="fa-solid fa-file-csv"></i> Download CSV
-                                    </button>
-                                </form>
-                            </div> -->
-
-                            <%@ include file="../common/CSVDownload.jsp" %>
-
-                        </c:if>
+                        
 
                         <c:if test="${complaintsList == null || complaintsList.isEmpty() }">
                             <div class=" d-flex mb-2 p-2 justify-content-center customeWidth" style="width: 85vw;">

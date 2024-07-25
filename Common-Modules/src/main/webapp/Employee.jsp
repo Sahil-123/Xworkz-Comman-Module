@@ -7,6 +7,9 @@
         <%@ include file="component/HeaderLink.jsp" %>
             <base href="http://localhost:8080/Common-Modules/">
 
+                <%@ include file="../employee/EmployeeHeaderLinks.jsp" %>
+
+
 
             <title>Employee Dashboard</title>
 

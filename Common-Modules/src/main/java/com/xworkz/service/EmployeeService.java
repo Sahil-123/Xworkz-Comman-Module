@@ -1,6 +1,7 @@
 package com.xworkz.service;
 
 import com.xworkz.dto.DTOListPage;
+import com.xworkz.entity.ComplaintDTO;
 import com.xworkz.entity.EmployeeDTO;
 import com.xworkz.requestDto.*;
 import com.xworkz.responseDto.EmployeeNameAndIdResponseDto;
@@ -39,4 +40,6 @@ public interface EmployeeService {
     ResponseResolveComplaintDto resolveOtherStatusComplaint(RequestOtherStatusComplaintDTO requestResolveComplaintDTO, EmployeeDTO employeeDTO);
 
     Boolean editProfile(RequestEmployeeProfileDTO requestEmployeeProfileDTO, Model model) throws IOException;
+
+    ComplaintDTO searchComplaint(int complaintId, Long id, Long departmentId);
 }

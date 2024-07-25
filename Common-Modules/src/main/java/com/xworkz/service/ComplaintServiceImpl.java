@@ -217,10 +217,29 @@ public class ComplaintServiceImpl implements ComplaintService {
     }
 
     @Override
-    public List<ComplaintDTO> getUserComplaintNotification(Long empId, Long deptId) {
+    public NotificationList<ComplaintDTO> getUserComplaintNotification(Long empId, Long deptId) {
         System.out.println("user complaint notification service. " +empId+" "+deptId);
         Optional<List<ComplaintDTO>> complaintDTOList = complaintRepository.findUserComplaintsInNotification(empId, deptId);
-        return complaintDTOList.orElse(new ArrayList<>());
+        if(complaintDTOList.isPresent()){
+            NotificationList<ComplaintDTO> notificationList = new NotificationList<>();
+            notificationList.setCount(complaintDTOList.get().size());
+            LocalDate todaysDate = LocalDate.now();
+            complaintDTOList.get().forEach(e->{
+                if(todaysDate.equals(e.getCreatedDate().toLocalDate())){
+                    notificationList.getToDays().add(e);
+                }else{
+                    notificationList.getOlder().add(e);
+                }
+            });
+
+            notificationList.getOlder().sort((obj1, obj2)-> obj2.getCreatedDate().compareTo(obj1.getCreatedDate()));
+
+            notificationList.getToDays().sort((obj1, obj2)-> obj2.getCreatedDate().compareTo(obj1.getCreatedDate()));
+
+            return notificationList;
+        }
+
+        return new NotificationList<>();
     }
 
     private static void addEmployeeDetails(EmployeeDTO employeeDTO, ComplaintDTO complaintDTO) {

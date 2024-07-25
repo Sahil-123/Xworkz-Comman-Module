@@ -2,6 +2,7 @@ package com.xworkz.controller;
 
 
 import com.xworkz.dto.DTOListPage;
+import com.xworkz.dto.NotificationList;
 import com.xworkz.entity.*;
 import com.xworkz.exceptions.InfoException;
 import com.xworkz.requestDto.*;
@@ -424,21 +425,43 @@ public class EmployeeController {
 
     @GetMapping(value = "/notification")
     @ResponseBody
-    public List<ComplaintDTO> getAdminNotification(Model model) throws IOException {
+    public NotificationList<ComplaintDTO> getAdminNotification(Model model) throws IOException {
 
         System.out.println("Employee get notification ");
 
         try{
             EmployeeDTO employeeDTO = (EmployeeDTO) model.getAttribute("employeeData");
             System.out.println(employeeDTO);
-            List<ComplaintDTO> complaintDTOList = complaintService.getUserComplaintNotification(employeeDTO.getId(),employeeDTO.getDepartmentId());
+            NotificationList<ComplaintDTO> complaintDTOList = complaintService.getUserComplaintNotification(employeeDTO.getId(),employeeDTO.getDepartmentId());
             System.out.println(complaintDTOList);
             return complaintDTOList;
         }catch (Exception e){
             e.printStackTrace();
         }
 
-        return Collections.emptyList();
+        return new NotificationList<ComplaintDTO>();
+    }
+
+    @GetMapping("/viewComplaint")
+    public String getComplaintDetails(@RequestParam int complaintId ,Model model) {
+//        model.addAttribute("admin", true);
+
+        try{
+            EmployeeDTO employeeDTO = (EmployeeDTO) model.getAttribute("employeeData");
+            ComplaintDTO complaintDTO = employeeService.searchComplaint(complaintId,employeeDTO.getId(),employeeDTO.getDepartmentId());
+
+            model.addAttribute("complaint",complaintDTO);
+            model.addAttribute("viewAccess", "employee");
+
+
+            return "common/ViewComplaint";
+        }catch (InfoException e){
+            model.addAttribute("infoError", e.getMessage());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return "common/ViewComplaint";
     }
 
 

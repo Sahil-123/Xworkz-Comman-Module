@@ -8,6 +8,9 @@
 
         <%@ include file="../component/HeaderLink.jsp" %>
             <%@ include file="../user/UserHeader.jsp" %>
+                <link rel="stylesheet" href="resources/css/Notification.css">
+
+
 
                 <c:choose>
 
@@ -19,6 +22,7 @@
                     </c:when>
 
                     <c:otherwise>
+                        <link rel="stylesheet" href="resources/css/ViewEmployeeComplaint.css">
 
                     </c:otherwise>
                 </c:choose>
@@ -74,16 +78,22 @@
         </c:when>
 
         <c:otherwise>
-            <%@ include file="../department/DepartmentAdminNav.jsp" %>
+            <%@ include file="../employee/EmployeeNav.jsp" %>
         </c:otherwise>
     </c:choose>
 
-    <div class="container-md">
+    <div class="container-md mt-3">
+        <span class="text-danger">
+            ${infoError}
+        </span>
+
+        <div id="errorAlert">
+
+        </div>
 
         <div class=" p-5 border border-secondary rounded-3 mt-3 shadow p-3 mb-5 bg-body rounded">
-            <span class="text-danger">
-                ${infoError}
-            </span>
+
+
 
             <div class="row mb-4">
                 <h4>Complaint Details</h4>
@@ -278,6 +288,10 @@
         </c:when>
 
         <c:otherwise>
+
+            <script type="module" src="resources/js/employee/EmployeeNotification.js"></script>
+
+
             <div class="modal fade" id="otherModel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
                 aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">

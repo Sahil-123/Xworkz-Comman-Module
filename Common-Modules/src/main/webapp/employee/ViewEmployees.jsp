@@ -27,6 +27,12 @@
                     <div class="table-responsive-sm p-4 ">
                         <h3 class="text-center"> Employee Details </h3>
                         <br>
+
+                        <c:if test="${employeeList != null && !employeeList.isEmpty() }">
+                            <%@ include file="../common/CSVDownload.jsp" %>
+                        </c:if>
+
+                        
                         <form action="departmentAdmin/viewAllEmployees/1/7" method="POST">
                             <div
                                 class=" d-flex mb-2 p-2 border border-1 rounded-3 border-secondary justify-content-between">
@@ -43,9 +49,7 @@
                             </div>
                         </form>
 
-                        <c:if test="${employeeList != null && !employeeList.isEmpty() }">
-                            <%@ include file="../common/CSVDownload.jsp" %>
-                        </c:if>
+                        
 
                         <c:if test="${employeeList == null || employeeList.isEmpty() }">
                             <div class=" d-flex mb-2 p-2 justify-content-center customeWidth" style="width: 85vw;">

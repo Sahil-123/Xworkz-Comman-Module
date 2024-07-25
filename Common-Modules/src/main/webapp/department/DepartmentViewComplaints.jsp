@@ -9,9 +9,9 @@
                 <link rel="stylesheet" href="resources/css/Table.css">
 
                 <%@ include file="../user/UserHeader.jsp" %>
-                <%@ include file="../department/DepartmentAdminHeaderLinks.jsp" %>
+                    <%@ include file="../department/DepartmentAdminHeaderLinks.jsp" %>
 
-                <title>Department Complaints</title>
+                        <title>Department Complaints</title>
 
     </head>
 
@@ -26,6 +26,11 @@
                     <div class="table-responsive-sm p-4 ">
                         <h3 class="text-center"> Complaints Details </h3>
                         <br>
+
+                        <c:if test="${complaintsList != null && !complaintsList.isEmpty() }">
+                            <%@ include file="../common/CSVDownload.jsp" %>
+                        </c:if>
+
                         <form action="departmentAdmin/viewDepartmentComplaints/1/7" method="POST">
                             <div
                                 class=" d-flex mb-2 p-2 border border-1 rounded-3 border-secondary justify-content-between">
@@ -64,9 +69,7 @@
                             </div>
                         </form>
 
-                        <c:if test="${complaintsList != null && !complaintsList.isEmpty() }">
-                            <%@ include file="../common/CSVDownload.jsp" %>
-                        </c:if>
+
 
                         <c:if test="${complaintsList == null || complaintsList.isEmpty() }">
                             <div class=" d-flex mb-2 p-2 justify-content-center customeWidth" style="width: 85vw;">

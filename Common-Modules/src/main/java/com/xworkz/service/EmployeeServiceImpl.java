@@ -386,4 +386,19 @@ public class EmployeeServiceImpl implements EmployeeService{
         return employeeRepository.update(employeeData);
     }
 
+    @Override
+    public ComplaintDTO searchComplaint(int complaintId, Long id, Long departmentId) {
+        ComplaintDTO complaintDTO = new ComplaintDTO();
+        complaintDTO.setId((long) complaintId);
+        complaintDTO.setEmpId(id);
+        complaintDTO.setDeptId(departmentId);
+        Optional<List<ComplaintDTO>> optionalComplaintDTOList = complaintRepository.searchAllComplaintsForAdmin(complaintDTO);
+
+        if(!optionalComplaintDTOList.isPresent() && optionalComplaintDTOList.get().isEmpty()){
+            throw new InfoException("Complaint Not Found");
+        }
+
+        return optionalComplaintDTOList.get().get(0);
+    }
+
 }

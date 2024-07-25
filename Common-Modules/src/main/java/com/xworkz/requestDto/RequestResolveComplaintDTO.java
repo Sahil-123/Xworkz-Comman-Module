@@ -23,4 +23,6 @@ public class RequestResolveComplaintDTO implements Serializable {
     @NotNull(message = "otp should not empty")
     @Size(message = "otp should be only 6 digits", min=6 , max = 6)
     private String otp;
+
+    private String status;
 }
