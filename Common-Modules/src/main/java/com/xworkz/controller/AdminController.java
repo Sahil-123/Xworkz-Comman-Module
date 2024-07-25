@@ -212,7 +212,6 @@ public class AdminController {
         try{
             NotificationList<ComplaintDTO> complaintDTOList = complaintService.getAdminComplaintNotification();
             System.out.println(complaintDTOList);
-
             return complaintDTOList;
         }catch (Exception e){
             e.printStackTrace();
