@@ -141,6 +141,30 @@
       <version>2.15.1</version> <!-- Use a version compatible with your Jackson version -->
     </dependency>
 
+<!--    <dependency>-->
+<!--      <groupId>org.springframework</groupId>-->
+<!--      <artifactId>spring-context</artifactId>-->
+<!--      <version>5.3.24</version> &lt;!&ndash; Use the version that matches your Spring MVC version &ndash;&gt;-->
+<!--    </dependency>-->
+    <dependency>
+      <groupId>org.springframework.data</groupId>
+      <artifactId>spring-data-redis</artifactId>
+      <version>2.7.10</version> <!-- Use the version that matches your Spring version -->
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/redis.clients/jedis -->
+    <dependency>
+      <groupId>redis.clients</groupId>
+      <artifactId>jedis</artifactId>
+      <version>3.8.0</version>
+    </dependency>
+
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context-support</artifactId>
+      <version>5.3.24</version> <!-- Use the version that matches your Spring MVC version -->
+    </dependency>
 
 
   </dependencies>

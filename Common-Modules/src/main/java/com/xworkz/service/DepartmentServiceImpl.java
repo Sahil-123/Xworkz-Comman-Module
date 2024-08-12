@@ -1,6 +1,7 @@
 package com.xworkz.service;
 
 import com.xworkz.dto.DTOListPage;
+import com.xworkz.dto.DepartmentDTOListPage;
 import com.xworkz.entity.ComplaintDTO;
 import com.xworkz.entity.DepartmentDTO;
 import com.xworkz.exceptions.InfoException;
@@ -11,6 +12,7 @@ import com.xworkz.responseDto.ResponseDTO;
 import com.xworkz.responseDto.ResponseDataDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -35,7 +37,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public DTOListPage<DepartmentDTO> getAllDepartmentsWithPagination(Integer offset, Integer pageSize) {
+    public DepartmentDTOListPage<DepartmentDTO> getAllDepartmentsWithPagination(Integer offset, Integer pageSize) {
         System.out.println("Running Department service impl get departments with pagination.");
         return departmentRepository.findAll(offset,pageSize);
     }

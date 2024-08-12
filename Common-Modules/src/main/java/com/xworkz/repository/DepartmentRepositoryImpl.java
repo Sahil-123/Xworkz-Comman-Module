@@ -2,16 +2,20 @@ package com.xworkz.repository;
 
 
 import com.xworkz.dto.DTOListPage;
+import com.xworkz.dto.DepartmentDTOListPage;
 import com.xworkz.entity.DepartmentDTO;
 import com.xworkz.entity.UserDTO;
 import com.xworkz.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,7 +26,9 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
     private EntityManagerFactory entityManagerFactory;
 
     @Override
+    @Cacheable(cacheNames = "departments")
     public Optional<List<DepartmentDTO>> findAll() {
+        System.out.println("==========================");
         System.out.println("Repository fetching departments");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
 
@@ -40,7 +46,9 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
     }
 
     @Override
-    public DTOListPage<DepartmentDTO> findAll(Integer offset, Integer pageSize) {
+    @Cacheable(value = "departmentsList", key = "#offset")
+    public DepartmentDTOListPage<DepartmentDTO> findAll(Integer offset, Integer pageSize) {
+        System.out.println("-----------------------");
         System.out.println("Repository fetching departments with pagination");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
 
@@ -51,20 +59,19 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
             query.setMaxResults(pageSize);
 
             List<DepartmentDTO> departmentDTOList = query.getResultList();
-            return new DTOListPage<DepartmentDTO>(count,Optional.ofNullable(departmentDTOList));
+            return new DepartmentDTOListPage<DepartmentDTO>(count,departmentDTOList);
         } catch (PersistenceException e) {
             e.printStackTrace();
         } finally {
             entityManager.close();
         }
-        return new DTOListPage<DepartmentDTO>(0L,Optional.empty());
+        return new DepartmentDTOListPage<DepartmentDTO>(0L, Collections.emptyList());
     }
 
+//    @Cacheable(cacheNames = "departmentsCount")
     private Long getCount(){
         System.out.println("Department Repository getting count.");
-
         EntityManager entityManager = entityManagerFactory.createEntityManager();
-
         try {
             Query queryTotal = entityManager.createQuery
                     ("SELECT count(d) FROM DepartmentDTO d");
@@ -81,8 +88,9 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
     }
 
     @Override
+//    @Cacheable(cacheNames = "departmentId", key = "#id")
     public Optional<DepartmentDTO> findById(long id) {
-
+        System.out.println("fetching department by id");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
             DepartmentDTO departmentDTO = entityManager.find(DepartmentDTO.class, id);
@@ -96,6 +104,7 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
     }
 
     @Override
+//    @Cacheable(cacheNames = "departmentName", key = "#departmentName")
     public boolean checkDepartmentName(String departmentName) {
         System.out.println("Department Repository check department name process is initiated using department name." + departmentName);
         EntityManager entityManager = entityManagerFactory.createEntityManager();
@@ -118,6 +127,7 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
     }
 
     @Override
+//    @CachePut(cacheNames = {"departments","departmentsWithPagination"})
     public Boolean save(DepartmentDTO departmentDTO) {
         System.out.println("Department Save Process is initiated with dto "+departmentDTO);
 

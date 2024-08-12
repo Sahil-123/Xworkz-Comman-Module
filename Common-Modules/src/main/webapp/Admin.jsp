@@ -5,9 +5,11 @@
     <head>
         <meta charset="UTF-8">
         <%@ include file="component/HeaderLink.jsp" %>
-            <base href="http://localhost:8080/Common-Modules/">
+            <base href="http://192.168.139.7:8080/Common-Modules/">
 
             <link rel="stylesheet" href="resources/css/AdminDashboard.css">
+        <%@ include file="../component/AdminHeaderLink.jsp" %>
+
 
             <title>Admin Dashboard</title>
 

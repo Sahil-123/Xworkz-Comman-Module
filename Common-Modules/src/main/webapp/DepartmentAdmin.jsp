@@ -5,7 +5,7 @@
     <head>
         <meta charset="UTF-8">
         <%@ include file="component/HeaderLink.jsp" %>
-            <base href="http://localhost:8080/Common-Modules/">
+            <base href="http://192.168.139.7:8080/Common-Modules/">
                 <%@ include file="../department/DepartmentAdminHeaderLinks.jsp" %>
 
             

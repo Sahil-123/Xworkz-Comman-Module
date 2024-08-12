@@ -10,7 +10,7 @@
                 <input type="hidden" value="${filter.status}" name="status" />
 
                 <button type="submit" class="btn btn-default border border-primary" role="button">
-                    <i class="fa-solid fa-file-csv"></i> Download CSV
+                    <i class="fa-solid fa-file-csv"></i> Export CSV
                 </button>
             </form>
         </div>
@@ -27,7 +27,7 @@
                 <input type="hidden" value="${employeesFilter.mobile}" name="mobile" />
 
                 <button type="submit" class="btn btn-default border border-primary" role="button">
-                    <i class="fa-solid fa-file-csv"></i> Download CSV
+                    <i class="fa-solid fa-file-csv"></i> Export CSV
                 </button>
             </form>
         </div>
@@ -42,7 +42,7 @@
                 <input type="hidden" value="${employeeFilter.status}" name="status" />
 
                 <button type="submit" class="btn btn-default border border-primary" role="button">
-                    <i class="fa-solid fa-file-csv"></i> Download CSV
+                    <i class="fa-solid fa-file-csv"></i> Export CSV
                 </button>
             </form>
         </div>
@@ -54,7 +54,7 @@
 
             <a href="${downloadCSV}/${currentPage}/${pageSize}" class="btn btn-default border border-primary"
                 role="button">
-                <i class="fa-solid fa-file-csv"></i> Download CSV</a>
+                <i class="fa-solid fa-file-csv"></i> Export CSV</a>
         </div>
 
     </c:when>
@@ -63,7 +63,7 @@
         <div class=" d-flex mb-2 p-2 justify-content-end customeWidth">
             <a href="${downloadCSV}/${currentPage}/${pageSize}" class="btn btn-default border border-primary"
                 role="button">
-                <i class="fa-solid fa-file-csv"></i> Download CSV</a>
+                <i class="fa-solid fa-file-csv"></i> Export CSV</a>
         </div>
     </c:otherwise>
 </c:choose>

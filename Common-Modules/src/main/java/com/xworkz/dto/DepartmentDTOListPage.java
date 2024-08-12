@@ -12,8 +12,8 @@ import java.util.Optional;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class DTOListPage <T> implements Serializable {
+public class DepartmentDTOListPage <T> implements Serializable {
     private static final long serialVersionUID = 1L;
     private Long count;
-    private Optional<List<T>> list;
+    private List<T> list;
 }

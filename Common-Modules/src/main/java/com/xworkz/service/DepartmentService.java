@@ -1,6 +1,7 @@
 package com.xworkz.service;
 
 import com.xworkz.dto.DTOListPage;
+import com.xworkz.dto.DepartmentDTOListPage;
 import com.xworkz.entity.DepartmentDTO;
 import com.xworkz.requestDto.RequestDepartmentDTO;
 import com.xworkz.responseDto.DepartmentNameAndIdResponseDto;
@@ -13,7 +14,7 @@ import java.util.Optional;
 public interface DepartmentService {
     Optional<List<DepartmentDTO>> getAllDepartments();
 
-    DTOListPage<DepartmentDTO> getAllDepartmentsWithPagination(Integer offset, Integer pageSize);
+    DepartmentDTOListPage<DepartmentDTO> getAllDepartmentsWithPagination(Integer offset, Integer pageSize);
 
     List<DepartmentNameAndIdResponseDto> getAllDepartmentsNameAndId();
 

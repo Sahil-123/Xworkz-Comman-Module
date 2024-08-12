@@ -5,4 +5,4 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<base href="http://localhost:8080/Common-Modules/">
+<base href="http://192.168.139.7:8080/Common-Modules/">

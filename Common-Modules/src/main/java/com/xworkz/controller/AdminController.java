@@ -1,6 +1,7 @@
 package com.xworkz.controller;
 
 import com.xworkz.dto.DTOListPage;
+import com.xworkz.dto.DepartmentDTOListPage;
 import com.xworkz.dto.NotificationList;
 import com.xworkz.entity.ComplaintDTO;
 import com.xworkz.entity.DepartmentDTO;
@@ -177,14 +178,18 @@ public class AdminController {
 
         if(offset.isPresent() && offset.get() <=1) offset = Optional.of(1);
 
-        DTOListPage<DepartmentDTO> departmentDTOListPage = departmentService.getAllDepartmentsWithPagination(offset.orElse(1), pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE));
+        DepartmentDTOListPage<DepartmentDTO> departmentDTOListPage = departmentService.getAllDepartmentsWithPagination(offset.orElse(1), pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE));
         System.out.println(departmentDTOListPage);
 
-        model.addAttribute("departmentslist", departmentDTOListPage.getList().get());
+        model.addAttribute("departmentslist", departmentDTOListPage.getList());
         model.addAttribute("downloadCSV","admin/departments/downloadCSV");
 
         String pageURL = "admin/departments";
-        CommonUtils.setPagination(offset.orElse(1), pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE), pageURL, departmentDTOListPage, model);
+        DTOListPage<DepartmentDTO> dtoListPage = new DTOListPage();
+        dtoListPage.setList(Optional.ofNullable(departmentDTOListPage.getList()));
+        dtoListPage.setCount(departmentDTOListPage.getCount());
+
+        CommonUtils.setPagination(offset.orElse(1), pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE), pageURL, dtoListPage, model);
         return "admin/AdminViewAllDepartment";
     }
 
@@ -194,12 +199,12 @@ public class AdminController {
         System.out.println("Exporting Departments with pagination in CSV"+offset.get()+" "+pageSize.get());
         if (offset.isPresent() && offset.get() <= 1) offset = Optional.of(1);
 
-        DTOListPage<DepartmentDTO> departmentDTOListPage = departmentService.getAllDepartmentsWithPagination(offset.orElse(1), pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE));
+        DepartmentDTOListPage<DepartmentDTO> departmentDTOListPage = departmentService.getAllDepartmentsWithPagination(offset.orElse(1), pageSize.orElse(CommonUtils.DEFAULT_PAGE_SIZE));
 
         response.setContentType("text/csv");
         response.setHeader("Content-Disposition", "attachment; filename=\"data.csv\"");
 
-        CSVExport.sendCSV(response.getWriter(),departmentDTOListPage.getList().get(),DepartmentDTO.exportToAdmin());
+        CSVExport.sendCSV(response.getWriter(),departmentDTOListPage.getList(),DepartmentDTO.exportToAdmin());
     }
 
 

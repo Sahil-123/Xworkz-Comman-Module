@@ -5,7 +5,7 @@
     <head>
         <meta charset="UTF-8">
         <%@ include file="component/HeaderLink.jsp" %>
-            <base href="http://localhost:8080/Common-Modules/">
+            <base href="http://192.168.139.7:8080/Common-Modules/">
 
 
             <title>Sign Up</title>
@@ -131,7 +131,7 @@
                             <label class="form-check-label" for="agree">Agreement</label>
                         </div>
 
-                        <input type="submit" class="btn btn-primary" id="submitButton" value="Signup" disabled/>
+                        <input type="submit" class="btn btn-primary" id="submitButton" value="Signup" />
 
                         <div class="mb-1 mt-3 d-flex justify-content-center">
                             <p>
