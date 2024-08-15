@@ -172,7 +172,7 @@ public class UserRepositoryImpl implements UserRepository{
         try{
             Long count = getCount();
             if(offset < 1) offset = 1;
-            Query query = entityManager.createQuery("select user from UserDTO user",UserDTO.class);
+            Query query = entityManager.createQuery("select user from UserDTO user order by user.createdDate desc",UserDTO.class);
             query.setFirstResult(CommonUtils.getFirstResultForPagination(offset, pageSize));
             query.setMaxResults(pageSize);
 

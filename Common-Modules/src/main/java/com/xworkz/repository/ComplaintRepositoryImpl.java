@@ -54,7 +54,7 @@ public class ComplaintRepositoryImpl implements ComplaintRepository {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
 
         try {
-            Query query = entityManager.createQuery("SELECT c FROM ComplaintDTO c", ComplaintDTO.class);
+            Query query = entityManager.createQuery("SELECT c FROM ComplaintDTO c order by c.createdDate desc", ComplaintDTO.class);
             List<ComplaintDTO> complaintList = query.getResultList();
             return Optional.ofNullable(complaintList);
         } catch (PersistenceException e) {
@@ -206,6 +206,8 @@ public class ComplaintRepositoryImpl implements ComplaintRepository {
             List<Predicate> predicates = getPredicatesList(complaintDTO, cb, root);
 
             query.where(cb.and(predicates.toArray(new Predicate[0])));
+            query.orderBy(cb.desc(root.get("createdDate")));
+
 
             Query query1 = entityManager.createQuery(query);
             query1.setFirstResult(CommonUtils.getFirstResultForPagination(offset, pageSize));
@@ -239,6 +241,7 @@ public class ComplaintRepositoryImpl implements ComplaintRepository {
             List<Predicate> predicates = getPredicatesList(complaintDTO, cb, root);
 
             query.where(cb.and(predicates.toArray(new Predicate[0])));
+            query.orderBy(cb.desc(root.get("createdDate")));
 
             Query query1 = entityManager.createQuery(query);
             List<ComplaintDTO> results = query1.getResultList();
@@ -272,6 +275,7 @@ public class ComplaintRepositoryImpl implements ComplaintRepository {
             predicates.add(cb.and(resolvedStatus, notResolvedStatus));
 
             query.where(cb.and(predicates.toArray(new Predicate[0])));
+            query.orderBy(cb.desc(root.get("createdDate")));
 
             List<ComplaintDTO> results = entityManager.createQuery(query).getResultList();
             entityManager.close();
@@ -304,6 +308,7 @@ public class ComplaintRepositoryImpl implements ComplaintRepository {
             predicates.add(cb.and(resolvedStatus, notResolvedStatus));
 
             query.where(cb.and(predicates.toArray(new Predicate[0])));
+            query.orderBy(cb.desc(root.get("createdDate")));
 
             Query query1 = entityManager.createQuery(query);
             query1.setFirstResult(CommonUtils.getFirstResultForPagination(offset, pageSize));
@@ -342,6 +347,7 @@ public class ComplaintRepositoryImpl implements ComplaintRepository {
             predicates.add(cb.or(resolvedStatus, notResolvedStatus));
 
             query.where(cb.and(predicates.toArray(new Predicate[0])));
+            query.orderBy(cb.desc(root.get("createdDate")));
 
             List<ComplaintDTO> results = entityManager.createQuery(query).getResultList();
             entityManager.close();
@@ -374,6 +380,7 @@ public class ComplaintRepositoryImpl implements ComplaintRepository {
             predicates.add(cb.or(resolvedStatus, notResolvedStatus));
 
             query.where(cb.and(predicates.toArray(new Predicate[0])));
+            query.orderBy(cb.desc(root.get("createdDate")));
 
             Query query1 = entityManager.createQuery(query);
             query1.setFirstResult(CommonUtils.getFirstResultForPagination(offset, pageSize));
@@ -613,6 +620,7 @@ public class ComplaintRepositoryImpl implements ComplaintRepository {
         if (complaintDTO.getCreatedDate() != null) {
             predicates.add(cb.greaterThanOrEqualTo(root.get("createdDate"), complaintDTO.getCreatedDate()));
         }
+
         return predicates;
     }
 

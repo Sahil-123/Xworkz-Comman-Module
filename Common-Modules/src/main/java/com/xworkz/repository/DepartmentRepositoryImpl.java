@@ -26,14 +26,14 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
     private EntityManagerFactory entityManagerFactory;
 
     @Override
-    @Cacheable(cacheNames = "departments")
+//    @Cacheable(cacheNames = "departments")
     public Optional<List<DepartmentDTO>> findAll() {
         System.out.println("==========================");
         System.out.println("Repository fetching departments");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
 
         try {
-            Query query = entityManager.createQuery("SELECT d FROM DepartmentDTO d", DepartmentDTO.class);
+            Query query = entityManager.createQuery("SELECT d FROM DepartmentDTO d order by d.createdDate desc", DepartmentDTO.class);
             List<DepartmentDTO> departmentDTOList = query.getResultList();
             return Optional.ofNullable(departmentDTOList);
         } catch (PersistenceException e) {
@@ -46,7 +46,7 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
     }
 
     @Override
-    @Cacheable(value = "departmentsList", key = "#offset")
+//    @Cacheable(value = "departmentsList", key = "#offset")
     public DepartmentDTOListPage<DepartmentDTO> findAll(Integer offset, Integer pageSize) {
         System.out.println("-----------------------");
         System.out.println("Repository fetching departments with pagination");
@@ -54,7 +54,7 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
 
         try {
             Long count = getCount();
-            Query query = entityManager.createQuery("SELECT d FROM DepartmentDTO d", DepartmentDTO.class);
+            Query query = entityManager.createQuery("SELECT d FROM DepartmentDTO d order by d.createdDate desc", DepartmentDTO.class);
             query.setFirstResult(CommonUtils.getFirstResultForPagination(offset,pageSize));
             query.setMaxResults(pageSize);
 
@@ -136,6 +136,7 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
             entityManager.getTransaction().begin();
             entityManager.persist(departmentDTO);
             entityManager.getTransaction().commit();
+            //
             return true;
         } catch (PersistenceException e) {
             e.printStackTrace();

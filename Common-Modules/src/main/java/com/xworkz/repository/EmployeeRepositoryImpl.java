@@ -25,7 +25,7 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
     public Optional<List<EmployeeDTO>> findAll() {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
-            Query query = entityManager.createQuery("SELECT e FROM EmployeeDTO e", EmployeeDTO.class);
+            Query query = entityManager.createQuery("SELECT e FROM EmployeeDTO e order by e.createdDate desc", EmployeeDTO.class);
             List<EmployeeDTO> employeeDTOList = query.getResultList();
             return Optional.ofNullable(employeeDTOList);
         } catch (PersistenceException e) {
@@ -221,6 +221,7 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
 //            }
 
             query.where(cb.and(predicates.toArray(new Predicate[0])));
+            query.orderBy(cb.desc(root.get("createdDate")));
 
             List<EmployeeDTO> results = entityManager.createQuery(query).getResultList();
             entityManager.close();
@@ -279,6 +280,8 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
             List<Predicate> predicates = getPredicates(employeeDTO, cb, root);;
 
             query.where(cb.and(predicates.toArray(new Predicate[0])));
+            query.orderBy(cb.desc(root.get("createdDate")));
+
 
             Query query1 = entityManager.createQuery(query);
             query1.setFirstResult(CommonUtils.getFirstResultForPagination(offset,pageSize));

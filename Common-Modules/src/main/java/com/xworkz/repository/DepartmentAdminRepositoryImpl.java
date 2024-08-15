@@ -23,7 +23,7 @@ public class DepartmentAdminRepositoryImpl implements DepartmentAdminRepository 
     public Optional<List<DepartmentAdminDTO>> findAll() {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
-            Query query = entityManager.createQuery("SELECT d FROM DepartmentAdminDTO d", DepartmentAdminDTO.class);
+            Query query = entityManager.createQuery("SELECT d FROM DepartmentAdminDTO d order by d.createdDate desc", DepartmentAdminDTO.class);
             List<DepartmentAdminDTO> departmentAdminDTOList = query.getResultList();
             return Optional.ofNullable(departmentAdminDTOList);
         } catch (PersistenceException e) {
@@ -41,7 +41,7 @@ public class DepartmentAdminRepositoryImpl implements DepartmentAdminRepository 
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
             Long count = getCount();
-            Query query = entityManager.createQuery("SELECT d FROM DepartmentAdminDTO d", DepartmentAdminDTO.class);
+            Query query = entityManager.createQuery("SELECT d FROM DepartmentAdminDTO d order by d.createdDate desc", DepartmentAdminDTO.class);
             query.setFirstResult(CommonUtils.getFirstResultForPagination(offset,pageSize));
             query.setMaxResults(pageSize);
 
