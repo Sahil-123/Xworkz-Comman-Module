@@ -50,7 +50,7 @@ function showComplaint(element){
     window.location.href = "admin/viewComplaint?complaintId="+element.id;
 }
 
-setInterval(loadNotification, 10000);
+setInterval(loadNotification, 100000);
 
 window.loadNotification = loadNotification;
 // window.onload = loadNotification;

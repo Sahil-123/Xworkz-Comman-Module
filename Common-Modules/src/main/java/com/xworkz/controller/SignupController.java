@@ -60,4 +60,9 @@ public class SignupController {
         return userService.checkMail(email);
     }
 
+    @GetMapping("/testException")
+    public String checkException() throws Exception {
+        throw new Exception("Testing the exception");
+    }
+
 }

@@ -9,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
@@ -21,6 +22,7 @@ import java.text.SimpleDateFormat;
 @Configuration
 @ComponentScan("com.xworkz")
 @EnableWebMvc
+@EnableAspectJAutoProxy
 public class CommanModuleConfig implements WebMvcConfigurer {
     @Bean
     public ViewResolver viewResolver(){
