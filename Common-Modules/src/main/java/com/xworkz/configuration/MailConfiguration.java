@@ -44,7 +44,7 @@ public class MailConfiguration {
     }
 
     public MailConfiguration(){
-        System.out.println("Mail Configuration is created.");
+        System.out.println("Mail Configuration initiated.");
     }
 
 }

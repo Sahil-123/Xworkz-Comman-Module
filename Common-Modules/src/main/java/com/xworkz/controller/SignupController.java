@@ -38,8 +38,6 @@ public class SignupController {
         } catch (InfoException e) {
             System.out.println(e.getMessage());
             model.addAttribute("infoError", e.getMessage());
-        } catch (Exception e) {
-            e.printStackTrace();
         }
 
         return "SignUp";

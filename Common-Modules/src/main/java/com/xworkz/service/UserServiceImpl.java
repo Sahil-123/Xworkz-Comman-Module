@@ -13,6 +13,7 @@ import com.xworkz.utils.PasswordGenerator;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import java.io.IOException;
@@ -38,6 +39,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
+    @Transactional
     public Boolean validateAndSave(RequestSignupDTO signupDTO) {
         System.out.println("User Service process is initiated using DTO: " + signupDTO);
 
@@ -61,6 +63,9 @@ public class UserServiceImpl implements UserService {
         userDTO.setPassword(PasswordGenerator.generatePassword());
         System.out.println(userDTO);
         Boolean result = userRepository.save(userDTO);
+
+        int k =2/0;
+
         mailSender.sendSignupMail(userDTO.getEmail(), userDTO.getPassword());
 
         return result;

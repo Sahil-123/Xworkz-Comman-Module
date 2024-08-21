@@ -26,7 +26,7 @@ import java.text.SimpleDateFormat;
 public class CommanModuleConfig implements WebMvcConfigurer {
     @Bean
     public ViewResolver viewResolver(){
-        System.out.println("View Resolver initiated..");
+        System.out.println("View Resolver configured..");
         return new InternalResourceViewResolver("/",".jsp");
     }
 
@@ -35,6 +35,7 @@ public class CommanModuleConfig implements WebMvcConfigurer {
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.addConverter(converterListToString);
 
+        System.out.println("Model Mapper configured");
         return modelMapper;
     }
 
