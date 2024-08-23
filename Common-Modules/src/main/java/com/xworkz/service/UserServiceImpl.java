@@ -2,20 +2,26 @@ package com.xworkz.service;
 
 import com.xworkz.dto.DTOListPage;
 import com.xworkz.entity.ImageDTO;
-import com.xworkz.responseDto.ResponseDTO;
-import com.xworkz.responseDto.ResponseDataDTO;
 import com.xworkz.entity.UserDTO;
 import com.xworkz.exceptions.InfoException;
 import com.xworkz.repository.UserRepository;
+//import com.xworkz.repository.UserRepositoryInt;
 import com.xworkz.requestDto.*;
+import com.xworkz.responseDto.ResponseDTO;
+import com.xworkz.responseDto.ResponseDataDTO;
 import com.xworkz.utils.CustomeMailSender;
 import com.xworkz.utils.PasswordGenerator;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.ui.Model;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -38,9 +44,13 @@ public class UserServiceImpl implements UserService {
     private ImageService imageService;
 
 
+//    @Autowired
+//    private UserRepositoryInt userRepositoryInt;
+
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public Boolean validateAndSave(RequestSignupDTO signupDTO) {
+
         System.out.println("User Service process is initiated using DTO: " + signupDTO);
 
         Optional<List<UserDTO>> userDTOList = userRepository.findByUserMail(signupDTO.getEmail());
@@ -64,11 +74,11 @@ public class UserServiceImpl implements UserService {
         System.out.println(userDTO);
         Boolean result = userRepository.save(userDTO);
 
-        int k =2/0;
+        if (userDTO.getFname().equals("sahil")) throw new DataIntegrityViolationException("data testing");
 
         mailSender.sendSignupMail(userDTO.getEmail(), userDTO.getPassword());
 
-        return result;
+        return result != null;
     }
 
     @Override
@@ -80,7 +90,7 @@ public class UserServiceImpl implements UserService {
         if (userDTOList.isPresent() && !userDTOList.get().isEmpty()) {
             UserDTO userDTO = userDTOList.get().get(0);
 
-            if(userDTO.isLock()){
+            if (userDTO.isLock()) {
                 throw new InfoException(" Your account is Locked. Please Reset your password.");
             }
 
@@ -96,8 +106,8 @@ public class UserServiceImpl implements UserService {
                 model.addAttribute("userDto", userDTO);
 
                 Optional<ImageDTO> imageDTO = imageService.findActiveImageByUserId(userDTO.getId());
-                if(imageDTO.isPresent()){
-                    model.addAttribute("imageData",imageDTO.get());
+                if (imageDTO.isPresent()) {
+                    model.addAttribute("imageData", imageDTO.get());
                 }
 
                 return "User";
@@ -115,7 +125,7 @@ public class UserServiceImpl implements UserService {
                     }
                     userDTO.setFailedAttemptsCount(userDTO.getFailedAttemptsCount() + 1);
 
-                    if(userDTO.getFailedAttemptsCount() == 3){
+                    if (userDTO.getFailedAttemptsCount() == 3) {
                         userDTO.setLock(true);
                     }
 
@@ -123,7 +133,7 @@ public class UserServiceImpl implements UserService {
                     userRepository.updateByDto(userDTO);
 
                 } else if (duration >= 1L) {
-                    System.out.println("checking under specified duration attempts are valid or not attempt = "+userDTO.getFailedAttemptsCount());
+                    System.out.println("checking under specified duration attempts are valid or not attempt = " + userDTO.getFailedAttemptsCount());
                     if (userDTO.getFailedAttemptsCount() < 3) {
                         System.out.println("attempts are valid under 3 after an hours so resting the time and count");
                         userDTO.setFailedAttemptDateTime(LocalDateTime.now());
@@ -132,7 +142,7 @@ public class UserServiceImpl implements UserService {
 //                    save updated counts to database.
                         userRepository.updateByDto(userDTO);
 
-                    }else{
+                    } else {
                         throw new InfoException("Your have exceeded login attempts. Your account is Locked. Please Reset your password.");
                     }
                 } else {
@@ -174,20 +184,20 @@ public class UserServiceImpl implements UserService {
         if (userDTOList.isPresent() && !userDTOList.get().isEmpty()) {
             UserDTO userDTO = userDTOList.get().get(0);
 
-            if(userDTO.isLock()){
+            if (userDTO.isLock()) {
                 throw new InfoException("Please follow forgot password process in order to unlock and reset an account.");
             }
 
-            if(userDTO.getLoginCount() == 0 || userDTO.getFailedAttemptsCount() == 3){
+            if (userDTO.getLoginCount() == 0 || userDTO.getFailedAttemptsCount() == 3) {
                 if (userDTO.getPassword().equals(requestResetPasswordDTO.getPassword())) {
                     userDTO.setPassword(requestResetPasswordDTO.getNewPassword());
                     userDTO.setFailedAttemptsCount(0);
 
-                    if(userDTO.getLoginCount() == 0 ) userDTO.setLoginCount(1);
+                    if (userDTO.getLoginCount() == 0) userDTO.setLoginCount(1);
 
                     return userRepository.updateByDto(userDTO);
                 }
-            }else {
+            } else {
                 throw new InfoException("Not allowed to reset the password");
             }
 
@@ -209,8 +219,8 @@ public class UserServiceImpl implements UserService {
             userDTO.setFailedAttemptsCount(3);
             userDTO.setLock(false);
             userRepository.updateByDto(userDTO);
-            mailSender.sendResetPasswordMail(userDTO.getEmail(),userDTO.getPassword());
-            model.addAttribute("successMessage","We have sent an email containing a temporary password to your registered email address. You can use this temporary password to log in and reset your password.");
+            mailSender.sendResetPasswordMail(userDTO.getEmail(), userDTO.getPassword());
+            model.addAttribute("successMessage", "We have sent an email containing a temporary password to your registered email address. You can use this temporary password to log in and reset your password.");
             return "ForgotPassword";
         }
 
@@ -218,7 +228,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public DTOListPage<UserDTO> getAllUser(Integer offset,Integer pageSize) {
+    public DTOListPage<UserDTO> getAllUser(Integer offset, Integer pageSize) {
         System.out.println("Running User service impl get all user method to find all the users.");
         return userRepository.getAllUsers(offset, pageSize);
     }
@@ -230,12 +240,12 @@ public class UserServiceImpl implements UserService {
         userDTO.setFname(userProfileDTO.getFname());
         userDTO.setLname(userProfileDTO.getLname());
         userDTO.setMobile(userProfileDTO.getMobile());
-        userDTO.setUpdatedBy(userDTO.getFname()+" "+userDTO.getLname());
+        userDTO.setUpdatedBy(userDTO.getFname() + " " + userDTO.getLname());
         userDTO.setUpdatedDate(LocalDateTime.now());
 
-        if(userProfileDTO.getProfilePicture() != null){
-            ImageDTO imageDTO = imageService.uploadImage(userProfileDTO.getProfilePicture(),userDTO);
-            model.addAttribute("imageData",imageDTO);
+        if (userProfileDTO.getProfilePicture() != null) {
+            ImageDTO imageDTO = imageService.uploadImage(userProfileDTO.getProfilePicture(), userDTO);
+            model.addAttribute("imageData", imageDTO);
         }
 
         return userRepository.merge(userDTO);

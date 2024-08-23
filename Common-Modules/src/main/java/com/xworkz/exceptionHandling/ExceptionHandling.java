@@ -17,7 +17,7 @@ public class ExceptionHandling {
         log.error("Error Occurred : "+e.getMessage());
 //        System.out.println(e.getMessage()+" "+e);
 
-//        model.addAttribute("errorMessage","Error Occurred : "+e.getMessage());
+        model.addAttribute("errorMessage","Error Occurred : "+e.getMessage());
         return "errorPages/error";
     }
 }

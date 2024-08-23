@@ -28,13 +28,13 @@
     </appender>
 
     <!-- Root Logger Configuration -->
-    <root level="debug">
+    <root level="info">
         <appender-ref ref="CONSOLE" />
         <appender-ref ref="FILE" />
     </root>
 
     <!-- Specific Logger Configuration -->
-    <logger name="com.xworkz" level="debug" additivity="false">
+    <logger name="com.xworkz" level="info" additivity="false">
         <appender-ref ref="CONSOLE" />
         <appender-ref ref="FILE" />
     </logger>

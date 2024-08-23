@@ -5,6 +5,7 @@ import com.xworkz.entity.UserDTO;
 import com.xworkz.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -17,6 +18,9 @@ public class UserRepositoryImpl implements UserRepository{
 
     @Autowired
     private EntityManagerFactory entityManagerFactory;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     private Long getCount(){
         System.out.println("User Repository getting count.");
@@ -40,27 +44,29 @@ public class UserRepositoryImpl implements UserRepository{
     }
 
     @Override
+    @Transactional
     public Boolean save(UserDTO userDTO) {
         System.out.println("User Repository save process is initiated using dto."+ userDTO);
 
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        EntityTransaction transaction = entityManager.getTransaction();
+//        EntityManager entityManager = entityManagerFactory.createEntityManager();
+//
+//        EntityTransaction transaction = entityManager.getTransaction();
 
         try {
-            transaction.begin();
+//            transaction.begin();
             entityManager.persist(userDTO);
-            transaction.commit();
+//            transaction.commit();
             return true;
 
         }catch(PersistenceException e){
             e.printStackTrace();
-            transaction.rollback();
+//            transaction.rollback();
+            throw e;
         }
         finally {
             entityManager.close();
         }
 
-        return false;
     }
 
     @Override
