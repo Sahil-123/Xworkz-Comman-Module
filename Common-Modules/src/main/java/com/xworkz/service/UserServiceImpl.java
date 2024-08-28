@@ -265,6 +265,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public ResponseDTO checkMail(String mail) {
         boolean check = userRepository.checkEmail(mail);
         ResponseDTO responseDTO = new ResponseDTO();
