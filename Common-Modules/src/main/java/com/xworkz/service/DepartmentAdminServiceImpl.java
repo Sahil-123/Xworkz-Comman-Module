@@ -16,6 +16,7 @@ import com.xworkz.utils.TimeConversion;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import java.time.LocalDateTime;
@@ -42,6 +43,7 @@ public class DepartmentAdminServiceImpl implements DepartmentAdminService {
 
 
     @Override
+    @Transactional
     public String signin(RequestSigningDTO requestSigningDTO, Model model) {
         Optional<DepartmentAdminDTO> adminOpt = departmentAdminRepository.findByEmail(requestSigningDTO.getEmail());
         if (adminOpt.isPresent()) {
@@ -63,6 +65,7 @@ public class DepartmentAdminServiceImpl implements DepartmentAdminService {
     }
 
     @Override
+    @Transactional
     public String signIn(RequestSigningDTO requestSigningDTO, Model model) {
         System.out.println("Department Admin Signing process is initiated with request signin dto " + requestSigningDTO);
 
@@ -138,6 +141,7 @@ public class DepartmentAdminServiceImpl implements DepartmentAdminService {
     }
 
     @Override
+    @Transactional
     public Boolean createEmployee() {
         // Logic to create an employee
         // For example, it could involve saving a new `DepartmentAdminDTO`
@@ -148,6 +152,7 @@ public class DepartmentAdminServiceImpl implements DepartmentAdminService {
     }
 
     @Override
+    @Transactional
     public Boolean assignEmployee() {
         // Logic to assign an employee
         // This could involve updating some details of an existing `DepartmentAdminDTO`
@@ -171,6 +176,7 @@ public class DepartmentAdminServiceImpl implements DepartmentAdminService {
     }
 
     @Override
+    @Transactional
     public Boolean validateAndSave(RequestDepartmentAdminDTO requestDepartmentAdminDTO, Model model) {
         System.out.println("Department Admin validate and save process is initiated with dto "+requestDepartmentAdminDTO);
 
@@ -254,6 +260,7 @@ public class DepartmentAdminServiceImpl implements DepartmentAdminService {
     }
 
     @Override
+    @Transactional
     public String validateAndSetForgotPassword(RequestForgotPasswordDTO requestForgotPasswordDTO, Model model) {
         System.out.println("Department Admin forgot password process is initiated with request email dto " + requestForgotPasswordDTO);
 
@@ -277,6 +284,7 @@ public class DepartmentAdminServiceImpl implements DepartmentAdminService {
     }
 
     @Override
+    @Transactional
     public Boolean validateAndResetPassword(RequestResetPasswordDTO requestResetPasswordDTO) {
         System.out.println("Department Admin reset password process is initiated with request password dto " + requestResetPasswordDTO);
 

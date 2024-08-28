@@ -12,6 +12,7 @@ import com.xworkz.requestDto.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -41,6 +42,7 @@ public class ComplaintServiceImpl implements ComplaintService {
     }
 
     @Override
+    @Transactional
     public ComplaintDTO saveComplaint(RequestComplaintDTO requestComplaintDTO,UserDTO userDTO) {
         System.out.println("Complaint Service save complaint process is initiated using dto." + requestComplaintDTO);
 
@@ -58,11 +60,13 @@ public class ComplaintServiceImpl implements ComplaintService {
     }
 
     @Override
+    @Transactional
     public void deleteComplaint(Long id) {
         complaintRepository.deleteById(id);
     }
 
     @Override
+    @Transactional
     public ComplaintDTO updateComplaint(ComplaintDTO complaint) {
         if (complaintRepository.update(complaint)) {
             return complaint;
@@ -71,6 +75,7 @@ public class ComplaintServiceImpl implements ComplaintService {
     }
 
     @Override
+    @Transactional
     public ComplaintDTO searchComplaints(RequestFilterComplaintDTO requestFilterComplaintDTO) {
         return null;
     }
@@ -90,12 +95,14 @@ public class ComplaintServiceImpl implements ComplaintService {
     }
 
     @Override
+    @Transactional
     public Boolean updateComplaint(RequestUpdateComplaintDTO requestUpdateComplaintDTO) {
         System.out.println("service complaint update processs "+requestUpdateComplaintDTO);
         return complaintRepository.updateComplaint(requestUpdateComplaintDTO);
     }
 
     @Override
+    @Transactional
     public Boolean updateComplaintForAdmin(RequestUpdateComplaintByAdminDTO requestUpdateComplaintByAdminDTO) {
         System.out.println("service complaint update for admin processes "+requestUpdateComplaintByAdminDTO);
 
@@ -112,6 +119,7 @@ public class ComplaintServiceImpl implements ComplaintService {
     }
 
     @Override
+    @Transactional
     public Boolean updateComplaintForDepartmentAdmin(RequestUpdateDepartmentComplaintByAdminDTO requestUpdateDepartmentComplaintByAdminDTO) {
         System.out.println("service complaint update for department admin processes "+requestUpdateDepartmentComplaintByAdminDTO);
 

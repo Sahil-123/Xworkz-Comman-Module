@@ -5,6 +5,7 @@ import com.xworkz.entity.EmployeeDTO;
 import com.xworkz.repository.EmployeeImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -24,6 +25,7 @@ public class EmployeeImageServiceImpl implements EmployeeImageService {
     private EmployeeImageRepository employeeImageRepository;
 
     @Override
+    @Transactional
     public EmployeeImageDTO uploadImage(MultipartFile file, EmployeeDTO employeeDTO) throws IOException {
         System.out.println("Employee Image upload process is initiated");
 
