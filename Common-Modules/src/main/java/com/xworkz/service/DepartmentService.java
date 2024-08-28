@@ -20,5 +20,5 @@ public interface DepartmentService {
 
     ResponseDTO checkDepartmentName(String departmentName);
 
-    Boolean validateAndSave(RequestDepartmentDTO requestDepartmentDTO, Model model);
+    Boolean validateAndSave(RequestDepartmentDTO requestDepartmentDTO);
 }

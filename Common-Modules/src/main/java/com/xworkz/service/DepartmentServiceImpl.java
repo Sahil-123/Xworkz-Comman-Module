@@ -64,7 +64,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     @Transactional
-    public Boolean validateAndSave(RequestDepartmentDTO requestDepartmentDTO, Model model) {
+    public Boolean validateAndSave(RequestDepartmentDTO requestDepartmentDTO) {
         System.out.println("Department Service save department process is initiated using dto." + requestDepartmentDTO);
 
         if(departmentRepository.checkDepartmentName(requestDepartmentDTO.getDepartmentName())){

@@ -40,7 +40,7 @@ public class DepartmentController {
     }
 
     @PostMapping("/register")
-    private String addDepartment(@Valid RequestDepartmentDTO requestDepartmentDTO, BindingResult bindingResult, Model model){
+    public String addDepartment(@Valid RequestDepartmentDTO requestDepartmentDTO, BindingResult bindingResult, Model model){
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("dto", requestDepartmentDTO);
@@ -49,7 +49,7 @@ public class DepartmentController {
         }
 
         try{
-            Boolean result = departmentService.validateAndSave(requestDepartmentDTO,model);
+            Boolean result = departmentService.validateAndSave(requestDepartmentDTO);
             model.addAttribute("successMessage", " Registration successful!.");
         } catch (InfoException e) {
             System.out.println(e.getMessage());
