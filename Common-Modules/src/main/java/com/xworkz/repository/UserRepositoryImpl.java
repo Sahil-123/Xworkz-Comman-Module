@@ -48,19 +48,12 @@ public class UserRepositoryImpl implements UserRepository{
     public Boolean save(UserDTO userDTO) {
         System.out.println("User Repository save process is initiated using dto."+ userDTO);
 
-//        EntityManager entityManager = entityManagerFactory.createEntityManager();
-//
-//        EntityTransaction transaction = entityManager.getTransaction();
-
         try {
-//            transaction.begin();
             entityManager.persist(userDTO);
-//            transaction.commit();
             return true;
 
         }catch(PersistenceException e){
             e.printStackTrace();
-//            transaction.rollback();
             throw e;
         }
         finally {
@@ -70,11 +63,9 @@ public class UserRepositoryImpl implements UserRepository{
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<List<UserDTO>> findByUserMail(String mail) {
         System.out.println("User Repository find by email process is initiated using mail."+ mail);
-
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        EntityTransaction transaction = entityManager.getTransaction();
 
         try {
 
@@ -85,20 +76,14 @@ public class UserRepositoryImpl implements UserRepository{
 
         }catch(PersistenceException e){
             e.printStackTrace();
+            throw e;
         }
-        finally {
-            entityManager.close();
-        }
-
-        return Optional.empty();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<List<UserDTO>> findByUserMobile(String mobile) {
         System.out.println("User Repository find by mobile process is initiated using mobile."+ mobile);
-
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        EntityTransaction transaction = entityManager.getTransaction();
 
         try {
 
@@ -109,23 +94,16 @@ public class UserRepositoryImpl implements UserRepository{
 
         }catch(PersistenceException e){
             e.printStackTrace();
+            throw e;
         }
-        finally {
-            entityManager.close();
-        }
-
-        return Optional.empty();
     }
 
     @Override
+    @Transactional
     public boolean updatePassword(UserDTO userDTO,String password) {
         System.out.println("User Repository update password process is initiated using dto and Password."+userDTO+", "+ password);
 
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        EntityTransaction transaction = entityManager.getTransaction();
-
         try {
-            transaction.begin();
             Query query=entityManager.createNamedQuery("updateUserPassword");
             query.setParameter("email",userDTO.getEmail());
             query.setParameter("password",password);
@@ -134,46 +112,32 @@ public class UserRepositoryImpl implements UserRepository{
             query.setParameter("loginCount",userDTO.getLoginCount()+1);
 
             query.executeUpdate();
-            transaction.commit();
             return true;
 
         }catch(PersistenceException e){
             e.printStackTrace();
-        }
-        finally {
-            entityManager.close();
+            throw e;
         }
 
-        return false;
     }
 
     @Override
+    @Transactional
     public boolean updateByDto(UserDTO userDTO) {
         System.out.println("User Repository update by dto process is initiated using dto."+ userDTO);
-
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        EntityTransaction transaction = entityManager.getTransaction();
-
         try {
-            transaction.begin();
             entityManager.merge(userDTO);
-            transaction.commit();
             return true;
 
         }catch(PersistenceException e){
             e.printStackTrace();
-            transaction.rollback();
-        }
-        finally {
-            entityManager.close();
-        }
 
-        return false;
+            throw e;
+        }
     }
 
     @Override
     public DTOListPage<UserDTO> getAllUsers(Integer offset, Integer pageSize) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
 
         try{
             Long count = getCount();
@@ -189,46 +153,33 @@ public class UserRepositoryImpl implements UserRepository{
             System.out.println(e.getMessage());
             System.out.println(e.getCause());
             e.printStackTrace();
+            throw e;
         }
-
-        finally {
-            entityManager.close();
-        }
-
-        return new DTOListPage<UserDTO>(0L,Optional.empty());
     }
 
 
 
     @Override
+    @Transactional
     public boolean merge(UserDTO userDTO) {
         System.out.println("User Repository merge process is initiated using dto."+ userDTO);
 
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        EntityTransaction transaction = entityManager.getTransaction();
-
         try {
-            transaction.begin();
             entityManager.merge(userDTO);
-            transaction.commit();
             return true;
 
         }catch(PersistenceException e){
             e.printStackTrace();
-            transaction.rollback();
-        }
-        finally {
-            entityManager.close();
+            throw e;
         }
 
-        return false;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public boolean checkMobile(String mobile) {
         System.out.println("User Repository check mobile number process is initiated using number."+ mobile);
 
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
 
         try{
             String query = "SELECT COUNT(u) FROM UserDTO u WHERE u.mobile = :mobile";
@@ -241,20 +192,16 @@ public class UserRepositoryImpl implements UserRepository{
             System.out.println(e.getMessage());
             System.out.println(e.getCause());
             e.printStackTrace();
+            throw  e;
         }
 
-        finally {
-            entityManager.close();
-        }
-        return true;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public boolean checkEmail(String email) {
 
         System.out.println("User Repository check email process is initiated using email."+ email);
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-
         try{
             String query = "SELECT COUNT(u) FROM UserDTO u WHERE u.email = :email";
             Long count = (Long) entityManager.createQuery(query)
@@ -266,19 +213,15 @@ public class UserRepositoryImpl implements UserRepository{
             System.out.println(e.getMessage());
             System.out.println(e.getCause());
             e.printStackTrace();
+            throw e;
         }
 
-        finally {
-            entityManager.close();
-        }
-        return true;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<UserDTO> findById(Long id) {
         System.out.println("User Repository find by ID process is initiated using ID." + id);
-
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
 
         try {
             UserDTO userDTO = entityManager.find(UserDTO.class, id);
@@ -287,10 +230,7 @@ public class UserRepositoryImpl implements UserRepository{
             System.out.println(e.getMessage());
             System.out.println(e.getCause());
             e.printStackTrace();
-        } finally {
-            entityManager.close();
+            throw e;
         }
-
-        return Optional.empty();
     }
 }

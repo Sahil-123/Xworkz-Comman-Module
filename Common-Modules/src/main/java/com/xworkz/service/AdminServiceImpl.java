@@ -12,6 +12,7 @@ import com.xworkz.utils.CustomeMailSender;
 import com.xworkz.utils.PasswordGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import java.time.Duration;
@@ -32,6 +33,7 @@ public class AdminServiceImpl implements AdminService{
     private ComplaintRepository complaintRepository;
 
     @Override
+    @Transactional
     public String signin(RequestSigningDTO requestSigningDTO, Model model) {
 
         Optional<List<AdminDTO>> adminDTOList = adminRepository.findByEmail(requestSigningDTO.getEmail());
@@ -115,6 +117,7 @@ public class AdminServiceImpl implements AdminService{
     }
 
     @Override
+    @Transactional
     public String validateAndSetForgotPassword(RequestForgotPasswordDTO requestForgotPasswordDTO,Model model) {
         System.out.println("Admin forgot password process is initiated with request email dto " + requestForgotPasswordDTO);
 
@@ -137,6 +140,7 @@ public class AdminServiceImpl implements AdminService{
 
 
     @Override
+    @Transactional
     public boolean validateAndResetPassword(RequestResetPasswordDTO requestResetPasswordDTO) {
         System.out.println("User reset password process is initiated with request password dto " + requestResetPasswordDTO);
 
@@ -171,6 +175,7 @@ public class AdminServiceImpl implements AdminService{
     }
 
     @Override
+    @Transactional
     public ComplaintDTO searchComplaint(int complaintId) {
         Optional<ComplaintDTO> complaintDTOOptional = complaintRepository.findById((long)complaintId);
         if(!complaintDTOOptional.isPresent()){

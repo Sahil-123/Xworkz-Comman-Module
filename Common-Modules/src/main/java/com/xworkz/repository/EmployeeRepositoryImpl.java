@@ -5,6 +5,7 @@ import com.xworkz.entity.EmployeeDTO;
 import com.xworkz.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -21,98 +22,78 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
     @Autowired
     private EntityManagerFactory entityManagerFactory;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     @Override
+    @Transactional(readOnly = true)
     public Optional<List<EmployeeDTO>> findAll() {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
             Query query = entityManager.createQuery("SELECT e FROM EmployeeDTO e order by e.createdDate desc", EmployeeDTO.class);
             List<EmployeeDTO> employeeDTOList = query.getResultList();
             return Optional.ofNullable(employeeDTOList);
         } catch (PersistenceException e) {
             e.printStackTrace();
-        } finally {
-            entityManager.close();
+            throw e;
         }
-        return Optional.empty();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<EmployeeDTO> findById(Long id) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
             EmployeeDTO employeeDTO = entityManager.find(EmployeeDTO.class, id);
             return Optional.ofNullable(employeeDTO);
         } catch (PersistenceException e) {
             e.printStackTrace();
-        } finally {
-            entityManager.close();
+            throw e;
         }
-        return Optional.empty();
     }
 
     @Override
+    @Transactional
     public Boolean save(EmployeeDTO employeeDTO) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
-            entityManager.getTransaction().begin();
             entityManager.persist(employeeDTO);
-            entityManager.getTransaction().commit();
             return true;
         } catch (PersistenceException e) {
             e.printStackTrace();
-            if (entityManager.getTransaction().isActive()) {
-                entityManager.getTransaction().rollback();
-            }
-        } finally {
-            entityManager.close();
+            throw e;
         }
-        return false;
     }
 
     @Override
+    @Transactional
     public Boolean update(EmployeeDTO employeeDTO) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
-            entityManager.getTransaction().begin();
             entityManager.merge(employeeDTO);
-            entityManager.getTransaction().commit();
             return true;
         } catch (PersistenceException e) {
             e.printStackTrace();
-            if (entityManager.getTransaction().isActive()) {
-                entityManager.getTransaction().rollback();
-            }
-        } finally {
-            entityManager.close();
+            throw e;
         }
-        return false;
     }
 
     @Override
+    @Transactional
     public Boolean deleteById(Long id) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
-            entityManager.getTransaction().begin();
             EmployeeDTO employeeDTO = entityManager.find(EmployeeDTO.class, id);
             if (employeeDTO != null) {
                 entityManager.remove(employeeDTO);
-                entityManager.getTransaction().commit();
                 return true;
             }
         } catch (PersistenceException e) {
             e.printStackTrace();
-            if (entityManager.getTransaction().isActive()) {
-                entityManager.getTransaction().rollback();
-            }
-        } finally {
-            entityManager.close();
+            throw e;
         }
+
         return false;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<EmployeeDTO> findByEmail(String email) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
             Query query = entityManager.createQuery("SELECT e FROM EmployeeDTO e WHERE e.email = :email", EmployeeDTO.class);
             query.setParameter("email", email);
@@ -124,15 +105,13 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
         }
         catch (PersistenceException e) {
             e.printStackTrace();
-        } finally {
-            entityManager.close();
+            throw e;
         }
-        return Optional.empty();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<List<EmployeeDTO>> findByEmployeeMobile(String mobile) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
             Query query = entityManager.createQuery("SELECT e FROM EmployeeDTO e WHERE e.mobile = :mobile", EmployeeDTO.class);
             query.setParameter("mobile", mobile);
@@ -144,15 +123,13 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
         }
         catch (PersistenceException e) {
             e.printStackTrace();
-        } finally {
-            entityManager.close();
+            throw e;
         }
-        return Optional.empty();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public boolean checkMobile(String mobile) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
             Query query = entityManager.createQuery("SELECT COUNT(e) FROM EmployeeDTO e WHERE e.mobile = :mobile");
             query.setParameter("mobile", mobile);
@@ -160,15 +137,13 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
             return count > 0;
         } catch (PersistenceException e) {
             e.printStackTrace();
-        } finally {
-            entityManager.close();
+            throw e;
         }
-        return false;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public boolean checkEmail(String email) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
             Query query = entityManager.createQuery("SELECT COUNT(e) FROM EmployeeDTO e WHERE e.email = :email");
             query.setParameter("email", email);
@@ -176,17 +151,15 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
             return count > 0;
         } catch (PersistenceException e) {
             e.printStackTrace();
-        } finally {
-            entityManager.close();
+            throw e;
         }
-        return false;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<List<EmployeeDTO>> searchAllEmployees(EmployeeDTO employeeDTO) {
         System.out.println("Employee in repository processing " + employeeDTO);
 
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
             CriteriaBuilder cb = entityManager.getCriteriaBuilder();
             CriteriaQuery<EmployeeDTO> query = cb.createQuery(EmployeeDTO.class);
@@ -232,10 +205,8 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
 
         } catch (PersistenceException e) {
             e.printStackTrace();
-        } finally {
-            entityManager.close();
+            throw e;
         }
-        return Optional.empty();
     }
 
     private static  List<Predicate>  getPredicates(EmployeeDTO employeeDTO, CriteriaBuilder cb, Root<EmployeeDTO> root) {
@@ -268,10 +239,10 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public DTOListPage<EmployeeDTO> searchAllEmployees(EmployeeDTO employeeDTO, Integer offset, Integer pageSize) {
         System.out.println("Employee in repository processing " + employeeDTO);
 
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
             CriteriaBuilder cb = entityManager.getCriteriaBuilder();
             CriteriaQuery<EmployeeDTO> query = cb.createQuery(EmployeeDTO.class);
@@ -298,10 +269,8 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
 
         } catch (PersistenceException e) {
             e.printStackTrace();
-        } finally {
-            entityManager.close();
+            throw e;
         }
-        return new DTOListPage<>(0L,Optional.empty());
     }
 
 

@@ -14,6 +14,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import java.time.LocalDateTime;
@@ -62,7 +63,8 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public Boolean validateAndSave(RequestDepartmentDTO requestDepartmentDTO, Model model) {
+    @Transactional
+    public Boolean validateAndSave(RequestDepartmentDTO requestDepartmentDTO) {
         System.out.println("Department Service save department process is initiated using dto." + requestDepartmentDTO);
 
         if(departmentRepository.checkDepartmentName(requestDepartmentDTO.getDepartmentName())){
