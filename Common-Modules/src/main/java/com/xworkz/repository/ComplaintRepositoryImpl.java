@@ -17,6 +17,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -432,6 +433,18 @@ public class ComplaintRepositoryImpl implements ComplaintRepository {
             return Optional.ofNullable(complaintDTOList);
 
         } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    @Override
+    @Transactional
+    public List<ComplaintDTO> getAllOTPClearingComplaint() {
+        try{
+            Query query= entityManager.createQuery("select complaint from ComplaintDTO complaint where complaint.otp is not null or complaint.otptime is not null");
+            return query.getResultList();
+        }catch (Exception e){
             e.printStackTrace();
             throw e;
         }

@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -248,6 +249,25 @@ public class ComplaintServiceImpl implements ComplaintService {
         }
 
         return new NotificationList<>();
+    }
+
+    @Override
+    @Transactional
+    public List<ComplaintDTO> getAllOTPCleaningComplaints() {
+        return complaintRepository.getAllOTPClearingComplaint();
+    }
+
+    @Override
+    public void clearOTPs() {
+        System.out.println("Clearing the OTPs of Complaint");
+
+        List<ComplaintDTO> complaintDTOS = complaintRepository.getAllOTPClearingComplaint();
+
+        for (ComplaintDTO complaintDTO: complaintDTOS){
+            complaintDTO.setOtp(null);
+            complaintDTO.setOtptime(null);
+            complaintRepository.update(complaintDTO);
+        }
     }
 
     private static void addEmployeeDetails(EmployeeDTO employeeDTO, ComplaintDTO complaintDTO) {

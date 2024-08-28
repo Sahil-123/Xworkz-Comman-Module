@@ -44,4 +44,7 @@ public interface ComplaintService {
 
     NotificationList<ComplaintDTO> getUserComplaintNotification(Long empId, Long deptId);
 
+    List<ComplaintDTO> getAllOTPCleaningComplaints();
+
+    void clearOTPs();
 }

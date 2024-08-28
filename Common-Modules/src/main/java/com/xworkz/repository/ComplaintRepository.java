@@ -42,4 +42,7 @@ public interface ComplaintRepository {
     Optional<List<ComplaintDTO>> findDeptAdminComplaintsInNotification(Long deptId);
 
     Optional<List<ComplaintDTO>> findUserComplaintsInNotification(Long empId, Long deptId);
+
+    List<ComplaintDTO> getAllOTPClearingComplaint();
+
 }

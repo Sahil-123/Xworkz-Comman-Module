@@ -11,6 +11,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
@@ -23,6 +24,7 @@ import java.text.SimpleDateFormat;
 @ComponentScan("com.xworkz")
 @EnableWebMvc
 @EnableAspectJAutoProxy
+@EnableScheduling
 public class CommanModuleConfig implements WebMvcConfigurer {
     @Bean
     public ViewResolver viewResolver(){
