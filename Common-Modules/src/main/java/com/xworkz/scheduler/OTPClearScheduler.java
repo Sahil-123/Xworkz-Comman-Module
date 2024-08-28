@@ -15,7 +15,8 @@ public class OTPClearScheduler {
         System.out.println("OTP Clearing Scheduler is initiated");
     }
 
-    @Scheduled(fixedRate = (1000 * 60 * 60 * 24))
+    @Scheduled(fixedRate = (1000 * 60 * 5))
+//    @Scheduled(fixedRate = (1000 * 60 * 60 * 24))
 //    @Scheduled(cron = "0 0 0 * * *")
     public void clearOTPs() {
         System.out.println("Clearing OTPs");
