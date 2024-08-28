@@ -3,6 +3,7 @@ package com.xworkz.repository;
 import com.xworkz.entity.ImageDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.util.List;
@@ -15,36 +16,28 @@ public class ImageRepositoryImpl implements ImageRepository{
     @Autowired
     private EntityManagerFactory entityManagerFactory;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     @Override
+    @Transactional
     public boolean save(ImageDTO imageDTO) {
         System.out.println("Image Repository save process is initiated using dto."+ imageDTO);
 
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        EntityTransaction transaction = entityManager.getTransaction();
-
         try {
-            transaction.begin();
             entityManager.persist(imageDTO);
-            transaction.commit();
             return true;
 
         }catch(PersistenceException e){
             e.printStackTrace();
-            transaction.rollback();
+            throw e;
         }
-        finally {
-            entityManager.close();
-        }
-
-        return false;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<List<ImageDTO>> getImagesByUserId(Long userId) {
         System.out.println("Image Repository find by User ID process is initiated using userid."+ userId);
-
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        EntityTransaction transaction = entityManager.getTransaction();
 
         try {
 
@@ -55,40 +48,27 @@ public class ImageRepositoryImpl implements ImageRepository{
 
         }catch(PersistenceException e){
             e.printStackTrace();
+            throw e;
         }
-        finally {
-            entityManager.close();
-        }
-
-        return Optional.empty();
     }
 
     @Override
+    @Transactional
     public boolean updateImageActiveByUserId(List<ImageDTO> imageDTOList) {
         System.out.println("Image Repository update Image Active By User Id process is initiated using dto list."+ imageDTOList);
 
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        EntityTransaction transaction = entityManager.getTransaction();
-
         try {
-            transaction.begin();
             for (ImageDTO imageDTO: imageDTOList){
                 Query query = entityManager.createNamedQuery("updateImageActive");
                 query.setParameter("active",imageDTO.isActive());
                 query.setParameter("userId",imageDTO.getUserId());
                 query.executeUpdate();
             }
-            transaction.commit();
             return true;
 
         }catch(PersistenceException e){
             e.printStackTrace();
-            transaction.rollback();
+            throw e;
         }
-        finally {
-            entityManager.close();
-        }
-
-        return false;
     }
 }

@@ -3,6 +3,7 @@ package com.xworkz.repository;
 import com.xworkz.entity.EmployeeImageDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.util.List;
@@ -14,34 +15,27 @@ public class EmployeeImageRepositoryImpl implements EmployeeImageRepository {
     @Autowired
     private EntityManagerFactory entityManagerFactory;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     @Override
+    @Transactional
     public boolean save(EmployeeImageDTO employeeImageDTO) {
         System.out.println("Employee Image Repository save process is initiated using dto." + employeeImageDTO);
 
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        EntityTransaction transaction = entityManager.getTransaction();
-
         try {
-            transaction.begin();
             entityManager.persist(employeeImageDTO);
-            transaction.commit();
             return true;
         } catch (PersistenceException e) {
             e.printStackTrace();
-            transaction.rollback();
-        } finally {
-            entityManager.close();
+            throw e;
         }
-
-        return false;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<List<EmployeeImageDTO>> getImagesByEmployeeId(Long employeeId) {
         System.out.println("Employee Image Repository find by Employee ID process is initiated using employeeId." + employeeId);
-
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        EntityTransaction transaction = entityManager.getTransaction();
 
         try {
             Query query = entityManager.createNamedQuery("findImagesByEmployeeID");
@@ -51,37 +45,26 @@ public class EmployeeImageRepositoryImpl implements EmployeeImageRepository {
             return Optional.ofNullable(employeeImageDTOList);
         } catch (PersistenceException e) {
             e.printStackTrace();
-        } finally {
-            entityManager.close();
+            throw e;
         }
-
-        return Optional.empty();
     }
 
     @Override
+    @Transactional
     public boolean updateImageActiveByEmployeeId(List<EmployeeImageDTO> employeeImageDTOList) {
         System.out.println("Employee Image Repository update Image Active By Employee Id process is initiated using dto list." + employeeImageDTOList);
 
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        EntityTransaction transaction = entityManager.getTransaction();
-
         try {
-            transaction.begin();
             for (EmployeeImageDTO employeeImageDTO : employeeImageDTOList) {
                 Query query = entityManager.createNamedQuery("updateEmployeeImageActive");
                 query.setParameter("active", employeeImageDTO.isActive());
                 query.setParameter("employeeId", employeeImageDTO.getEmployeeId());
                 query.executeUpdate();
             }
-            transaction.commit();
             return true;
         } catch (PersistenceException e) {
             e.printStackTrace();
-            transaction.rollback();
-        } finally {
-            entityManager.close();
+            throw e;
         }
-
-        return false;
     }
 }

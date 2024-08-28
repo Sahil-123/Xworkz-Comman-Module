@@ -5,40 +5,36 @@ import com.xworkz.entity.DepartmentAdminDTO;
 import com.xworkz.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceException;
-import javax.persistence.Query;
+import javax.persistence.*;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 public class DepartmentAdminRepositoryImpl implements DepartmentAdminRepository {
 
-    @Autowired
-    private EntityManagerFactory entityManagerFactory;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<List<DepartmentAdminDTO>> findAll() {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
             Query query = entityManager.createQuery("SELECT d FROM DepartmentAdminDTO d order by d.createdDate desc", DepartmentAdminDTO.class);
             List<DepartmentAdminDTO> departmentAdminDTOList = query.getResultList();
             return Optional.ofNullable(departmentAdminDTOList);
         } catch (PersistenceException e) {
             e.printStackTrace();
-        } finally {
-            entityManager.close();
+            throw e;
         }
-        return Optional.empty();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public DTOListPage<DepartmentAdminDTO> findAllByPagination(Integer offset, Integer pageSize) {
         System.out.println("Find all department admin by pagination "+offset+" "+pageSize);
 
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
             Long count = getCount();
             Query query = entityManager.createQuery("SELECT d FROM DepartmentAdminDTO d order by d.createdDate desc", DepartmentAdminDTO.class);
@@ -49,16 +45,12 @@ public class DepartmentAdminRepositoryImpl implements DepartmentAdminRepository 
             return new DTOListPage<>(count,Optional.ofNullable(departmentAdminDTOList));
         } catch (PersistenceException e) {
             e.printStackTrace();
-        } finally {
-            entityManager.close();
+            throw e;
         }
-        return new DTOListPage<DepartmentAdminDTO>(0L,Optional.empty());
     }
 
     private Long getCount(){
         System.out.println("Department admin Repository getting count.");
-
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
 
         try {
             Query queryTotal = entityManager.createQuery
@@ -67,89 +59,69 @@ public class DepartmentAdminRepositoryImpl implements DepartmentAdminRepository 
 
         }catch(PersistenceException e){
             e.printStackTrace();
-        }
-        finally {
-            entityManager.close();
+            throw e;
         }
 
-        return 0L;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<DepartmentAdminDTO> findById(Long id) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
             DepartmentAdminDTO departmentAdminDTO = entityManager.find(DepartmentAdminDTO.class, id);
             return Optional.ofNullable(departmentAdminDTO);
         } catch (PersistenceException e) {
             e.printStackTrace();
-        } finally {
-            entityManager.close();
+            throw e;
         }
-        return Optional.empty();
     }
 
     @Override
+    @Transactional
     public boolean save(DepartmentAdminDTO departmentAdminDTO) {
         System.out.println("Department admin save process for dto "+departmentAdminDTO);
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
+
         try {
-            entityManager.getTransaction().begin();
             entityManager.persist(departmentAdminDTO);
-            entityManager.getTransaction().commit();
             return true;
         } catch (PersistenceException e) {
             e.printStackTrace();
-            entityManager.getTransaction().rollback();
-            return false;
-        } finally {
-            entityManager.close();
+            throw e;
         }
     }
 
     @Override
+    @Transactional
     public boolean update(DepartmentAdminDTO departmentAdminDTO) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
-            entityManager.getTransaction().begin();
             entityManager.merge(departmentAdminDTO);
-            entityManager.getTransaction().commit();
             return true;
         } catch (PersistenceException e) {
             e.printStackTrace();
-            entityManager.getTransaction().rollback();
-            return false;
-        } finally {
-            entityManager.close();
+            throw e;
         }
     }
 
     @Override
+    @Transactional
     public boolean deleteById(Long id) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
-            entityManager.getTransaction().begin();
             DepartmentAdminDTO departmentAdminDTO = entityManager.find(DepartmentAdminDTO.class, id);
             if (departmentAdminDTO != null) {
                 entityManager.remove(departmentAdminDTO);
-                entityManager.getTransaction().commit();
                 return true;
-            } else {
-                entityManager.getTransaction().rollback();
-                return false;
             }
+
+            return false;
         } catch (PersistenceException e) {
             e.printStackTrace();
-            entityManager.getTransaction().rollback();
-            return false;
-        } finally {
-            entityManager.close();
+            throw e;
         }
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<DepartmentAdminDTO> findByEmail(String email) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
             Query query = entityManager.createQuery("SELECT d FROM DepartmentAdminDTO d WHERE d.email = :email", DepartmentAdminDTO.class);
             query.setParameter("email", email);
@@ -157,15 +129,13 @@ public class DepartmentAdminRepositoryImpl implements DepartmentAdminRepository 
             return Optional.ofNullable(departmentAdminDTO);
         } catch (PersistenceException e) {
             e.printStackTrace();
-        } finally {
-            entityManager.close();
+            throw e;
         }
-        return Optional.empty();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public boolean checkMobile(String mobile) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
             Query query = entityManager.createQuery("SELECT COUNT(e) FROM DepartmentAdminDTO e WHERE e.mobile = :mobile");
             query.setParameter("mobile", mobile);
@@ -173,15 +143,13 @@ public class DepartmentAdminRepositoryImpl implements DepartmentAdminRepository 
             return count > 0;
         } catch (PersistenceException e) {
             e.printStackTrace();
-        } finally {
-            entityManager.close();
+            throw e;
         }
-        return false;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public boolean checkEmail(String email) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
             Query query = entityManager.createQuery("SELECT COUNT(e) FROM DepartmentAdminDTO e WHERE e.email = :email");
             query.setParameter("email", email);
@@ -189,9 +157,7 @@ public class DepartmentAdminRepositoryImpl implements DepartmentAdminRepository 
             return count > 0;
         } catch (PersistenceException e) {
             e.printStackTrace();
-        } finally {
-            entityManager.close();
+            throw e;
         }
-        return false;
     }
 }

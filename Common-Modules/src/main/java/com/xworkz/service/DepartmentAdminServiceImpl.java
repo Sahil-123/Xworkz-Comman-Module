@@ -219,6 +219,8 @@ public class DepartmentAdminServiceImpl implements DepartmentAdminService {
                 throw new InfoException("Department not present");
             }
 
+
+
             mailSender.sendDepartmentAdminMail(departmentAdminDTO.getEmail(),password,departmentDTO.get().getDepartmentName());
 
             return true;
