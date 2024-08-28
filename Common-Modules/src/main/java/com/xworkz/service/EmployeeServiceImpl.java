@@ -16,6 +16,7 @@ import com.xworkz.utils.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import java.io.IOException;
@@ -51,6 +52,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 
 
     @Override
+    @Transactional
     public String signin(RequestSigningDTO requestSigningDTO, Model model) {
         System.out.println("Employee Sigin process is initiated with request signin dto " + requestSigningDTO);
 
@@ -123,6 +125,7 @@ public class EmployeeServiceImpl implements EmployeeService{
     }
 
     @Override
+    @Transactional
     public boolean validateAndResetPassword(RequestResetPasswordDTO requestResetPasswordDTO) {
         System.out.println("Employee reset password process is initiated with request password dto " + requestResetPasswordDTO);
 
@@ -157,6 +160,7 @@ public class EmployeeServiceImpl implements EmployeeService{
     }
 
     @Override
+    @Transactional
     public String validateAndSetForgotPassword(RequestForgotPasswordDTO requestForgotPasswordDTO, Model model) {
         System.out.println("Admin forgot password process is initiated with request email dto " + requestForgotPasswordDTO);
 
@@ -180,6 +184,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 
 
     @Override
+    @Transactional
     public Boolean validateAndSaveByDeptAdmin(RequestRegisterEmployeeDTO requestRegisterEmployeeDTO, Model model) {
 
         System.out.println("Employee Service process is initiated using DTO: " + requestRegisterEmployeeDTO);
@@ -276,6 +281,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 
 
     @Override
+    @Transactional
     public ResponseResolveComplaintDto generateOTP(EmployeeDTO employeeDTO, Long complaintId) {
         System.out.println("Generate otp process is initiated in employee service "+ complaintId);
 
@@ -317,6 +323,7 @@ public class EmployeeServiceImpl implements EmployeeService{
     }
 
     @Override
+    @Transactional
     public ResponseResolveComplaintDto resolveComplaint(RequestResolveComplaintDTO requestResolveComplaintDTO, EmployeeDTO employeeDTO) {
         System.out.println("Resolve complaint process in employee service is initiated "+requestResolveComplaintDTO);
 
@@ -345,6 +352,7 @@ public class EmployeeServiceImpl implements EmployeeService{
     }
 
     @Override
+    @Transactional
     public ResponseResolveComplaintDto resolveOtherStatusComplaint(RequestOtherStatusComplaintDTO requestOtherStatusComplaintDTO, EmployeeDTO employeeDTO) {
         System.out.println("Resolve Other complaint status process in employee service is initiated "+requestOtherStatusComplaintDTO);
 
@@ -369,6 +377,7 @@ public class EmployeeServiceImpl implements EmployeeService{
     }
 
     @Override
+    @Transactional
     public Boolean editProfile(RequestEmployeeProfileDTO requestEmployeeProfileDTO, Model model) throws IOException {
         System.out.println("Edit profile of employee "+requestEmployeeProfileDTO);
         EmployeeDTO employeeData = (EmployeeDTO) model.getAttribute("employeeData");

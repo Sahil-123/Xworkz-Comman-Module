@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
 //    private UserRepositoryInt userRepositoryInt;
 
     @Override
-    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
+    @Transactional
     public Boolean validateAndSave(RequestSignupDTO signupDTO) {
 
         System.out.println("User Service process is initiated using DTO: " + signupDTO);
@@ -82,6 +82,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public String signin(RequestSigningDTO requestSigningDTO, Model model) {
         System.out.println("User Sigin process is initiated with request signin dto " + requestSigningDTO);
 
@@ -172,6 +173,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public boolean validateAndResetPassword(RequestResetPasswordDTO requestResetPasswordDTO) {
         System.out.println("User reset password process is initiated with request password dto " + requestResetPasswordDTO);
 
@@ -207,6 +209,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public String validateAndSetForgotPassword(RequestForgotPasswordDTO requestForgotPasswordDTO, Model model) {
         System.out.println("User forgot password process is initiated with request email dto " + requestForgotPasswordDTO);
 
@@ -234,6 +237,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public boolean editProfile(UserProfileDTO userProfileDTO, Model model) throws IOException {
 
         UserDTO userDTO = (UserDTO) model.getAttribute("userData");
