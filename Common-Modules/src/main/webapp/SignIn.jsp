@@ -77,6 +77,10 @@
                                 
                             </c:when>
 
+                            <c:when test="${userAccess.equals('employee')}">
+
+                            </c:when>
+
                             <c:otherwise>
                                 <li class="nav-item">
                                     <a class="nav-link" href="SignUp.jsp">
