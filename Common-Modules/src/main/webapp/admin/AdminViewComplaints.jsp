@@ -9,11 +9,11 @@
                 <link rel="stylesheet" href="resources/css/AdminViewUser.css">
 
                 <%@ include file="../user/UserHeader.jsp" %>
-        <%@ include file="../component/AdminHeaderLink.jsp" %>
+                    <%@ include file="../component/AdminHeaderLink.jsp" %>
 
 
 
-                    <title>Complaints</title>
+                        <title>Complaints</title>
 
     </head>
 
@@ -48,7 +48,7 @@
                             <%@ include file="../common/CSVDownload.jsp" %>
 
                         </c:if>
-                        
+
                         <form action="complaints/viewAllComplaints/1/7" method="POST">
                             <div
                                 class=" d-flex mb-2 p-2 border border-1 rounded-3 border-secondary justify-content-between">
@@ -78,16 +78,20 @@
 
                                 <select class="form-control m-1" id="status" name="status">
                                     <option value="">Status</option>
-                                    <option value="Open">Open</option>
+                                    <option value="InReview">In Review</option>
+                                    <option value="AssignedToDepartment">Assigned to Department</option>
                                     <option value="Pending">Pending</option>
-                                    <option value="InProgess">InProgess</option>
+                                    <option value="Reopened">Reopened</option>
+                                    <option value="Resolved">Resolved</option>
+                                    <option value="NotResolved">Not Resolved</option>
+                                    <option value="Rejected">Rejected</option>
                                 </select>
 
                                 <input type="submit" class="btn btn-primary m-1" id="submitButton" value="Filter" />
                             </div>
                         </form>
 
-                        
+
 
                         <c:if test="${complaintsList == null || complaintsList.isEmpty() }">
                             <div class=" d-flex mb-2 p-2 justify-content-center customeWidth" style="width: 85vw;">
@@ -142,14 +146,17 @@
                                                     <td>
                                                         <select class="form-control m-1" id="status" name="status">
                                                             <option value="">Status</option>
-                                                            <option value="Open" <c:if
-                                                                test="${complaint.status == 'Open'}">selected
-                            </c:if>>Open</option>
-                            <option value="Pending" <c:if test="${complaint.status == 'Pending'}">selected</c:if>
-                                >Pending</option>
-                            <option value="InProgess" <c:if test="${complaint.status == 'InProgess'}">selected</c:if>
-                                >InProgress</option>
-                            </select>
+                                                            <option value="InReview" <c:if test="${complaint.status == 'InReview'}">selected</c:if>>In Review</option>
+                                                            <option value="InProgress" <c:if test="${complaint.status == 'InProgress'}">selected</c:if>>In Progress</option>
+                                                            <option value="InProgess" <c:if test="${complaint.status == 'InProgess'}">selected</c:if>
+                                                                >InProgress</option>
+                                                            <option value="AssignedToDepartment" <c:if test="${complaint.status == 'AssignedToDepartment'}">selected</c:if>>Assigned to Department</option>
+                                                            <option value="Pending" <c:if test="${complaint.status == 'Pending'}">selected</c:if>>Pending</option>
+                                                            <option value="Reopened" <c:if test="${complaint.status == 'Reopened'}">selected</c:if>>Reopened</option>
+                                                            <option value="NotResolved" <c:if test="${complaint.status == 'NotResolved'}">selected</c:if>>Not Resolved</option>
+                                                            <option value="Rejected" <c:if test="${complaint.status == 'Rejected'}">selected</c:if>>Rejected</option>
+                                                        </select>
+                                                        
                             </td>
                             <td class="">
                                 <input type="number" value="${complaint.id}" name="complaintId" hidden />

@@ -60,9 +60,15 @@
 
                                 <select class="form-control m-1" id="status" name="status">
                                     <option value="">Status</option>
-                                    <option value="Open">Open</option>
                                     <option value="Pending">Pending</option>
                                     <option value="InProgess">InProgess</option>
+
+                                    <option value="Reopened">Reopened</option>
+                                    <option value="Resolved">Resolved</option>
+                                    <option value="AssignedToDepartment">Assigned to Department</option>
+                                    <option value="NotResolved">Not Resolved</option>
+                                    <option value="Rejected">Rejected</option>
+
                                 </select>
 
                                 <input type="submit" class="btn btn-primary m-1" id="submitButton" value="Filter" />
@@ -121,13 +127,16 @@
                                                     <td>
                                                         <select class="form-control m-1" id="status" name="status">
                                                             <option value="">Status</option>
-                                                            <option value="Open" <c:if
-                                                                test="${complaint.status == 'Open'}">selected
-                        </c:if>>Open</option>
+                                                           
                         <option value="Pending" <c:if test="${complaint.status == 'Pending'}">selected</c:if>>Pending
                         </option>
                         <option value="InProgess" <c:if test="${complaint.status == 'InProgess'}">selected</c:if>
                             >InProgress</option>
+                            <option value="AssignedToDepartment" <c:if test="${complaint.status == 'AssignedToDepartment'}">selected</c:if>>Assigned to Department</option>
+                            <option value="InProgress" <c:if test="${complaint.status == 'InProgress'}">selected</c:if>>In Progress</option>
+                            <option value="Reopened" <c:if test="${complaint.status == 'Reopened'}">selected</c:if>>Reopened</option>
+                            <option value="Rejected" <c:if test="${complaint.status == 'Rejected'}">selected</c:if>>Rejected</option>
+                        
                         </select>
                         </td>
                         <td class="">
