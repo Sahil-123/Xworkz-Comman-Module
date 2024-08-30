@@ -9,6 +9,8 @@ import com.xworkz.exceptions.InfoException;
 import com.xworkz.repository.ComplaintRepository;
 import com.xworkz.requestDto.*;
 //import com.xworkz.service.ComplaintService;
+import com.xworkz.utils.CommonUtils;
+import com.xworkz.utils.TimeConversion;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,8 +31,6 @@ public class ComplaintServiceImpl implements ComplaintService {
 
     @Autowired
     private ModelMapper modelMapper;
-
-
 
     @Override
     public List<ComplaintDTO> findAllComplaints() {
@@ -264,9 +264,12 @@ public class ComplaintServiceImpl implements ComplaintService {
         List<ComplaintDTO> complaintDTOS = complaintRepository.getAllOTPClearingComplaint();
 
         for (ComplaintDTO complaintDTO: complaintDTOS){
-            complaintDTO.setOtp(null);
-            complaintDTO.setOtptime(null);
-            complaintRepository.update(complaintDTO);
+            Long otpTime = TimeConversion.getDurationInMinutes(complaintDTO.getOtptime());
+            if(otpTime > 3L){
+                complaintDTO.setOtp(null);
+                complaintDTO.setOtptime(null);
+                complaintRepository.update(complaintDTO);
+            }
         }
     }
 

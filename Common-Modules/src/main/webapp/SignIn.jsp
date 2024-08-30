@@ -8,7 +8,7 @@
             <base href="http://localhost:8080/Common-Modules/">
 
 
-            <title>Signin</title>
+            <title>Sign in</title>
 
             <style>
                 label {
@@ -143,7 +143,7 @@
                         </c:forEach>
                     </span>
 
-                    <h2 class="card-title text-center mb-5">Signin</h2>
+                    <h2 class="card-title text-center mb-5">Sign in</h2>
 
                     <div class="mb-3">
                         <label for="email" class="form-label">Email</label>

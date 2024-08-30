@@ -31,10 +31,8 @@
                                 ${userData.lname}"!</span></h1>
                         <hr>
                         <br />
-                        <p class="fs-6 fw-normal">
-                            It's great to have you here. Your dashboard is set up to help you manage your department
-                            efficiently. If you need any assistance, don't hesitate to reach out. Let's make today a
-                            productive one!
+                        <p class="fs-5 fw-normal">
+                            It's great to have you here. Your dashboard is ready and waiting. If you need any help, don't hesitate to ask. Let's make the most of today!.
                         </p>
                     </div>
 

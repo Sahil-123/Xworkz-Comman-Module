@@ -136,7 +136,7 @@
                         <div class="mb-1 mt-3 d-flex justify-content-center">
                             <p>
                                 Already have an account? <a href="SignIn.jsp" style="text-decoration: none">
-                                    <strong> Signin </strong> </a>
+                                    <strong> Sign in </strong> </a>
                             </p>
                         </div>
 

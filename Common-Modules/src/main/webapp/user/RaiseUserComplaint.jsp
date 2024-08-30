@@ -99,7 +99,7 @@
 
 
                         <div class="mb-3">
-                            <label for="description" class="form-label">Description</label>
+                            <label for="description" class="form-label">Complaint Details</label>
                             <textarea class="form-control" id="description" name="description"
                                 rows="3">${complaintData.description}</textarea>
                         </div>
