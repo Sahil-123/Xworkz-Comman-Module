@@ -57,6 +57,12 @@ public class DepartmentAdminController {
         return "SignIn";
     }
 
+    @GetMapping("/home")
+    public String getUserHome(Model model){
+//        model.addAttribute("link","user");
+        return "DepartmentAdmin";
+    }
+
     @PostMapping("/signin")
     public String singnin(@Valid RequestSigningDTO requestSigningDTO, BindingResult bindingResult, Model model) {
         System.out.println(" Department Admin Sigin Controller " + requestSigningDTO);

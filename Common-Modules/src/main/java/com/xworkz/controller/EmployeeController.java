@@ -50,6 +50,12 @@ public class EmployeeController {
         return "SignIn";
     }
 
+    @GetMapping("/home")
+    public String getUserHome(Model model){
+//        model.addAttribute("link","user");
+        return "Employee";
+    }
+
 
     @PostMapping("/signin")
     public String signin(@Valid RequestSigningDTO requestSigningDTO, BindingResult bindingResult, Model model) {

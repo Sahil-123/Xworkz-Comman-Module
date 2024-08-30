@@ -66,6 +66,12 @@ public class AdminController {
         return "ForgotPassword";
     }
 
+    @GetMapping("/home")
+    public String getUserHome(Model model){
+//        model.addAttribute("link","user");
+        return "Admin";
+    }
+
     @PostMapping("/signin")
     public String singnin(@Valid RequestSigningDTO requestSigningDTO, BindingResult bindingResult, Model model) {
         System.out.println(" Admin Siginin Controller " + requestSigningDTO);

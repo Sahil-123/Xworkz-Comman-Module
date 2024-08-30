@@ -1,5 +1,7 @@
 package com.xworkz.configuration;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -39,13 +41,24 @@ public class DBConfiguration {
 
     @Bean
     public DataSource dataSource(){
-        DriverManagerDataSource dataSource= new DriverManagerDataSource();
-        dataSource.setUrl(this.url);
-        dataSource.setUsername(this.username);
-        dataSource.setPassword(this.password);
-        dataSource.setDriverClassName(this.driver);
         System.out.println("DataSource configured");
-        return dataSource;
+//        DriverManagerDataSource dataSource= new DriverManagerDataSource();
+//        dataSource.setUrl(this.url);
+        HikariConfig config = new HikariConfig();
+        config.setJdbcUrl(this.url);
+        config.setUsername(this.username);
+        config.setPassword(this.password);
+        config.setDriverClassName(this.driver);
+        config.setConnectionTimeout(10000);
+        config.setPoolName("HikariCP");
+        config.setIdleTimeout(600000);
+        config.setMaxLifetime(1800000);
+        config.setMinimumIdle(5);
+        config.setMaximumPoolSize(100);
+        config.setLeakDetectionThreshold(30000); // 30 seconds
+
+
+        return new HikariDataSource(config);
     }
 
 

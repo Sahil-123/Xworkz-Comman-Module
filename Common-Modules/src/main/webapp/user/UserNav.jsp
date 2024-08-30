@@ -16,9 +16,11 @@
 
 
                 <a class=" nav-link nav-item text-capitalize nav-link d-flex align-items-center"
-                    href="user">
+                    href="home">
                     Home
                 </a>
+                <pre> </pre>
+
 
                 <!-- <li class="nav-item"> -->
                     <div class="btn-group dropstart nav-item">

@@ -197,7 +197,7 @@ public class UserController {
         return "index";
     }
 
-    @GetMapping("user")
+    @GetMapping("/home")
     public String getUserHome(Model model){
         model.addAttribute("link","user");
         return "User";

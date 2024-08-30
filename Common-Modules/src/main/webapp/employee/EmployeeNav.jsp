@@ -14,6 +14,12 @@
             </ul>
             <ul class="navbar-nav align-items-center">
 
+                <a class=" nav-link nav-item text-capitalize nav-link d-flex align-items-center"
+                    href="employee/home">
+                    Home
+                </a>
+                <pre>  </pre>
+
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">

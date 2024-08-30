@@ -13,6 +13,13 @@
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             </ul>
             <ul class="navbar-nav align-items-center">
+
+                <a class=" nav-link nav-item text-capitalize nav-link d-flex align-items-center"
+                    href="admin/home">
+                    Home
+                </a>
+                <pre> </pre>
+
                 <!-- <li class="nav-item text-capitalize nav-link d-flex align-items-center text-white">
                     <div class="nav-link nav-item ">${adminData.firstName} ${adminData.lastName}</div>
                     <div class="nav-item nav-link ms-1">
@@ -114,7 +121,8 @@
                         <!-- <span class="badge" id="notificationCount">3</span> -->
                         <!-- <span class="position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-danger p-2"><span class="visually-hidden">unread messages</span></span> -->
                         <span
-                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary bg-danger" id="notificationCount">0
+                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary bg-danger"
+                            id="notificationCount">0
                             <span class="visually-hidden">unread messages</span></span>
 
                     </a>
