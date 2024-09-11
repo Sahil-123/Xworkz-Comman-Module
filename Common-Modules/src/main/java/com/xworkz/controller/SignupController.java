@@ -65,11 +65,10 @@ public class SignupController {
     }
 
     @GetMapping("/testRedis")
-    @Cacheable(cacheNames = "sahil")
+    @Cacheable(cacheNames = "shortLivedCache", key = "'sahil'")
     @ResponseBody
     public String testRedis(){
         System.out.println("testing with key sahil for init.");
         return "Naikwadi";
     }
-
 }

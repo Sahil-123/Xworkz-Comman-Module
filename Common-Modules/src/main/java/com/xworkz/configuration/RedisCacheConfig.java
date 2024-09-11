@@ -15,6 +15,10 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
+
 @Configuration
 @EnableCaching
 @PropertySource("classpath:redis.properties")
@@ -36,9 +40,9 @@ public class RedisCacheConfig {
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
         System.out.println("Redis connection factory is created");
-        System.out.println("Host :"+host);
-        System.out.println("port :"+port);
-        System.out.println("password :"+password);
+//        System.out.println("Host :"+host);
+//        System.out.println("port :"+port);
+//        System.out.println("password :"+password);
 
         RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
         redisStandaloneConfiguration.setHostName(host);
@@ -68,9 +72,19 @@ public class RedisCacheConfig {
     public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
         System.out.println("Redis Cache Manager is created.");
 
-        RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig();
+        RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration
+                .defaultCacheConfig()
+                .entryTtl(Duration.ofMinutes(5))
+                .disableCachingNullValues();
+
+        Map<String, RedisCacheConfiguration> cacheConfigurationMap = new HashMap<>();
+        cacheConfigurationMap.put("shortLivedCache", RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(1)));
+
 //        redisCacheConfiguration.
-        return RedisCacheManager.builder(redisConnectionFactory).cacheDefaults(redisCacheConfiguration).build();
+        return RedisCacheManager.builder(redisConnectionFactory)
+                .cacheDefaults(redisCacheConfiguration)
+                .withInitialCacheConfigurations(cacheConfigurationMap)
+                .build();
     }
 
 }
