@@ -15,6 +15,7 @@ public class ExceptionHandling {
     @ExceptionHandler(value = Exception.class)
     public String handleGlobalException(Model model,Exception e){
         log.error("Error Occurred : "+e.getMessage());
+        e.printStackTrace();
 //        System.out.println(e.getMessage()+" "+e);
 
         model.addAttribute("errorMessage","Error Occurred : "+e.getMessage());
