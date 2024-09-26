@@ -15,6 +15,7 @@ import com.xworkz.responseDto.ResponseResolveComplaintDto;
 import com.xworkz.utils.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -50,6 +51,9 @@ public class EmployeeServiceImpl implements EmployeeService{
     @Autowired
     private EmployeeImageService employeeImageService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
 
     @Override
     @Transactional
@@ -65,7 +69,9 @@ public class EmployeeServiceImpl implements EmployeeService{
                 throw new InfoException(" Your account is Locked. Please Reset your password.");
             }
 
-            if (employeeDTO.getPassword().equals(requestSigningDTO.getPassword())) {
+//            if (employeeDTO.getPassword().equals(requestSigningDTO.getPassword())) {
+            if (passwordEncoder.matches(requestSigningDTO.getPassword(),employeeDTO.getPassword())) {
+
                 if (employeeDTO.getLoginCount() == 0 || employeeDTO.getFailedAttempts() == 3) {
                     return "ResetPassword";
                 }
@@ -216,10 +222,13 @@ public class EmployeeServiceImpl implements EmployeeService{
         employeeDTO.setDepartmentId(departmentAdminDTO.getDepartmentId());
         employeeDTO.setCreatedBy(employeeDTO.getFname() + " " + employeeDTO.getLname());
         employeeDTO.setCreatedDate(LocalDateTime.now());
-        employeeDTO.setPassword(PasswordGenerator.generatePassword());
+
+        String password = PasswordGenerator.generatePassword();
+
+        employeeDTO.setPassword(passwordEncoder.encode(password));
         System.out.println(employeeDTO);
         Boolean result = employeeRepository.save(employeeDTO);
-        mailSender.sendEmployeeRegisterMail(employeeDTO.getEmail(), employeeDTO.getPassword(),departmentDTO.get().getDepartmentName());
+        mailSender.sendEmployeeRegisterMail(employeeDTO.getEmail(), password,departmentDTO.get().getDepartmentName());
         return result;
     }
 

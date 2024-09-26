@@ -15,6 +15,7 @@ import com.xworkz.utils.PasswordGenerator;
 import com.xworkz.utils.TimeConversion;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -40,6 +41,9 @@ public class DepartmentAdminServiceImpl implements DepartmentAdminService {
 
     @Autowired
     private CustomeMailSender mailSender;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     @Override
@@ -78,7 +82,9 @@ public class DepartmentAdminServiceImpl implements DepartmentAdminService {
                 throw new InfoException(" Your account is Locked. Please Reset your password.");
             }
 
-            if (departmentAdminDTO.getPassword().equals(requestSigningDTO.getPassword())) {
+//            if (departmentAdminDTO.getPassword().equals(requestSigningDTO.getPassword())) {
+            if (passwordEncoder.matches(requestSigningDTO.getPassword(), departmentAdminDTO.getPassword())) {
+
                 if (departmentAdminDTO.getLoginCount() == 0 || departmentAdminDTO.getFailedAttempts() == 3) {
 
                     return "ResetPassword";
@@ -205,7 +211,8 @@ public class DepartmentAdminServiceImpl implements DepartmentAdminService {
             DepartmentAdminDTO departmentAdminDTO = modelMapper.map(requestDepartmentAdminDTO, DepartmentAdminDTO.class);
             departmentAdminDTO.setId(null);
             String password = PasswordGenerator.generatePassword();
-            departmentAdminDTO.setPassword(password);
+
+            departmentAdminDTO.setPassword(passwordEncoder.encode(password));
             departmentAdminDTO.setCreatedBy("Admin");
             departmentAdminDTO.setCreatedDate(LocalDateTime.now());
 

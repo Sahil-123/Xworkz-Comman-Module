@@ -14,6 +14,7 @@ import com.xworkz.utils.PasswordGenerator;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,6 +44,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private ImageService imageService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
 
 //    @Autowired
 //    private UserRepositoryInt userRepositoryInt;
@@ -70,13 +74,16 @@ public class UserServiceImpl implements UserService {
         UserDTO userDTO = modelMapper.map(signupDTO, UserDTO.class);
         userDTO.setCreatedBy(userDTO.getFname() + " " + userDTO.getLname());
         userDTO.setCreatedDate(LocalDateTime.now());
-        userDTO.setPassword(PasswordGenerator.generatePassword());
+
+        String password = PasswordGenerator.generatePassword();
+
+        userDTO.setPassword(passwordEncoder.encode(password));
         System.out.println(userDTO);
         Boolean result = userRepository.save(userDTO);
 
         if (userDTO.getFname().equals("sahil")) throw new DataIntegrityViolationException("data testing");
 
-        mailSender.sendSignupMail(userDTO.getEmail(), userDTO.getPassword());
+        mailSender.sendSignupMail(userDTO.getEmail(), password);
 
         return result != null;
     }
@@ -95,7 +102,9 @@ public class UserServiceImpl implements UserService {
                 throw new InfoException(" Your account is Locked. Please Reset your password.");
             }
 
-            if (userDTO.getPassword().equals(requestSigningDTO.getPassword())) {
+//            if (userDTO.getPassword().equals(requestSigningDTO.getPassword())) {
+            if (passwordEncoder.matches(requestSigningDTO.getPassword(), userDTO.getPassword())) {
+
                 if (userDTO.getLoginCount() == 0 || userDTO.getFailedAttemptsCount() == 3) {
                     return "ResetPassword";
                 }
