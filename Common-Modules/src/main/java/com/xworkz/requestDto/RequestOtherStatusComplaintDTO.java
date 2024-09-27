@@ -1,5 +1,6 @@
 package com.xworkz.requestDto;
 
+import com.xworkz.enums.ComplaintStatus;
 import com.xworkz.enums.EmployeeComplaintStatus;
 import lombok.*;
 
@@ -21,5 +22,5 @@ public class RequestOtherStatusComplaintDTO implements Serializable {
     private String comment;
 
     @NotNull(message = "status should not empty")
-    private EmployeeComplaintStatus status;
+    private ComplaintStatus status;
 }

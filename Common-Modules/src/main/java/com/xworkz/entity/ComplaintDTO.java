@@ -1,5 +1,6 @@
 package com.xworkz.entity;
 
+import com.xworkz.enums.ComplaintStatus;
 import lombok.*;
 
 import javax.persistence.*;
@@ -56,7 +57,8 @@ public class ComplaintDTO implements Serializable {
     private LocalDateTime updatedDate;
 
     @Column(name = "status")
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private ComplaintStatus status;
 
     @Column(name = "userId")
     private Long userId;

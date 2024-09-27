@@ -1,10 +1,13 @@
 package com.xworkz.requestDto;
 
+import com.xworkz.enums.ComplaintStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -22,5 +25,5 @@ public class RequestUpdateComplaintByAdminDTO implements Serializable {
     private Long department;
 
     @NotEmpty(message = "Status should not empty")
-    private String status;
+    private ComplaintStatus status;
 }

@@ -1,5 +1,6 @@
 package com.xworkz.requestDto;
 
+import com.xworkz.enums.ComplaintStatus;
 import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
@@ -24,5 +25,5 @@ public class RequestResolveComplaintDTO implements Serializable {
     @Size(message = "otp should be only 6 digits", min=6 , max = 6)
     private String otp;
 
-    private String status;
+    private ComplaintStatus status;
 }

@@ -29,12 +29,12 @@ public class ComplaintRepositoryImpl implements ComplaintRepository {
 
     @Override
     @Transactional
-    public Boolean save(ComplaintDTO complaintDTO) {
+    public ComplaintDTO save(ComplaintDTO complaintDTO) {
         System.out.println("Complaint Repository save process is initiated using dto." + complaintDTO);
 
         try {
             entityManager.persist(complaintDTO);
-            return true;
+            return complaintDTO;
         } catch (PersistenceException e) {
             e.printStackTrace();
             throw new InfoException("Something went wrong data not saved successfully.");

@@ -2,6 +2,7 @@ package com.xworkz.service;
 
 import com.xworkz.entity.AdminDTO;
 import com.xworkz.entity.ComplaintDTO;
+import com.xworkz.enums.Roles;
 import com.xworkz.exceptions.InfoException;
 import com.xworkz.repository.AdminRepository;
 import com.xworkz.repository.ComplaintRepository;
@@ -11,12 +12,17 @@ import com.xworkz.requestDto.RequestSigningDTO;
 import com.xworkz.utils.CustomeMailSender;
 import com.xworkz.utils.PasswordGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,6 +63,23 @@ public class AdminServiceImpl implements AdminService{
 //                save updated counts to database
                 adminRepository.updateByDto(adminDTO);
                 model.addAttribute("adminData",adminDTO);
+//
+////                Adding authentication in spring security context
+//                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+//                        new UsernamePasswordAuthenticationToken(adminDTO.getEmail(),adminDTO.getPassword());
+//                usernamePasswordAuthenticationToken.setDetails(Roles.ADMIN);
+//                usernamePasswordAuthenticationToken.setAuthenticated(true);
+//                SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+
+//                List<GrantedAuthority> authorities = Arrays.asList(new SimpleGrantedAuthority(Roles.ADMIN.toString()));
+//
+//                // Create the UsernamePasswordAuthenticationToken with email, password, and authorities
+//                UsernamePasswordAuthenticationToken authenticationToken =
+//                        new UsernamePasswordAuthenticationToken(adminDTO.getEmail(), adminDTO.getPassword(), authorities);
+//
+//                // Set the Authentication in the SecurityContext
+//                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+
                 return "Admin";
             }else {
 

@@ -2,6 +2,7 @@ package com.xworkz.service;
 
 import com.xworkz.dto.DTOListPage;
 import com.xworkz.entity.*;
+import com.xworkz.enums.ComplaintStatus;
 import com.xworkz.exceptions.InfoException;
 import com.xworkz.repository.ComplaintRepository;
 import com.xworkz.repository.DepartmentRepository;
@@ -346,7 +347,7 @@ public class EmployeeServiceImpl implements EmployeeService{
             ComplaintDTO complaintDTO = complaintDTOList.get().get(0);
 
             if(complaintDTO.getOtp().equals(requestResolveComplaintDTO.getOtp())){
-                complaintDTO.setStatus(CommonUtils.RESOLVED);
+                complaintDTO.setStatus(ComplaintStatus.RESOLVED);
                 complaintDTO.setComment(requestResolveComplaintDTO.getComment());
                 Boolean status = complaintRepository.update(complaintDTO);
                 return new ResponseResolveComplaintDto(true,"Complaint Resolved Successfully. Thank you ");
@@ -374,7 +375,7 @@ public class EmployeeServiceImpl implements EmployeeService{
         if(complaintDTOList.isPresent() && !complaintDTOList.get().isEmpty()){
             ComplaintDTO complaintDTO = complaintDTOList.get().get(0);
 
-            complaintDTO.setStatus(requestOtherStatusComplaintDTO.getStatus().getDisplayValue());
+            complaintDTO.setStatus(requestOtherStatusComplaintDTO.getStatus());
             complaintDTO.setComment(requestOtherStatusComplaintDTO.getComment());
 
             Boolean status = complaintRepository.update(complaintDTO);

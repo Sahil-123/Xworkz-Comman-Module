@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum ComplaintStatus {
+    RECEIVED("Received"),
     OPEN("Open"),
     IN_REVIEW("In Review"),
     ASSIGNED_TO_DEPARTMENT("Assigned to Department"),

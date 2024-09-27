@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ComplaintRepository {
-    Boolean save(ComplaintDTO complaintDTO);
+    ComplaintDTO save(ComplaintDTO complaintDTO);
 
     Optional<List<ComplaintDTO>> findAll();
 

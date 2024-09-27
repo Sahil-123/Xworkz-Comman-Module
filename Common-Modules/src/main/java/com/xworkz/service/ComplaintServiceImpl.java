@@ -3,8 +3,11 @@ package com.xworkz.service;
 import com.xworkz.dto.DTOListPage;
 import com.xworkz.dto.NotificationList;
 import com.xworkz.entity.ComplaintDTO;
+import com.xworkz.entity.ComplaintHistoryDTO;
 import com.xworkz.entity.EmployeeDTO;
 import com.xworkz.entity.UserDTO;
+import com.xworkz.enums.ComplaintStatus;
+import com.xworkz.enums.Roles;
 import com.xworkz.exceptions.InfoException;
 import com.xworkz.repository.ComplaintRepository;
 import com.xworkz.requestDto.*;
@@ -32,6 +35,9 @@ public class ComplaintServiceImpl implements ComplaintService {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private ComplaintHistoryService complaintHistoryService;
+
     @Override
     public List<ComplaintDTO> findAllComplaints() {
         return complaintRepository.findAll().orElse(null);
@@ -54,10 +60,21 @@ public class ComplaintServiceImpl implements ComplaintService {
         complaintDTO.setUserId(userDTO.getId());
 //        complaintDTO
 
-        if (complaintRepository.save(complaintDTO)) {
-            return complaintDTO;
+        ComplaintDTO complaintDTOResult = complaintRepository.save(complaintDTO);
+
+        if(complaintDTOResult != null){
+            ComplaintHistoryDTO complaintHistoryDTO = new ComplaintHistoryDTO();
+            complaintHistoryDTO.setComplaintID(complaintDTOResult.getId());
+            complaintHistoryDTO.setRole(Roles.USER);
+            complaintHistoryDTO.setId(userDTO.getId());
+            complaintHistoryDTO.setStatus(ComplaintStatus.RECEIVED);
+            complaintHistoryDTO.setCreatedDate(LocalDateTime.now());
+            complaintHistoryDTO.setComment("Your complaint has been submitted and is currently under review by the administration.");
+
+            complaintHistoryService.saveComplaintHistory(complaintHistoryDTO);
         }
-        return null;
+
+        return complaintDTOResult;
     }
 
     @Override
@@ -115,6 +132,8 @@ public class ComplaintServiceImpl implements ComplaintService {
         if(!complaintRepository.update(complaintDTO)){
             throw new InfoException("Something is wrong complaint with id = "+requestUpdateComplaintByAdminDTO.getComplaintId()+" not updated");
         }
+
+
 
         return true;
     }
