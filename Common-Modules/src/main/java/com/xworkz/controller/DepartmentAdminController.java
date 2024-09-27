@@ -202,7 +202,7 @@ public class DepartmentAdminController {
         }
 
         try {
-            complaintService.updateComplaintForDepartmentAdmin(requestUpdateDepartmentComplaintByAdminDTO);
+            complaintService.updateComplaintForDepartmentAdmin(requestUpdateDepartmentComplaintByAdminDTO,model);
             model.addAttribute("successMessage", "Complaint with Id "+ requestUpdateDepartmentComplaintByAdminDTO.getComplaintId()+" updated successfully.");
             return viewDepartmentComplaints(new RequestFilterComplaintDTO(),Optional.empty(), Optional.empty(),model);
         } catch (InfoException e) {

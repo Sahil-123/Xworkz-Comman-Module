@@ -1,5 +1,6 @@
 package com.xworkz.service;
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import com.xworkz.dto.DTOListPage;
 import com.xworkz.dto.NotificationList;
 import com.xworkz.entity.*;
@@ -153,7 +154,7 @@ public class ComplaintServiceImpl implements ComplaintService {
 
     @Override
     @Transactional
-    public Boolean updateComplaintForDepartmentAdmin(RequestUpdateDepartmentComplaintByAdminDTO requestUpdateDepartmentComplaintByAdminDTO) {
+    public Boolean updateComplaintForDepartmentAdmin(RequestUpdateDepartmentComplaintByAdminDTO requestUpdateDepartmentComplaintByAdminDTO, Model model) {
         System.out.println("service complaint update for department admin processes "+requestUpdateDepartmentComplaintByAdminDTO);
 
         ComplaintDTO complaintDTO = complaintRepository.findById(requestUpdateDepartmentComplaintByAdminDTO.getComplaintId()).get();
@@ -163,6 +164,18 @@ public class ComplaintServiceImpl implements ComplaintService {
         if(!complaintRepository.update(complaintDTO)){
             throw new InfoException("Something is wrong complaint with id = "+requestUpdateDepartmentComplaintByAdminDTO.getComplaintId()+" not updated");
         }
+
+        DepartmentAdminDTO departmentAdminDTO = (DepartmentAdminDTO) model.getAttribute("departmentAdminData");
+
+        ComplaintHistoryDTO complaintHistoryDTO = new ComplaintHistoryDTO();
+        complaintHistoryDTO.setRole(Roles.DEPARTMENT_ADMIN);
+        complaintHistoryDTO.setId(departmentAdminDTO.getId());
+        complaintHistoryDTO.setComplaintID(complaintDTO.getId());
+        complaintHistoryDTO.setCreatedDate(LocalDateTime.now());
+        complaintHistoryDTO.setComment(CommonUtils.getComplaintStatusMessage(requestUpdateDepartmentComplaintByAdminDTO.getStatus()));
+        complaintHistoryDTO.setStatus(requestUpdateDepartmentComplaintByAdminDTO.getStatus());
+
+        complaintHistoryService.saveComplaintHistory(complaintHistoryDTO);
 
         return true;
     }

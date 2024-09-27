@@ -3,6 +3,7 @@ package com.xworkz.service;
 import com.xworkz.dto.DTOListPage;
 import com.xworkz.entity.*;
 import com.xworkz.enums.ComplaintStatus;
+import com.xworkz.enums.Roles;
 import com.xworkz.exceptions.InfoException;
 import com.xworkz.repository.ComplaintRepository;
 import com.xworkz.repository.DepartmentRepository;
@@ -54,6 +55,9 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private ComplaintHistoryService complaintHistoryService;
 
 
     @Override
@@ -350,6 +354,17 @@ public class EmployeeServiceImpl implements EmployeeService{
                 complaintDTO.setStatus(ComplaintStatus.RESOLVED);
                 complaintDTO.setComment(requestResolveComplaintDTO.getComment());
                 Boolean status = complaintRepository.update(complaintDTO);
+
+                ComplaintHistoryDTO complaintHistoryDTO = new ComplaintHistoryDTO();
+                complaintHistoryDTO.setRole(Roles.EMPLOYEE);
+                complaintHistoryDTO.setId(employeeDTO.getId());
+                complaintHistoryDTO.setComplaintID(complaintDTO.getId());
+                complaintHistoryDTO.setCreatedDate(LocalDateTime.now());
+                complaintHistoryDTO.setComment(CommonUtils.getComplaintStatusMessage(ComplaintStatus.RESOLVED));
+                complaintHistoryDTO.setStatus(ComplaintStatus.RESOLVED);
+
+                complaintHistoryService.saveComplaintHistory(complaintHistoryDTO);
+
                 return new ResponseResolveComplaintDto(true,"Complaint Resolved Successfully. Thank you ");
             }else {
                 return new ResponseResolveComplaintDto(false,"Please provide valid OTP");
@@ -379,6 +394,17 @@ public class EmployeeServiceImpl implements EmployeeService{
             complaintDTO.setComment(requestOtherStatusComplaintDTO.getComment());
 
             Boolean status = complaintRepository.update(complaintDTO);
+
+            ComplaintHistoryDTO complaintHistoryDTO = new ComplaintHistoryDTO();
+            complaintHistoryDTO.setRole(Roles.EMPLOYEE);
+            complaintHistoryDTO.setId(employeeDTO.getId());
+            complaintHistoryDTO.setComplaintID(complaintDTO.getId());
+            complaintHistoryDTO.setCreatedDate(LocalDateTime.now());
+            complaintHistoryDTO.setComment(CommonUtils.getComplaintStatusMessage(requestOtherStatusComplaintDTO.getStatus()));
+            complaintHistoryDTO.setStatus(requestOtherStatusComplaintDTO.getStatus());
+
+            complaintHistoryService.saveComplaintHistory(complaintHistoryDTO);
+
             return new ResponseResolveComplaintDto(true,"Complaint Updated Successfully");
 
         }else {
