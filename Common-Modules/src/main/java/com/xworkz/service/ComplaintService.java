@@ -6,6 +6,7 @@ import com.xworkz.entity.ComplaintDTO;
 import com.xworkz.entity.EmployeeDTO;
 import com.xworkz.entity.UserDTO;
 import com.xworkz.requestDto.*;
+import org.springframework.ui.Model;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,7 +26,7 @@ public interface ComplaintService {
     DTOListPage<ComplaintDTO> searchComplaintsForAdmin(RequestFilterComplaintDTO requestFilterComplaintDTO, Integer offset, Integer pageSize);
     Boolean updateComplaint(RequestUpdateComplaintDTO requestUpdateComplaintDTO);
 
-    Boolean updateComplaintForAdmin(RequestUpdateComplaintByAdminDTO requestUpdateComplaintByAdminDTO);
+    Boolean updateComplaintForAdmin(RequestUpdateComplaintByAdminDTO requestUpdateComplaintByAdminDTO, Model model);
 
     Boolean updateComplaintForDepartmentAdmin(RequestUpdateDepartmentComplaintByAdminDTO requestUpdateDepartmentComplaintByAdminDTO);
 

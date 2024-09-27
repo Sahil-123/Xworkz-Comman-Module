@@ -50,10 +50,9 @@
 
                                         <select class="form-control m-1" id="status" name="status" class="">
                                             <option value="">Status</option>
-                                            <option value="In Progress">In Progress</option>
-                                            <option value="Pending">Pending</option>
-                                            <option value="Not Resolved">Not Resolved</option>
-                                            <!-- <option value="Resolved">Resolved</option> -->
+                                            <option value="IN_PROGRESS">In Progress</option>
+                                            <option value="PENDING">Pending</option>
+                                            <option value="NOT_RESOLVED">Not Resolved</option>
 
                                         </select>
 
@@ -114,19 +113,7 @@
 
                                                         <c:choose>
                                                             <c:when test="${status.equalsIgnoreCase('Resolved')}">
-                                                                <c:choose>
-                                                                    <c:when
-                                                                        test="${complaint.status.equalsIgnoreCase('Resolved')}">
-                                                                        <td class="text-success">${complaint.status}
-                                                                        </td>
-                                                                    </c:when>
 
-                                                                    <c:when
-                                                                        test="${complaint.status.equalsIgnoreCase('Not Resolved')}">
-                                                                        <td class="text-danger">${complaint.status}
-                                                                        </td>
-                                                                    </c:when>
-                                                                </c:choose>
 
                                                                 <td>${complaint.comment}</td>
                                                             </c:when>
@@ -138,21 +125,19 @@
                                                                     <td>
                                                                         <select class="form-control m-1" name="status">
                                                                             <option value="">Status</option>
-                                                                            <option value="In Progress" <c:if
-                                                                                test="${complaint.status.equalsIgnoreCase('In Progress')}">
-                                                                                selected
-                                        </c:if>>In Progress
-                                        </option>
-                                        <option value="Pending" <c:if
-                                            test="${complaint.status.equalsIgnoreCase('Pending')}">selected</c:if>
-                                            >Pending</option>
-                                        <option value="Not Resolved" <c:if
-                                            test="${complaint.status.equalsIgnoreCase('Not Resolved')}">selected
-                                            </c:if>>Not Resolved
-                                        </option>
-                                        <option value="Resolved" <c:if
-                                            test="${complaint.status.equalsIgnoreCase('Resolved')}">selected</c:if>
-                                            >Resolved</option>
+                                                                            <option value="IN_PROGRESS" <c:if test="${'IN_PROGRESS'.equalsIgnoreCase(complaint.status)}">selected</c:if>>
+                                                                                In Progress
+                                                                            </option>
+                                                                            <option value="PENDING" <c:if test="${'PENDING'.equalsIgnoreCase(complaint.status)}">selected</c:if>>
+                                                                                Pending
+                                                                            </option>
+                                                                            <option value="NOT_RESOLVED" <c:if test="${'NOT_RESOLVED'.equalsIgnoreCase(complaint.status)}">selected</c:if>>
+                                                                                Not Resolved
+                                                                            </option>
+                                                                            <option value="RESOLVED" <c:if test="${'RESOLVED'.equalsIgnoreCase(complaint.status)}">selected</c:if>>
+                                                                                Resolved
+                                                                            </option>
+
                                         </select>
                                         </td>
                                         <td class="d-flex justify-content-center">

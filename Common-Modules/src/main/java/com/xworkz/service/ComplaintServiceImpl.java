@@ -2,10 +2,7 @@ package com.xworkz.service;
 
 import com.xworkz.dto.DTOListPage;
 import com.xworkz.dto.NotificationList;
-import com.xworkz.entity.ComplaintDTO;
-import com.xworkz.entity.ComplaintHistoryDTO;
-import com.xworkz.entity.EmployeeDTO;
-import com.xworkz.entity.UserDTO;
+import com.xworkz.entity.*;
 import com.xworkz.enums.ComplaintStatus;
 import com.xworkz.enums.Roles;
 import com.xworkz.exceptions.InfoException;
@@ -18,6 +15,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -37,6 +35,7 @@ public class ComplaintServiceImpl implements ComplaintService {
 
     @Autowired
     private ComplaintHistoryService complaintHistoryService;
+
 
     @Override
     public List<ComplaintDTO> findAllComplaints() {
@@ -58,6 +57,7 @@ public class ComplaintServiceImpl implements ComplaintService {
         complaintDTO.setCreatedBy(userDTO.getFname()+" "+userDTO.getLname());
         complaintDTO.setCreatedDate(LocalDateTime.now());
         complaintDTO.setUserId(userDTO.getId());
+        complaintDTO.setStatus(ComplaintStatus.RECEIVED);
 //        complaintDTO
 
         ComplaintDTO complaintDTOResult = complaintRepository.save(complaintDTO);
@@ -76,6 +76,8 @@ public class ComplaintServiceImpl implements ComplaintService {
 
         return complaintDTOResult;
     }
+
+
 
     @Override
     @Transactional
@@ -121,7 +123,7 @@ public class ComplaintServiceImpl implements ComplaintService {
 
     @Override
     @Transactional
-    public Boolean updateComplaintForAdmin(RequestUpdateComplaintByAdminDTO requestUpdateComplaintByAdminDTO) {
+    public Boolean updateComplaintForAdmin(RequestUpdateComplaintByAdminDTO requestUpdateComplaintByAdminDTO, Model model) {
         System.out.println("service complaint update for admin processes "+requestUpdateComplaintByAdminDTO);
 
         ComplaintDTO complaintDTO = complaintRepository.findById(requestUpdateComplaintByAdminDTO.getComplaintId()).get();
@@ -129,11 +131,22 @@ public class ComplaintServiceImpl implements ComplaintService {
         complaintDTO.setStatus(requestUpdateComplaintByAdminDTO.getStatus());
 //        complaintDTO.setEmpId(-1L);
 
+//        complaintDTO.status.getDisplayValue().equalsIgnoreCase()
+
         if(!complaintRepository.update(complaintDTO)){
             throw new InfoException("Something is wrong complaint with id = "+requestUpdateComplaintByAdminDTO.getComplaintId()+" not updated");
         }
 
+        AdminDTO adminDTO = (AdminDTO) model.getAttribute("adminData");
 
+        ComplaintHistoryDTO complaintHistoryDTO = new ComplaintHistoryDTO();
+        complaintHistoryDTO.setComplaintID(complaintDTO.getId());
+        complaintHistoryDTO.setStatus(requestUpdateComplaintByAdminDTO.getStatus());
+        complaintHistoryDTO.setCreatedDate(LocalDateTime.now());
+        complaintHistoryDTO.setRole(Roles.ADMIN);
+        complaintHistoryDTO.setId((long) adminDTO.getId());
+        complaintHistoryDTO.setComment("Your complaint has been reviewed and assigned to the appropriate department for further action.");
+        complaintHistoryService.saveComplaintHistory(complaintHistoryDTO);
 
         return true;
     }

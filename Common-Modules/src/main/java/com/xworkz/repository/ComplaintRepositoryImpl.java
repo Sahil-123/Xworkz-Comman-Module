@@ -2,6 +2,7 @@ package com.xworkz.repository;
 
 import com.xworkz.dto.DTOListPage;
 import com.xworkz.entity.ComplaintDTO;
+import com.xworkz.enums.ComplaintStatus;
 import com.xworkz.exceptions.InfoException;
 import com.xworkz.requestDto.RequestUpdateComplaintDTO;
 import com.xworkz.utils.CommonUtils;
@@ -183,6 +184,11 @@ public class ComplaintRepositoryImpl implements ComplaintRepository {
             query1.setMaxResults(pageSize);
             List<ComplaintDTO> results = query1.getResultList();
 
+            System.out.println("-==================================-");
+            System.out.println();
+            System.out.println(results);
+            System.out.println();
+
             Query query2 = entityManager.createQuery(query);
             Long count = (long) query2.getResultList().size();
 
@@ -233,8 +239,8 @@ public class ComplaintRepositoryImpl implements ComplaintRepository {
 
 //            predicates.add(cb.notLike(root.get("status"), "%" + CommonUtils.RESOLVED + "%"));
 
-            Predicate resolvedStatus = cb.notLike(root.get("status"), "%" + CommonUtils.RESOLVED + "%");
-            Predicate notResolvedStatus = cb.notLike(root.get("status"), "%" + CommonUtils.NOT_RESOLVED + "%");
+            Predicate resolvedStatus = cb.equal(root.get("status"),ComplaintStatus.RESOLVED );
+            Predicate notResolvedStatus = cb.equal(root.get("status"),  ComplaintStatus.NOT_RESOLVED );
             predicates.add(cb.and(resolvedStatus, notResolvedStatus));
 
             query.where(cb.and(predicates.toArray(new Predicate[0])));
@@ -263,8 +269,8 @@ public class ComplaintRepositoryImpl implements ComplaintRepository {
 
 //            predicates.add(cb.notLike(root.get("status"), "%" + CommonUtils.RESOLVED + "%"));
 
-            Predicate resolvedStatus = cb.notLike(root.get("status"), "%" + CommonUtils.RESOLVED + "%");
-            Predicate notResolvedStatus = cb.notLike(root.get("status"), "%" + CommonUtils.NOT_RESOLVED + "%");
+            Predicate resolvedStatus = cb.notEqual(root.get("status"), ComplaintStatus.RESOLVED );
+            Predicate notResolvedStatus = cb.notEqual(root.get("status"), ComplaintStatus.NOT_RESOLVED );
             predicates.add(cb.and(resolvedStatus, notResolvedStatus));
 
             query.where(cb.and(predicates.toArray(new Predicate[0])));
@@ -274,6 +280,10 @@ public class ComplaintRepositoryImpl implements ComplaintRepository {
             query1.setFirstResult(CommonUtils.getFirstResultForPagination(offset, pageSize));
             query1.setMaxResults(pageSize);
             List<ComplaintDTO> results = query1.getResultList();
+
+            System.out.println();
+            System.out.println("-----------------------");
+            System.out.println(results);
 
             Query query2 = entityManager.createQuery(query);
             Long count = (long) query2.getResultList().size();
@@ -299,8 +309,8 @@ public class ComplaintRepositoryImpl implements ComplaintRepository {
 
 //            predicates.add(cb.like(root.get("status"), "%" + CommonUtils.RESOLVED + "%"));
 
-            Predicate resolvedStatus = cb.like(root.get("status"), "%" + CommonUtils.RESOLVED + "%");
-            Predicate notResolvedStatus = cb.like(root.get("status"), "%" + CommonUtils.NOT_RESOLVED + "%");
+            Predicate resolvedStatus = cb.equal(root.get("status"), ComplaintStatus.RESOLVED);
+            Predicate notResolvedStatus = cb.equal(root.get("status"), ComplaintStatus.NOT_RESOLVED);
             predicates.add(cb.or(resolvedStatus, notResolvedStatus));
 
             query.where(cb.and(predicates.toArray(new Predicate[0])));
@@ -329,8 +339,8 @@ public class ComplaintRepositoryImpl implements ComplaintRepository {
 
 //            predicates.add(cb.like(root.get("status"), "%" + CommonUtils.RESOLVED + "%"));
 
-            Predicate resolvedStatus = cb.like(root.get("status"), "%" + CommonUtils.RESOLVED + "%");
-            Predicate notResolvedStatus = cb.like(root.get("status"), "%" + CommonUtils.NOT_RESOLVED + "%");
+            Predicate resolvedStatus = cb.equal(root.get("status"),ComplaintStatus.RESOLVED);
+            Predicate notResolvedStatus = cb.equal(root.get("status"), ComplaintStatus.NOT_RESOLVED);
             predicates.add(cb.or(resolvedStatus, notResolvedStatus));
 
             query.where(cb.and(predicates.toArray(new Predicate[0])));
@@ -422,7 +432,7 @@ public class ComplaintRepositoryImpl implements ComplaintRepository {
 
             predicates.add(cb.equal(root.get("deptId"), deptId));
             predicates.add(cb.equal(root.get("empId"), empId));
-            predicates.add(cb.like(root.get("status"), "%"+CommonUtils.IN_PROGRESS+"%"));
+            predicates.add(cb.equal(root.get("status"), ComplaintStatus.ASSIGNED_TO_EMPLOYEE));
 
 //            predicates.add(cb.isNull(root.get("empId")));
 
@@ -489,7 +499,7 @@ public class ComplaintRepositoryImpl implements ComplaintRepository {
         if (complaintDTO.getCity() != null && !complaintDTO.getCity().isEmpty()) {
             predicates.add(cb.equal(root.get("city"), complaintDTO.getCity()));
         }
-        if (complaintDTO.getStatus() != null && !complaintDTO.getStatus().isEmpty()) {
+        if (complaintDTO.getStatus() != null && !complaintDTO.getStatus().getDisplayValue().isEmpty()) {
             predicates.add(cb.equal(root.get("status"), complaintDTO.getStatus()));
         }
         if (complaintDTO.getCountry() != null && !complaintDTO.getCountry().isEmpty()) {
@@ -547,7 +557,7 @@ public class ComplaintRepositoryImpl implements ComplaintRepository {
         if (complaintDTO.getCity() != null && !complaintDTO.getCity().isEmpty()) {
             predicates.add(cb.equal(root.get("city"), complaintDTO.getCity()));
         }
-        if (complaintDTO.getStatus() != null && !complaintDTO.getStatus().isEmpty()) {
+        if (complaintDTO.getStatus() != null && !complaintDTO.getStatus().getDisplayValue().isEmpty()) {
             predicates.add(cb.equal(root.get("status"), complaintDTO.getStatus()));
         }
         if (complaintDTO.getCountry() != null && !complaintDTO.getCountry().isEmpty()) {
@@ -588,7 +598,7 @@ public class ComplaintRepositoryImpl implements ComplaintRepository {
         if (complaintDTO.getCity() != null && !complaintDTO.getCity().isEmpty()) {
             predicates.add(cb.equal(root.get("city"), complaintDTO.getCity()));
         }
-        if (complaintDTO.getStatus() != null && !complaintDTO.getStatus().isEmpty()) {
+        if (complaintDTO.getStatus() != null && !complaintDTO.getStatus().getDisplayValue().isEmpty()) {
             predicates.add(cb.equal(root.get("status"), complaintDTO.getStatus()));
         }
         if (complaintDTO.getCountry() != null && !complaintDTO.getCountry().isEmpty()) {

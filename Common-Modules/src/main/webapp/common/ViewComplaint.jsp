@@ -183,15 +183,12 @@
 
                                 <select class="form-control m-1" id="status" name="status">
                                     <option value="">Status</option>
-                                    <option value="Open" <c:if test="${complaint.status == 'Open'}">selected
-                                        </c:if>>Open</option>
-                                    <option value="Pending" <c:if test="${complaint.status == 'Pending'}">selected
-                                        </c:if>
-                                        >Pending
-                                    </option>
-                                    <option value="InProgess" <c:if test="${complaint.status == 'InProgess'}">selected
-                                        </c:if>
-                                        >InProgress</option>
+                                    <option value="PENDING" <c:if test="${'PENDING'.equalsIgnoreCase(complaint.status)}">selected</c:if>>Pending</option>
+                                                           <option value="IN_PROGRESS" <c:if test="${'IN_PROGRESS'.equalsIgnoreCase(complaint.status)}">selected</c:if>>In Progress</option>
+                                                           <option value="ASSIGNED_TO_EMPLOYEE" <c:if test="${'ASSIGNED_TO_EMPLOYEE'.equalsIgnoreCase(complaint.status)}">selected</c:if>>Assigned to Employee</option>
+<option value="REOPENED" <c:if test="${'REOPENED'.equalsIgnoreCase(complaint.status)}">selected</c:if>>Reopened</option>
+                                                           <option value="REJECTED" <c:if test="${'REJECTED'.equalsIgnoreCase(complaint.status)}">selected</c:if>>Rejected</option>
+
                                 </select>
                             </div>
 
@@ -222,15 +219,13 @@
 
                                 <select class="form-control m-1" id="status" name="status">
                                     <option value="">Status</option>
-                                    <option value="Open" <c:if test="${complaint.status == 'Open'}">selected
-                                        </c:if>>Open</option>
-                                    <option value="Pending" <c:if test="${complaint.status == 'Pending'}">selected
-                                        </c:if>
-                                        >Pending</option>
-                                    <option value="InProgess" <c:if test="${complaint.status == 'InProgess'}">
-                                        selected
-                                        </c:if>
-                                        >InProgress</option>
+                                     <option value="IN_PROGRESS" <c:if test="${'IN_PROGRESS'.equalsIgnoreCase(complaint.status)}">selected</c:if>>In Progress</option>
+                                                                                               <option value="ASSIGNED_TO_DEPARTMENT" <c:if test="${'ASSIGNED_TO_DEPARTMENT'.equalsIgnoreCase(complaint.status)}">selected</c:if>>Assigned to Department</option>
+                                                                                               <option value="PENDING" <c:if test="${'PENDING'.equalsIgnoreCase(complaint.status)}">selected</c:if>>Pending</option>
+                                                                                               <option value="REOPENED" <c:if test="${'REOPENED'.equalsIgnoreCase(complaint.status)}">selected</c:if>>Reopened</option>
+                                                                                               <option value="NOT_RESOLVED" <c:if test="${'NOT_RESOLVED'.equalsIgnoreCase(complaint.status)}">selected</c:if>>Not Resolved</option>
+                                                                                               <option value="REJECTED" <c:if test="${'REJECTED'.equalsIgnoreCase(complaint.status)}">selected</c:if>>Rejected</option>
+
                                 </select>
                             </div>
 
@@ -253,12 +248,11 @@
                             <div class="col">
                                 <select class="form-control m-1" name="status">
                                     <option value="">Status</option>
-                                    <option value="In Progress">In Progress
-                                    </option>
-                                    <option value="Pending">Pending</option>
-                                    <option value="Not Resolved">Not Resolved
-                                    </option>
-                                    <option value="Resolved">Resolved</option>
+                                    <option value="IN_PROGRESS" <c:if test="${'IN_PROGRESS'.equalsIgnoreCase(complaint.status)}">selected</c:if>>In Progress</option>
+                                    <option value="PENDING" <c:if test="${'PENDING'.equalsIgnoreCase(complaint.status)}">selected</c:if>>Pending</option>
+                                    <option value="NOT_RESOLVED" <c:if test="${'NOT_RESOLVED'.equalsIgnoreCase(complaint.status)}">selected</c:if>>Not Resolved</option>
+                                    <option value="RESOLVED" <c:if test="${'RESOLVED'.equalsIgnoreCase(complaint.status)}">selected</c:if>>Resolved</option>
+
                                 </select>
                             </div>
                             <div class="col">

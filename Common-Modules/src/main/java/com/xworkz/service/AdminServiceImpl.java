@@ -63,6 +63,8 @@ public class AdminServiceImpl implements AdminService{
 //                save updated counts to database
                 adminRepository.updateByDto(adminDTO);
                 model.addAttribute("adminData",adminDTO);
+                System.out.println("====================");
+                System.out.println(model.getAttribute("adminData"));
 //
 ////                Adding authentication in spring security context
 //                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =

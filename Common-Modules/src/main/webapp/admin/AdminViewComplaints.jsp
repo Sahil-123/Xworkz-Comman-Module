@@ -77,14 +77,19 @@
                                 </select>
 
                                 <select class="form-control m-1" id="status" name="status">
-                                    <option value="">Status</option>
-                                    <option value="InReview">In Review</option>
-                                    <option value="AssignedToDepartment">Assigned to Department</option>
-                                    <option value="Pending">Pending</option>
-                                    <option value="Reopened">Reopened</option>
-                                    <option value="Resolved">Resolved</option>
-                                    <option value="NotResolved">Not Resolved</option>
-                                    <option value="Rejected">Rejected</option>
+                                   <option value="">Status</option>
+                                   <option value="RECEIVED">Received</option>
+                                   <option value="OPEN">Open</option>
+                                   <option value="IN_REVIEW">In Review</option>
+                                   <option value="ASSIGNED_TO_DEPARTMENT">Assigned to Department</option>
+                                   <option value="ASSIGNED_TO_EMPLOYEE">Assigned to Employee</option>
+                                   <option value="IN_PROGRESS">In Progress</option>
+                                   <option value="PENDING">Pending</option>
+                                   <option value="RESOLVED">Resolved</option>
+                                   <option value="REOPENED">Reopened</option>
+                                   <option value="NOT_RESOLVED">Not Resolved</option>
+                                   <option value="REJECTED">Rejected</option>
+
                                 </select>
 
                                 <input type="submit" class="btn btn-primary m-1" id="submitButton" value="Filter" />
@@ -146,21 +151,20 @@
                                                     <td>
                                                         <select class="form-control m-1" id="status" name="status">
                                                             <option value="">Status</option>
-                                                            <option value="InReview" <c:if test="${complaint.status == 'InReview'}">selected</c:if>>In Review</option>
-                                                            <option value="InProgress" <c:if test="${complaint.status == 'InProgress'}">selected</c:if>>In Progress</option>
-                                                            <option value="InProgess" <c:if test="${complaint.status == 'InProgess'}">selected</c:if>
-                                                                >InProgress</option>
-                                                            <option value="AssignedToDepartment" <c:if test="${complaint.status == 'AssignedToDepartment'}">selected</c:if>>Assigned to Department</option>
-                                                            <option value="Pending" <c:if test="${complaint.status == 'Pending'}">selected</c:if>>Pending</option>
-                                                            <option value="Reopened" <c:if test="${complaint.status == 'Reopened'}">selected</c:if>>Reopened</option>
-                                                            <option value="NotResolved" <c:if test="${complaint.status == 'NotResolved'}">selected</c:if>>Not Resolved</option>
-                                                            <option value="Rejected" <c:if test="${complaint.status == 'Rejected'}">selected</c:if>>Rejected</option>
+                                                           <option value="IN_PROGRESS" <c:if test="${'IN_PROGRESS'.equalsIgnoreCase(complaint.status)}">selected</c:if>>In Progress</option>
+                                                           <option value="ASSIGNED_TO_EMPLOYEE" <c:if test="${'ASSIGNED_TO_EMPLOYEE'.equalsIgnoreCase(complaint.status)}">selected</c:if>>Assigned to Employee</option>
+                                                           <option value="PENDING" <c:if test="${'PENDING'.equalsIgnoreCase(complaint.status)}">selected</c:if>>Pending</option>
+                                                           <option value="REOPENED" <c:if test="${'REOPENED'.equalsIgnoreCase(complaint.status)}">selected</c:if>>Reopened</option>
+                                                           <option value="NOT_RESOLVED" <c:if test="${'NOT_RESOLVED'.equalsIgnoreCase(complaint.status)}">selected</c:if>>Not Resolved</option>
+                                                           <option value="REJECTED" <c:if test="${'REJECTED'.equalsIgnoreCase(complaint.status)}">selected</c:if>>Rejected</option>
+
                                                         </select>
                                                         
                             </td>
                             <td class="">
                                 <input type="number" value="${complaint.id}" name="complaintId" hidden />
                                 <button type="submit" class="btn btn btn-success btn-sm m-1">Submit</button>
+
                             </td>
                             </form>
 

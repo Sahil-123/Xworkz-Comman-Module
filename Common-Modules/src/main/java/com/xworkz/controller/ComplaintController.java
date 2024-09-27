@@ -1,6 +1,7 @@
 package com.xworkz.controller;
 
 import com.xworkz.dto.DTOListPage;
+import com.xworkz.entity.AdminDTO;
 import com.xworkz.entity.ComplaintDTO;
 import com.xworkz.entity.UserDTO;
 import com.xworkz.exceptions.InfoException;
@@ -25,7 +26,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/complaints")
-@SessionAttributes({"userData"})
+@SessionAttributes({"userData", "adminData"})
 public class ComplaintController {
 
     @Autowired
@@ -233,7 +234,8 @@ public class ComplaintController {
         }
 
         try {
-            complaintService.updateComplaintForAdmin(requestUpdateComplaintByAdminDTO);
+
+            complaintService.updateComplaintForAdmin(requestUpdateComplaintByAdminDTO, model);
             model.addAttribute("successMessage", "Complaint with Id " + requestUpdateComplaintByAdminDTO.getComplaintId() + " updated successfully.");
 //            return viewComplaintsForAdmin(new RequestFilterComplaintDTO(),model);
         } catch (InfoException e) {

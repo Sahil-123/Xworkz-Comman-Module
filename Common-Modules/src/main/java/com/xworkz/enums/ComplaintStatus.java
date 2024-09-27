@@ -4,17 +4,17 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum ComplaintStatus {
-    RECEIVED("Received"),
-    OPEN("Open"),
-    IN_REVIEW("In Review"),
-    ASSIGNED_TO_DEPARTMENT("Assigned to Department"),
-    ASSIGNED_TO_EMPLOYEE("Assigned to Employee"),
-    IN_PROGRESS("In Progress"),
-    PENDING("Pending"),
-    RESOLVED("Resolved"),
-    REOPENED("Reopened"),
-    NOT_RESOLVED("Not Resolved"),
-    REJECTED("Rejected");
+    RECEIVED("RECEIVED"),
+    OPEN("OPEN"),
+    IN_REVIEW("IN_REVIEW"),
+    ASSIGNED_TO_DEPARTMENT("ASSIGNED_TO_DEPARTMENT"),
+    ASSIGNED_TO_EMPLOYEE("ASSIGNED_TO_EMPLOYEE"),
+    IN_PROGRESS("IN_PROGRESS"),
+    PENDING("PENDING"),
+    RESOLVED("RESOLVED"),
+    REOPENED("REOPENED"),
+    NOT_RESOLVED("NOT_RESOLVED"),
+    REJECTED("REJECTED");
 
     private final String displayValue;
 

@@ -49,9 +49,18 @@
 
                                 <select class="form-control m-1" id="status" name="status">
                                     <option value="">Status</option>
-                                    <option value="Open">Open</option>
-                                    <option value="Pending">Pending</option>
-                                    <option value="InProgess">InProgess</option>
+                                    <option value="RECEIVED">Received</option>
+                                    <option value="OPEN">Open</option>
+                                    <option value="IN_REVIEW">In Review</option>
+                                    <option value="ASSIGNED_TO_DEPARTMENT">Assigned to Department</option>
+                                    <option value="ASSIGNED_TO_EMPLOYEE">Assigned to Employee</option>
+                                    <option value="IN_PROGRESS">In Progress</option>
+                                    <option value="PENDING">Pending</option>
+                                    <option value="RESOLVED">Resolved</option>
+                                    <option value="REOPENED">Reopened</option>
+                                    <option value="NOT_RESOLVED">Not Resolved</option>
+                                    <option value="REJECTED">Rejected</option>
+
                                 </select>
 
                                 <input type="submit" class="btn btn-primary m-1" id="submitButton" value="Filter" />
@@ -102,11 +111,11 @@
                                                 <td>${complaint.address}</td>
                                                 <td>${complaint.description}</td>
                                                 <td>${complaint.createdDate}</td>
-                                                <td>${complaint.status}</td>
+                                                <td>${complaint.status.getDisplayValue()}</td>
                                                 <td><a href="complaints/updateComplaintPage?id=${complaint.id}"
                                                         class=" btn btn-success btn-sm
                                                         
-                                                        <c:if test="${complaint.status.equalsIgnoreCase('resolved') || complaint.status.equalsIgnoreCase('not resolved') }">
+                                                        <c:if test="${complaint.status.getDisplayValue().equalsIgnoreCase('resolved') || complaint.status.getDisplayValue().equalsIgnoreCase('not_resolved') }">
                                                             disabled
                                                         </c:if>
                                                         

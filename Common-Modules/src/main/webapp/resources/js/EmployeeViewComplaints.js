@@ -174,15 +174,15 @@ async function updateStatus(event, element, complaintId, spinner) {
         'status': status
     };
 
-    if (status === "Pending") {
+    if (status === "PENDING") {
         let modelElement = document.getElementById("otherModel");
         model = modelElement;
         new bootstrap.Modal(modelElement).show();
-    } else if (status === "Not Resolved") {
+    } else if (status === "NOT_RESOLVED") {
         let modelElement = document.getElementById("otherModel");
         model = modelElement;
         new bootstrap.Modal(modelElement).show();
-    } else if (status === "Resolved") {
+    } else if (status === "RESOLVED") {
         try {
 
 
