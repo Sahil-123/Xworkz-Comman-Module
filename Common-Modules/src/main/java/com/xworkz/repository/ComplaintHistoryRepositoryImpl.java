@@ -39,6 +39,11 @@ public class ComplaintHistoryRepositoryImpl implements ComplaintHistoryRepositor
             Query query = entityManager.createNamedQuery("findHistoryByComplaintID");
             query.setParameter("complaintID", complaintID.longValue());
             List<ComplaintHistoryDTO> complaintHistoryDTOList = (List<ComplaintHistoryDTO>) query.getResultList();
+
+            System.out.println();
+            System.out.println("=======================");
+            System.out.println(complaintHistoryDTOList);
+
             return Optional.ofNullable(complaintHistoryDTOList);
         } catch (PersistenceException e) {
             e.printStackTrace();

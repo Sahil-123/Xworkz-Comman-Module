@@ -1,6 +1,4 @@
 
-
-
 function getRequest() {
     let request;
     if (window.XMLHttpRequest) {

@@ -7,6 +7,7 @@
         <%@ include file="../component/HeaderLink.jsp" %>
             <link rel="stylesheet" href="resources/css/Table.css">
             <%-- <link rel="stylesheet" href="resources/css/ViewUserComplaint.css"> --%>
+                <link rel="stylesheet" href="resources/css/UserComplaintStatus.css">
                 <%@ include file="../user/UserHeader.jsp" %>
 
 
@@ -111,46 +112,91 @@
                                                 <td>${complaint.address}</td>
                                                 <td>${complaint.description}</td>
                                                 <td>${complaint.createdDate}</td>
-                                                <td>${complaint.status.getDisplayValue()}</td>
-                                                <td><a href="complaints/updateComplaintPage?id=${complaint.id}"
-                                                        class=" btn btn-success btn-sm
+                                                <td class="status-text">${complaint.status.getDisplayValue()}</td>
+                                                <td><a href="complaints/updateComplaintPage?id=${complaint.id}" class=" btn btn-success btn-sm
                                                         
-                                                        <c:if test="${complaint.status.getDisplayValue().equalsIgnoreCase('resolved') || complaint.status.getDisplayValue().equalsIgnoreCase('not_resolved') }">
-                                                            disabled
-                                                        </c:if>
-                                                        
-                                                        ">
-                                                        <%-- <i class="fa-solid fa-pen-to-square">
-                                                            </i> --%>
-                                                            Edit
-                                                    </a>
-                                                </td>
-                                                <td><a href="#" class="btn btn-success btn-sm">
-                                                        <%-- <i class="fa-solid fa-circle-info">
-                                                            </i> --%>
-                                                            Status
-                                                    </a>
-                                                </td>
-
-                                            </tr>
-                                        </c:forEach>
-
-                                    </tbody>
+                                                        <c:if test="
+                                                        ${complaint.status.getDisplayValue().equalsIgnoreCase('resolved')
+                                                        ||
+                                                        complaint.status.getDisplayValue().equalsIgnoreCase('not_resolved')
+                                                        }">
+                                                        disabled
                         </c:if>
-                        </table>
 
-                        <hr>
-                        <%@ include file="../common/Pagination.jsp" %>
+                        ">
+                        <%-- <i class="fa-solid fa-pen-to-square">
+                            </i> --%>
+                            Edit
+                            </a>
+                            </td>
+                            <td>
+                                <button class="btn btn-success btn-sm"
+                                    onclick="getComplaintStatus(${complaint.id}, complaintStatusModel, spinner)">
+                                    Status
+                                </button>
+                            </td>
+
+                            </tr>
+                            </c:forEach>
+
+                            </tbody>
+                            </c:if>
+                            </table>
+
+                            <hr>
+                            <%@ include file="../common/Pagination.jsp" %>
                     </div>
                     <!-- </c:otherwise>
                         </c:choose> -->
                 </div>
             </div>
 
-
-
-
             </div>
+
+
+            <div class="modal fade modal-dialog-scrollable" id="complaintStatusModel" data-bs-backdrop="static"
+                data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <h5 class="modal-title text-center w-100" id="staticBackdropLabel">Complaint Status</h5>
+                        </div>
+
+                        <div class="modal-body">
+
+                            <div class="timeline-wrapper" id="complaintStatus">
+                                <div class="node">
+                                    <h5 style="color: rgb(0, 123, 255);">Received</h5>
+                                    <p>Your complaint has been submitted and is currently under review by the
+                                        administration.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer  d-flex justify-content-end">
+                            <button type="button" class="btn btn-secondary"
+                                onclick="dismisComplaintStatusModel(complaintStatusModel)">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="spinner" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class=" modal-body p-5 bg-transparent text-white d-flex justify-content-center ">
+                        <div class="d-flex justify-content-center">
+                            <div class="spinner-border text-light"></div>
+                            <h3 class="ms-3">Loading</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
 
             <c:if test="${successMessage.length() > 0}">
                 <div class="modal fade " id="exampleModal" tabindex="0" aria-labelledby="exampleModalLabel"
@@ -174,6 +220,8 @@
                     </div>
                 </div>
 
+
+
                 <script>
                     document.addEventListener("DOMContentLoaded", function () {
                         var exampleModal = new bootstrap.Modal(document.getElementById('exampleModal'));
@@ -183,6 +231,9 @@
             </c:if>
 
             <script type="module" src="resources/js/RaiseUserComplaint.js"></script>
+            <script type="module" src="resources/js/ViewUserComplaint.js"></script>
+
+
 
     </body>
 
