@@ -161,6 +161,9 @@
             <div class="tech-card">Spring MVC</div>
             <div class="tech-card">Hikari</div>
 
+            <div class="tech-card">MySQL (DataBase)</div>
+
+
 
           </div>
         </div>
