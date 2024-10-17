@@ -80,6 +80,7 @@
 
 
 
+        <div class="vh100">
         <div class="mt-3 container d-flex justify-content-center">
             <div class="card w-50 ps-4 pe-4 pt-2 pb-1 shadow p-3 mb-5 bg-body rounded">
                 <form action="signup" method="POST">
@@ -144,6 +145,8 @@
             </div>
             </form>
         </div>
+        </div>
+
 
 
         <c:if test="${successMessage.length() > 0}">

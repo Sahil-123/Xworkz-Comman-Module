@@ -20,7 +20,7 @@
 
         <%@ include file="../department/DepartmentAdminNav.jsp" %>
 
-
+<div class="main-content">
             <div class="mt-3 container-fluid d-flex justify-content-center ">
 
                 <div class="">
@@ -106,6 +106,8 @@
                     </div>
                 </div>
             </div>
+</div>
+
 
             </div>
 

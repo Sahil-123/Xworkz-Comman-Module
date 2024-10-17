@@ -41,7 +41,7 @@ body {
     align-items: center;
    
     width: 100%;
-    position: fixed;
+    /* position: fixed; */
     bottom: 0%;
 
     letter-spacing: 0.09rem;
@@ -52,4 +52,20 @@ body {
     text-decoration: none !important;
     color: rgba(255, 255, 255, 0.812);
     cursor: pointer;
+}
+
+.vh100{
+    /* height: 100vh; */
+    min-height: 100vh;
+
+}
+
+.per100{
+    height: inherit;
+}
+
+.main-content {
+    min-height: 100vh;
+    flex: 1; /* Makes the main content area take up available space */
+    /* padding: 20px; Adds some padding around the content */
 }

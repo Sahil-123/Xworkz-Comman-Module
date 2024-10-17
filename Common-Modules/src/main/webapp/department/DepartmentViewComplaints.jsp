@@ -19,7 +19,7 @@
 
         <%@ include file="./DepartmentAdminNav.jsp" %>
 
-            <div class="mt-3 container-fluid d-flex justify-content-center ">
+            <div class="mt-3 container-fluid d-flex justify-content-center vh100">
 
 
                 <div class="">

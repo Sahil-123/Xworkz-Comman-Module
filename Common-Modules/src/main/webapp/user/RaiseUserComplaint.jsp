@@ -16,6 +16,7 @@
     <body>
         <%@ include file="UserNav.jsp" %>
 
+<div class="main-content">
 
             <div class="mt-3 container d-flex justify-content-center">
                 <div class="card w-50 ps-4 pe-4 pt-2 pb-1 shadow p-3 mb-5 bg-body rounded">
@@ -119,6 +120,9 @@
                 </div>
                 </form>
             </div>
+
+            </div>
+
 
 
             <c:if test="${successMessage.length() > 0}">

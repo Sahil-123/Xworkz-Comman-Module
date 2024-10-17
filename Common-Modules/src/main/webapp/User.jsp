@@ -22,6 +22,8 @@
         <%@ include file="user/UserNav.jsp" %>
 
 
+<div class="main-content">
+
             <div class="mt-5 container">
 
                 <div class="card text-left p-5 d-flex flex-row align-content-center justify-content-between p-shadow">
@@ -65,6 +67,7 @@
 
                 </div>
             </div>
+</div>
 
 
 

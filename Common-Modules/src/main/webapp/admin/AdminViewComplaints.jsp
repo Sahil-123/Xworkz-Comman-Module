@@ -21,8 +21,7 @@
 
         <%@ include file="../component/AdminHorizontalNavBar.jsp" %>
 
-            <div class="mt-3 container-fluid d-flex justify-content-center ">
-
+            <div class="mt-3 container-fluid d-flex justify-content-center main-content">
 
                 <div class="">
                     <div class="table-responsive-sm p-4 ">
@@ -180,10 +179,6 @@
                         </div>
                     </div>
                 </div>
-
-
-
-
             </div>
 
             <c:if test="${successMessage.length() > 0}">

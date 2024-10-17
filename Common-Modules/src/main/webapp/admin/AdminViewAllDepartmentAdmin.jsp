@@ -16,7 +16,7 @@
     <body class="fw-normal">
         <%@ include file="../component/AdminHorizontalNavBar.jsp" %>
 
-            <div class="mt-1 container-fluid d-flex justify-content-center">
+            <div class="mt-1 container-fluid d-flex justify-content-center main-content">
                 <div class="">
                     <div class="table-responsive-xxl p-4">
                         <h5 class="text-center"> Department Admin Details </h5>

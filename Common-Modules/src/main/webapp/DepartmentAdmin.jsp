@@ -87,7 +87,7 @@
         <%@ include file="department/DepartmentAdminNav.jsp" %>
 
 
-            <div class="mt-5 container">
+            <div class="mt-5 container vh100">
 
                 <div class="card text-left p-5 d-flex flex-row align-content-center justify-content-between p-shadow">
 
