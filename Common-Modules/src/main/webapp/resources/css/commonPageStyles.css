@@ -52,6 +52,7 @@ body {
     text-decoration: none !important;
     color: rgba(255, 255, 255, 0.812);
     cursor: pointer;
+    /* display: inline-block !important; */
 }
 
 .vh100{

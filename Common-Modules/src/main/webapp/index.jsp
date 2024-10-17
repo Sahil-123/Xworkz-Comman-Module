@@ -5,8 +5,8 @@
   <head>
     <meta charset="UTF-8">
     <link rel="icon" type="image/x-icon" href="xworkz-logo.png">
+    <link rel="stylesheet" href="resources/css/index.css">
     <%@ include file="component/HeaderLink.jsp" %>
-
 
       <title>Welcome</title>
   </head>
@@ -123,34 +123,40 @@
     </nav>
 
 
-    <div class="mt-3 container vh100">
-      <div class="card text-left">
-        <div class="card-body">
-          <h5 class="card-title">Tech Stack:</h5>
-          <p class="card-text">Java, Spring, JSP, Servlet</p>
+    <div class="mt-3">
+      <div class="vh100">
+        <div class="container p-3 welcome">
+          <!-- <h1>Welcome</h1> -->
+          <div class="content">
+            <h1>Users Issue Management System</h1>
+            <p>
+              Users Issue Management System simplifies complaint management by acting as a bridge between users, admins,
+              and departments, ensuring that issues are quickly addressed, tracked, and resolved efficiently. It's a
+              one-stop solution for streamlining communication and improving response times, making life easier for
+              everyone involved.
+            </p>
+          </div>
+          <div class="img-container">
+            <img src="resources/images/landing-img1.png" class="img"/>
+          </div>
         </div>
-
-        <div class="card-body">
-          <h5 class="card-title">Start Date: </h5>
-          <p class="card-text">Wednesday, 12 June 2024</p>
-        </div>
-
-        <div class="card-body">
-          <h5 class="card-title">Version Control System:</h5>
-          <p class="card-text">Github: <a
-              href="https://github.com/Sahil-123/Xworkz-Comman-Module/tree/main/Common-Modules" target="_blank"> Common
-              Modules</a></p>
-        </div>
-
-        <div class="card-body">
-          <h5 class="card-title">Description:</h5>
-          <p class="card-text">------</p>
-        </div>
-
       </div>
+
+      <div class="vh100 technology-outer">
+        <div class="container p-3 technology">
+          <h1>Key Technologies </h1>
+        </div>
+      </div>
+
+      <!-- <div class="vh100">
+        <div class="container p-3 about">
+
+          <h1>About us</h1>
+        </div>
+      </div> -->
     </div>
 
-             <%@ include file="../component/Footer.jsp" %>
+    <%@ include file="../component/Footer.jsp" %>
 
   </body>
 

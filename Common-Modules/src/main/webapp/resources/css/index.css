@@ -1,0 +1,82 @@
+.welcome, .technology, .about {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+}
+
+.welcome, .technology, .about > h1{
+   margin-top: 2rem;
+}
+
+.technology-outer{
+    background-color: #2C3539;
+    color: white;
+}
+
+.technology h1 {
+    margin-top: 2rem;
+}
+
+.welcome{
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+
+    height: 70vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    flex-direction: row;
+    
+    /* flex-basis: 50%; */
+
+    
+}
+
+.welcome > .content {
+
+    /* border: 1px solid red; */
+    /* width: 90%; */
+    /* height: auto; */
+    flex-basis: 60%;
+
+    letter-spacing: .08rem;
+    line-height: 1.7rem;
+
+}
+
+.content  h1 {
+    margin-bottom: 2rem;
+    font-weight: 660;
+    /* color: blue; */
+}
+
+.content p {
+    font-size: 0.99rem;
+    font-weight: 400;
+    /* color: blue; */
+}
+
+.welcome >.img-container {
+    /* height: 100px; */
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    flex-basis: 30%;
+
+    margin-left: 20px;
+    
+}
+
+.welcome >.img-container >.img {
+    /* height: 100px; */
+    width: 20rem;
+    
+}
+
+.about {
+
+}
