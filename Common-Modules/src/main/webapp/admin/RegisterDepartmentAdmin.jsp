@@ -111,7 +111,7 @@
     </c:if>
 
             <script type="module" src="resources/js/DepartmentAdminRegister.js"></script>
-
+             <%@ include file="../component/Footer.jsp" %>
     </body>
 
     </html>

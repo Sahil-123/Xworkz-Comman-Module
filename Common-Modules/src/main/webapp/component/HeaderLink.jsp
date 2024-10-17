@@ -6,3 +6,5 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <base href="http://localhost:8080/Common-Modules/">
+
+<link rel="stylesheet" href="resources/css/commonPageStyles.css">

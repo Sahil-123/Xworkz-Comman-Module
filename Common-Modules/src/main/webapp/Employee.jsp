@@ -126,6 +126,9 @@
                 </div>
             </div>
 
+
+                         <%@ include file="../component/Footer.jsp" %>
+
     </body>
 
     </html>

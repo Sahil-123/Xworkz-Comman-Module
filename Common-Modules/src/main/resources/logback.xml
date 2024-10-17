@@ -41,11 +41,11 @@
 
 
     <!-- Specific Logger Configuration for HikariCP -->
-    <logger name="com.zaxxer.hikari" level="DEBUG" additivity="false">
+    <logger name="com.zaxxer.hikari" level="INFO" additivity="false">
         <appender-ref ref="CONSOLE" />
         <appender-ref ref="FILE" />
     </logger>
-    <logger name="com.zaxxer.hikari.pool.HikariPool" level="DEBUG" additivity="false">
+    <logger name="com.zaxxer.hikari.pool.HikariPool" level="INFO" additivity="false">
         <appender-ref ref="CONSOLE" />
         <appender-ref ref="FILE" />
     </logger>

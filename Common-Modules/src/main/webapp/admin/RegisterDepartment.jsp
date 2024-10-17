@@ -90,7 +90,7 @@
     </c:if>
 
     <script type="module" src="resources/js/department/RegisterDepartment.js"></script>
-
+             <%@ include file="../component/Footer.jsp" %>
 </body>
 
 </html>

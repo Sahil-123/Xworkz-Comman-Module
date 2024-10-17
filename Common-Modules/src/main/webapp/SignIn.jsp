@@ -251,7 +251,8 @@
             </div>
             </form>
 
-            ${userAccess}
+<!--${userAccess} -->
+
 
 
             <c:if test="${successMessage.length() > 0}">
@@ -285,6 +286,9 @@
             </c:if>
 
         </div>
+
+
+                     <%@ include file="../component/Footer.jsp" %>
 
     </body>
 

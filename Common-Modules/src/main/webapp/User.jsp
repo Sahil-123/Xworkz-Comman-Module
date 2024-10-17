@@ -102,6 +102,7 @@
 
             <!-- <img src="profileImages" alt="Profile picture"></img> -->
 
+             <%@ include file="../component/Footer.jsp" %>
     </body>
 
     </html>

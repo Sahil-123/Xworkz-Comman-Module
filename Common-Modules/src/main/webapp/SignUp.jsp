@@ -179,4 +179,6 @@
 
     </body>
 
+                 <%@ include file="../component/Footer.jsp" %>
+
     </html>

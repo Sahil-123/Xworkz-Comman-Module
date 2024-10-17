@@ -219,7 +219,7 @@
             <script type="module" src="resources/js/RaiseUserComplaint.js"></script>
             <script type="module" src="resources/js/viewAllComplaintsForAdmin.js"></script>
 
-
+             <%@ include file="../component/Footer.jsp" %>
     </body>
 
     </html>

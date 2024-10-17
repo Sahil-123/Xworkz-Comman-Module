@@ -12,5 +12,6 @@
     <p>We're sorry, but something went wrong. Please try again later.</p>
     <p>${errorMessage}</p>
 
+             <%@ include file="../component/Footer.jsp" %>
 </body>
 </html>

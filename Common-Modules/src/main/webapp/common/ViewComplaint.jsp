@@ -368,7 +368,7 @@
         </c:otherwise>
     </c:choose>
 
-
+             <%@ include file="../component/Footer.jsp" %>
     </body>
 
     </html>

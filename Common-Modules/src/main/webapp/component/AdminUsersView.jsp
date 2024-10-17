@@ -115,6 +115,7 @@
       </c:if>
 
       <%-- <script type="module" src="resources/js/RaiseUserComplaint.js"></script> --%>
+                   <%@ include file="../component/Footer.jsp" %>
 
   </body>
 

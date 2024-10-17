@@ -103,6 +103,8 @@
                     });
                 </script>
             </c:if>
+            
+            <%@ include file="../component/Footer.jsp" %>
 
     </body>
 

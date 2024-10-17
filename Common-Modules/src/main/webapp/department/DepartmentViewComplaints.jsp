@@ -187,6 +187,7 @@
             </c:if>
 
             <script type="module" src="resources/js/DepartmentViewComplaints.js"></script>
+                         <%@ include file="../component/Footer.jsp" %>
     </body>
 
     </html>

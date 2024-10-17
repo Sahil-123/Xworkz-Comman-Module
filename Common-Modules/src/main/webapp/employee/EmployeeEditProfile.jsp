@@ -105,7 +105,7 @@
         </c:if>
 
 
-
+             <%@ include file="../component/Footer.jsp" %>
     </body>
 
     </html>

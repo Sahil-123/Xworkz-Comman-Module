@@ -10,7 +10,7 @@
 }
 
 table {
-  font-size: 0.92rem;
+  font-size: 0.82rem;
   font-family: sans-serif;
   /* border: 1px solid red; */
 }
@@ -34,6 +34,10 @@ th {
 
 tr:nth-child(even) {
   background-color: #f2efef;
+}
+
+tr:nth-child(odd) {
+  background-color: white;
 }
 
 label {

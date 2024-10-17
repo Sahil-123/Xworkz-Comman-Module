@@ -234,7 +234,7 @@
             <script type="module" src="resources/js/ViewUserComplaint.js"></script>
 
 
-
+             <%@ include file="../component/Footer.jsp" %>
     </body>
 
     </html>

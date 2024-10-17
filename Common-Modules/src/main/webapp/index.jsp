@@ -23,7 +23,7 @@
             style="width: 70px; height:30px; " />
         </a>
 
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+        <div class="collapse navbar-collapse navigation-buttons" id="navbarTogglerDemo03">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           </ul>
           <ul class="navbar-nav">
@@ -56,7 +56,7 @@
               <div class="dropdown dropstart">
                 <a class=" nav-link" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
                   aria-expanded="false">
-                  Department Admin
+                  Department
                 </a>
 
                 <ul class="dropdown-menu  navbar-dark bg-dark" aria-labelledby="dropdownMenuLink">
@@ -149,6 +149,8 @@
 
       </div>
     </div>
+
+             <%@ include file="../component/Footer.jsp" %>
 
   </body>
 

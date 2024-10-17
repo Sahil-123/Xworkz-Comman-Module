@@ -138,7 +138,7 @@
         <%-- ${dto} --%>
 
             <script type="module" src="resources/js/EmployeeRegister.js"></script>
-
+             <%@ include file="../component/Footer.jsp" %>
     </body>
 
     </html>

@@ -189,7 +189,7 @@
             </c:if>
 
         </div>
-
+             <%@ include file="../component/Footer.jsp" %>
     </body>
 
     </html>

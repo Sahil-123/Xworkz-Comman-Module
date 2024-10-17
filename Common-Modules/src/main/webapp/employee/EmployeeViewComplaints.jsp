@@ -285,6 +285,8 @@
             </c:if>
 
             <script type="module" src="resources/js/EmployeeViewComplaints.js"></script>
+
+                         <%@ include file="../component/Footer.jsp" %>
     </body>
 
     </html>
