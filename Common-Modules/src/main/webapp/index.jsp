@@ -137,7 +137,7 @@
             </p>
           </div>
           <div class="img-container">
-            <img src="resources/images/landing-img1.png" class="img"/>
+            <img src="resources/images/landing-img1.png" class="img" />
           </div>
         </div>
       </div>
@@ -145,6 +145,24 @@
       <div class="vh100 technology-outer">
         <div class="container p-3 technology">
           <h1>Key Technologies </h1>
+          <div class="tech d-flex flex-wrap">
+
+            <div class="tech-card">HTML</div>
+            <div class="tech-card">CSS</div>
+            <div class="tech-card">Bootstrap</div>
+            <div class="tech-card">JavaScript</div>
+            <div class="tech-card">Java</div>
+            <div class="tech-card">JPA</div>
+            <div class="tech-card">Spring</div>
+            <div class="tech-card">JSP</div>
+            <div class="tech-card">Spring Transaction</div>
+            <div class="tech-card">Spring AOP</div>
+            <div class="tech-card">Spring ORM (Hibernate)</div>
+            <div class="tech-card">Spring MVC</div>
+            <div class="tech-card">Hikari</div>
+
+
+          </div>
         </div>
       </div>
 

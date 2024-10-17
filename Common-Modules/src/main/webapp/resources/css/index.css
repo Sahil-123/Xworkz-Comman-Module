@@ -80,3 +80,29 @@
 .about {
 
 }
+
+.tech {
+    letter-spacing: .1rem;
+    font-size: 1.1rem;
+    margin-top: 2rem;
+    font-weight: 600;
+}
+
+
+.tech-card {
+    padding: .3rem 1.1rem .3rem 1.1rem;
+    border-radius: 10px;
+    border: 3px solid #49d449;
+    margin: 20px;
+
+    cursor: pointer;
+    box-shadow: rgb(23 255 148 / 82%) 0px 30px 60px -12px inset, rgb(14 229 40) 0px 18px 36px -18px inset;
+    /* background-color: ; */
+    transition: 200ms;
+    /* width: 90%; */
+}
+
+.tech-card:hover{
+    transform: scale(1.1);
+    box-shadow: rgb(170 243 194 / 58%) 0px 54px 55px, rgb(78 215 111 / 53%) 0px -12px 30px, rgb(68 230 134 / 45%) 0px 4px 6px, rgb(83 240 168 / 35%) 0px 12px 13px, rgb(128 244 186 / 28%) 0px -3px 5px;
+}
