@@ -18,7 +18,7 @@
     margin-top: 2rem;
 }
 
-.welcome{
+.welcome, .about-inner {
     box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
 
     height: 70vh;
@@ -29,36 +29,37 @@
 
     flex-direction: row;
     
-    /* flex-basis: 50%; */
-
-    
+    /* flex-basis: 50%; */    
 }
 
-.welcome > .content {
+.welcome > .content,
+.about-inner > .content {
 
     /* border: 1px solid red; */
     /* width: 90%; */
     /* height: auto; */
     flex-basis: 60%;
 
-    letter-spacing: .08rem;
-    line-height: 1.7rem;
+    letter-spacing: .01rem;
+    word-spacing: .25rem;
+    line-height: 1.9rem;
 
 }
 
 .content  h1 {
-    margin-bottom: 2rem;
+    margin-bottom: 2.2rem;
     font-weight: 660;
     /* color: blue; */
 }
 
 .content p {
-    font-size: 0.99rem;
-    font-weight: 400;
-    /* color: blue; */
+    font-size: 1.1rem;
+    font-weight: 410;
+    color: rgb(70, 70, 70);
 }
 
-.welcome >.img-container {
+.welcome >.img-container,
+.about-inner >.img-container {
     /* height: 100px; */
 
     display: flex;
@@ -71,7 +72,8 @@
     
 }
 
-.welcome >.img-container >.img {
+.welcome >.img-container >.img,
+.about-inner >.img-container >.img {
     /* height: 100px; */
     width: 20rem;
     
@@ -79,6 +81,11 @@
 
 .about {
 
+}
+
+.about-inner {
+    flex-direction: row-reverse;
+    
 }
 
 .tech {

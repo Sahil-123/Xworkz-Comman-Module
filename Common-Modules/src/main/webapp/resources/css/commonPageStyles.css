@@ -1,6 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+
 * {
     padding: 0%;
     margin: 0%;
+    font-family: 'Poppins', sans-serif;
 }
 
 body {
@@ -58,7 +62,11 @@ body {
 .vh100{
     /* height: 100vh; */
     min-height: 100vh;
+}
 
+.vh90{
+    /* height: 100vh; */
+    min-height: 85vh;
 }
 
 .per100{
@@ -69,4 +77,8 @@ body {
     min-height: 100vh;
     flex: 1; /* Makes the main content area take up available space */
     /* padding: 20px; Adds some padding around the content */
+}
+
+.capito {
+    font-size: 2.5rem;
 }

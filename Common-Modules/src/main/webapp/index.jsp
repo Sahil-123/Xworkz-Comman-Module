@@ -124,7 +124,7 @@
 
 
     <div class="mt-3">
-      <div class="vh100">
+      <div class="vh90">
         <div class="container p-3 welcome">
           <!-- <h1>Welcome</h1> -->
           <div class="content">
@@ -162,19 +162,36 @@
             <div class="tech-card">Hikari</div>
 
             <div class="tech-card">MySQL (DataBase)</div>
-
-
-
           </div>
         </div>
       </div>
 
-      <!-- <div class="vh100">
-        <div class="container p-3 about">
+      <div class="vh90">
+        <div class="container p-3 about mt-5">
+          <div class="container p-3 about-inner">
+            <!-- <h1>Welcome</h1> -->
+            <div class="content">
+              <!-- <h1>Users Issue Management System</h1> -->
+              <h1>About Me</h1>
+              <p>
+                <span class="capito">H</span>i, I'm Sahil Naikwadi, and I recently graduated with a degree in Computer Science Engineering. I'm
+                passionate about technology and love developing software that solves real-world problems. Throughout my
+                journey, I've worked on several projects that have helped me build a solid understanding of key
+                technologies like Spring MVC, JPA, MySQL, JavaScript, and Bootstrap.
 
-          <h1>About us</h1>
+                I enjoy tackling challenges head-on and am always looking for ways to improve my skills. Whether it's
+                learning about new tools or working on exciting projects, I'm eager to keep growing and applying my
+                knowledge to make a meaningful impact.
+              </p>
+            </div>
+            <div class="img-container">
+              <img src="resources/images/about-us-removebg.png" class="img" />
+            </div>
+          </div>
+
         </div>
-      </div> -->
+      </div>
+
     </div>
 
     <%@ include file="../component/Footer.jsp" %>
